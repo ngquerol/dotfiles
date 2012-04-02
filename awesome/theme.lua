@@ -6,7 +6,7 @@
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "feh --bg-fill Dropbox/wallpapers/whirlingdervish.png" }
+theme.wallpaper_cmd = { "" }
 -- }}}
 
 -- {{{ Styles
