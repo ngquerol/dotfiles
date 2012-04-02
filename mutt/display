@@ -1,0 +1,42 @@
+# Sorting
+set sort = threads
+set sort_aux = date-received
+
+# Set French locale
+set locale="fr_FR.UTF-8"
+set allow_8bit
+set charset="utf-8"
+set assumed_charset="utf-8"
+set send_charset="utf-8:iso-8859-15:us-ascii"
+set date_format="%A %d %b %Y à %H:%M:%S (%Z)"
+
+# Quoting
+set attribution="Le %d, %n a écrit :"
+set forward_format="[Re: %s]"
+set forward_quote
+
+set reverse_name = yes
+set reverse_realname = yes
+
+set index_format = "%Z | %{%d.%m %R} | %-20.20L | %s"
+set folder_format = "%N %f %> %d %t"
+set status_format = " %n nouveaux / %u non lus %f %> %m mails "
+
+# Mark wrapped lines in the pager with a '+'
+set markers
+
+# Don't wrap mid-word
+set smart_wrap
+
+# Editor & mailcap
+set implicit_autoview
+auto_view text/x-vcard text/html text/enriched
+set editor="emacsclient -t"
+
+# Pager
+set pager_index_lines = 5
+set pager_context = 3
+
+# Misc
+set menu_scroll = yes
+set ascii_chars
