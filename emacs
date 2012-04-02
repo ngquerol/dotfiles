@@ -37,6 +37,7 @@
 	 auto-complete
 	 lua-mode
 	 yaml-mode
+	 markdown-mode
 	 linum-off
 	 )
        (mapcar 'el-get-source-name el-get-sources)))
