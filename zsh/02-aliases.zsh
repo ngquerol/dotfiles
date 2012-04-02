@@ -22,4 +22,3 @@ alias sudo='sudo '
 
 # Emacs (terminal)
 alias e='emacsclient -t'
-alias .G='git --work-tree=/home/nico/ --git-dir=/home/nico/dotfiles.git'

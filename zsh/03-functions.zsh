@@ -39,15 +39,15 @@ unpack() {
 pack() {
 
     if [[ $# -lt 2 ]]; then
-        echo "Compresse fichiers et répertoires via:"
+	echo "Compresse fichiers et répertoires via:"
 	echo "  pack archive_file file [dir|file]*"
 	return 1
     fi
 
-    [[ -f $1 ]] && echo "Erreur: le fichier de destination existe déjà."
+    [[ -f $1 ]] && echo "Erreur: le fichier de destination existe déjà." && return 1
 
     local lower
-    lower=${(L)1}           
+    lower=${(L)1}
     case $lower in
 	*.tar.bz2) tar cvjf $@ ;;
 	*.tar.gz) tar cvzf $@ ;;
