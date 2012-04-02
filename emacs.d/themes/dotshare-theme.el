@@ -37,7 +37,7 @@
 
 ;;; Credits
 ;;
-;; Jani Nurminen created the original theme for vim on such this port
+;; Christian Brassat created the original theme for Emacs 23 on such this port
 ;; is based.
 
 ;;; Code
