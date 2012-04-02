@@ -1,4 +1,46 @@
-;;; dotshare-theme.el --- A color theme for Emacs.
+;;; color-theme-dotshare.el --- A color theme for Emacs 24.
+
+;; Copyright (C) 2012 Nicolas G. Querol, Christian Brassat, Bozhidar Batsov
+
+;; Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+;; URL:
+;; Version: 0.2
+
+;; Based on zenburn-theme.el:
+;; Author: Bozhidar Batsov <bozhidar.batsov@gmail.com>
+;; URL: http://github.com/bbatsov/zenburn-emacs
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Installation:
+;;
+;; Drop the theme in a folder that is on `custom-theme-load-path'
+;; and enjoy!
+;;
+;; Don't forget that the theme requires Emacs 24.
+;;
+
+;;; Bugs
+;;
+;; None that I'm aware of.
+
+;;; Credits
+;;
+;; Jani Nurminen created the original theme for vim on such this port
+;; is based.
+
+;;; Code
 
 (deftheme dotshare "")
 
