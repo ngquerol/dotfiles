@@ -11,10 +11,6 @@ zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh_cache
 
-# Prevent CVS files/directories from being completed
-zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
-zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS'
-
 # Allow mistakes
 zstyle ':completion:*' completer _complete _match _approximate
 zstyle ':completion:*:match:*' original only
@@ -44,6 +40,14 @@ zstyle ':completion:*:processes-names'       command 'ps -awxho command'
 # Sudo completion
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
     /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+
+# Git info in prompt
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' stagedstr ':S'
+zstyle ':vcs_info:*' unstagedstr ':U'
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' actionformats '%F{4}(%f%s%F{4})%F{3}-%F{4}[%F{2}%b%F{3}%c%u|%F{1}%a%F{4}]%f '
+zstyle ':vcs_info:*' formats '%F{4}(%f%s%F{4})%F{3}-%F{4}[%F{2}%b%F{4}%c%u]%f '
 
 # pacman-color completion
 compdef _pacman pacman-color=pacman

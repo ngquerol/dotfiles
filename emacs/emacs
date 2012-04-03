@@ -132,6 +132,9 @@
 ;; clean up redundant whitespace when saving
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
+;; revert buffers automagically
+(global-auto-revert-mode 1)
+
 ;; Environment
 (prefer-coding-system 'utf-8)
 (set-language-environment 'utf-8)

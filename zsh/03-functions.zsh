@@ -1,4 +1,4 @@
-## Title stuffs
+## Title & git stuffs
 precmd() {
 
     setprompt
@@ -7,6 +7,9 @@ precmd() {
 	rxvt* )
 	    print -Pn "\e]0;%n@%m: %~\a" ;;
     esac
+
+    vcs_info
+
 }
 
 preexec() {
