@@ -80,8 +80,6 @@ layouts =
    gmailwidget = widget({ type = "textbox" })
    vicious.register(gmailwidget, vicious.widgets.gmail,
 		    function (widget, args)
-		       gmail_t:set_text(" <span weight='bold' color='#66AABB'>"..args["{sender}"].."</span>: "..args["{subject}"].." ")
-		       gmail_t:add_to_object(gmailicon)
 		       if args['{count}'] > 0 then
 			  return "<span color ='#66AABB' weight ='bold'>"..args["{count}"].."</span>"
 		       else
