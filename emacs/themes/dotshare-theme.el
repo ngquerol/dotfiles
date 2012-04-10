@@ -71,7 +71,7 @@
    ;;; basic coloring
    `(cursor ((,class (:foreground ,dotshare-fg))))
    `(default ((,class (:foreground ,dotshare-fg :background ,dotshare-bg-1))))
-   `(fringe ((,class (:foreground ,dotshare-fg :background ,dotshare-bg))))
+   `(fringe ((,class (:foreground ,dotshare-fg :background ,dotshare-bg-1))))
    `(escape-glyph-face ((,class (:foreground ,dotshare-red))))
    `(header-line ((,class (:foreground ,dotshare-yellow
 				       :background ,dotshare-bg-1
