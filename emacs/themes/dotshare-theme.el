@@ -30,7 +30,7 @@
 ;;; Code
 
 (deftheme dotshare 
-"A colourful and dark theme")
+"A colourful, dark and terminal-friendly theme")
 
 (let ((class '((class color) (min-colors 89)))
       ;; color definitions
