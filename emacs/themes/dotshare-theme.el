@@ -1,14 +1,10 @@
 ;;; color-theme-dotshare.el --- A color theme for Emacs 24.
 
-;; Copyright (C) 2012 Nicolas G. Querol, Christian Brassat, Bozhidar Batsov
+;; Based on color-theme-dotshare.el:
+;; Author: Christian Brassat <crshd@mail.com>
+;; URL: http://dotshare.it/dots/191/
 
-;; Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
-;; URL:
-;; Version: 0.2
-
-;; Based on zenburn-theme.el:
-;; Author: Bozhidar Batsov <bozhidar.batsov@gmail.com>
-;; URL: http://github.com/bbatsov/zenburn-emacs
+;; Ported to GNU Emacs 24's built-in theme system by Nicolas G. Querol <nicolas.gquerol@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,18 +27,10 @@
 ;; Don't forget that the theme requires Emacs 24.
 ;;
 
-;;; Bugs
-;;
-;; None that I'm aware of.
-
-;;; Credits
-;;
-;; Christian Brassat created the original theme for Emacs 23 on such this port
-;; is based.
-
 ;;; Code
 
-(deftheme dotshare "")
+(deftheme dotshare 
+"A colourful and dark theme")
 
 (let ((class '((class color) (min-colors 89)))
       ;; color definitions
@@ -76,27 +64,22 @@
       (dotshare-blue-4		"#304a4f")
       (dotshare-blue-5		"#213236")
       (dotshare-magenta		"#9b64fb"))
+      
   (custom-theme-set-faces
    'dotshare
 
    ;;; basic coloring
-   `(default ((,class (:foreground ,dotshare-fg))))
    `(cursor ((,class (:foreground ,dotshare-fg))))
-   `(escape-glyph-face ((,class (:foreground ,dotshare-red))))
+   `(default ((,class (:foreground ,dotshare-fg :background ,dotshare-bg-1))))
    `(fringe ((,class (:foreground ,dotshare-fg :background ,dotshare-bg))))
+   `(escape-glyph-face ((,class (:foreground ,dotshare-red))))
    `(header-line ((,class (:foreground ,dotshare-yellow
 				       :background ,dotshare-bg-1
 				       :box (:line-width 5 :color ,dotshare-bg-1)))))
-   `(highlight ((,class (:background ,dotshare-bg+1))))
-   `(linum ((,class (:foreground "#505050" :background ,dotshare-bg-1))))
-
-   ;; faces used by isearch
-   `(isearch ((,class (:foreground ,dotshare-yellow :background ,dotshare-bg-1))))
-   `(isearch-fail ((,class (:foreground ,dotshare-fg :background ,dotshare-red-3))))
-   `(lazy-highlight ((,class (:foreground ,dotshare-yellow :background ,dotshare-bg+2))))
-
-   `(menu ((,class (:foreground ,dotshare-fg :background ,dotshare-bg))))
+   `(hl-line ((,class (:background ,dotshare-bg+1))))
+   `(linum ((,class (:foreground "#505050" :background ,dotshare-bg))))
    `(minibuffer-prompt ((,class (:foreground ,dotshare-yellow))))
+   `(menu ((,class (:foreground ,dotshare-fg :background ,dotshare-bg))))
    `(mode-line
      ((,class (:foreground ,dotshare-fg :background ,dotshare-bg+1
 			   :box (:line-width 5 :color ,dotshare-bg+1)))))
@@ -114,6 +97,11 @@
    `(secondary-selection ((,class (:background ,dotshare-bg+2))))
    `(trailing-whitespace ((,class (:background ,dotshare-red))))
    `(vertical-border ((,class (:foreground ,dotshare-fg))))
+
+   ;; faces used by isearch
+   `(isearch ((,class (:foreground ,dotshare-yellow :background ,dotshare-bg-1))))
+   `(isearch-fail ((,class (:foreground ,dotshare-fg :background ,dotshare-red-3))))
+   `(lazy-highlight ((,class (:foreground ,dotshare-yellow :background ,dotshare-bg+2))))
 
    ;; font-lock
    `(font-lock-builtin-face ((,class (:foreground ,dotshare-blue))))
@@ -468,14 +456,17 @@
    `(wl-highlight-summary-thread-top-face ((,class (:foreground ,dotshare-yellow))))
    `(wl-highlight-thread-indent-face ((,class (:foreground ,dotshare-magenta))))
    `(wl-highlight-summary-refiled-face ((,class (:foreground ,dotshare-fg))))
-   `(wl-highlight-summary-displaying-face ((,class (:underline t :weight bold))))
-
-   )
+   `(wl-highlight-summary-displaying-face ((,class (:underline t :weight bold)))))
 
   (custom-theme-set-variables
    'dotshare
-   `(ansi-color-names-vector [,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow
-					   ,dotshare-blue ,dotshare-magenta ,dotshare-cyan ,dotshare-fg])))
+   
+   `(ansi-color-names-vector 
+     [,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow
+     ,dotshare-blue ,dotshare-magenta ,dotshare-cyan ,dotshare-fg])
+   `(ansi-term-color-vector
+   ;; black, red, green, yellow, blue, magenta, cyan, white
+     [unspecified ,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow ,dotshare-blue ,dotshare-magenta ,dotshare-blue ,dotshare-fg])))
 
 (provide-theme 'dotshare)
 
