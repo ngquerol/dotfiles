@@ -1,14 +1,10 @@
-;; -------~-------~--~------------------~------
-;;
 ;; EMACS configuration file
 ;;
 ;; Nicolas G. Querol <nicolas.gquerol@gmail.com>
-;;
-;; -------~-------~--~------------------~------
+;;----------------------------------------------
 
-;; -------~-------~--~------------------~------
 ;; EL-GET
-;; -------~-------~--~------------------~------
+;; ---------------------------------------------
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (require 'el-get)
 
@@ -31,41 +27,43 @@
 (setq my-packages
       (append
        '(
-     yasnippet
-     popup
+	 yasnippet
+	 popup
 	 autopair
 	 auto-complete
 	 lua-mode
 	 yaml-mode
 	 markdown-mode
 	 linum-off
+	 smart-tab
 	 )
        (mapcar 'el-get-source-name el-get-sources)))
 
 (el-get 'sync my-packages)
 
-;; -------~-------~--~------------------~------
 ;; YASNIPPET
-;; -------~-------~--~------------------~------
+;; ---------------------------------------------
 (setq yas/snippet-dirs '("~/.emacs.d/snippets" "~/.emacs.d/el-get/yasnippet/snippets"))
 (yas/global-mode 1)
 
-;; -------~-------~--~------------------~------
 ;; AUTO-COMPLETE
-;; -------~-------~--~------------------~------
+;; ---------------------------------------------
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/el-get/auto-complete/dict")
 (require 'auto-complete-config)
 (ac-config-default)
 
-;; -------~-------~--~------------------~------
 ;; AUTOPAIR
-;; -------~-------~--~------------------~------
+;; ---------------------------------------------
 (autopair-global-mode 1)
-(setq autopair-autowrap t)
+(setq autopair-autowrap t
+      autopair-blink nil)
 
-;; -------~-------~--~------------------~------
+;; SMART-TAB
+;; ---------------------------------------------
+(global-smart-tab-mode 1)
+
 ;; SEPARATE CONFIGS
-;; -------~-------~--~------------------~------
+;; ---------------------------------------------
 (setq custom-file "~/.emacs-custom.el")
 (load custom-file 'noerror)
 
@@ -74,21 +72,19 @@
 (load "filetypes")
 (load "line-numbers")
 
-;; -------~-------~--~------------------~------
 ;; APPEARANCE
-;; -------~-------~--~------------------~------
+;; ---------------------------------------------
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'dotshare t)
 
-;; -------~-------~--~------------------~------
 ;; SYNTAX
-;; -------~-------~--~------------------~------
+;; ---------------------------------------------
 (global-font-lock-mode t)
 (setq font-lock-maximum-decoration t)
 
-;; -------~-------~--~------------------~------
 ;; MISC
-;; -------~-------~--~------------------~------
+;; ---------------------------------------------
+
 ;; no...
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
@@ -106,10 +102,10 @@
 ;; hilight current line
 (global-hl-line-mode 1)
 
-;; indent
-(setq standard-indent 2
+;; indentation
+(setq standard-indent 4
       indent-tabs-mode nil
-      tab-width)
+      tab-width 4)
 
 ;; always end a file with a newline
 (setq require-final-newline t)
@@ -127,7 +123,8 @@
 ;; "smooth" scrolling
 (setq scroll-preserve-screen-position 1
       scroll-margin                   10
-      scroll-conservatively           10000)
+      scroll-conservatively           10000
+      mouse-wheel-scroll-amount       '(1))
 
 ;; clean up redundant whitespace when saving
 (add-hook 'before-save-hook 'whitespace-cleanup)
