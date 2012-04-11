@@ -29,13 +29,11 @@
 
 ;;; Code
 
-<<<<<<< HEAD
 (deftheme dotshare
   "A colourful, dark and terminal-friendly theme")
 =======
 (deftheme dotshare 
 "A colourful, dark and terminal-friendly theme")
->>>>>>> 255faa37d795d2b61bec7912b566666c8b808e03
 
 (let ((class '((class color) (min-colors 89)))
       ;; color definitions
@@ -80,16 +78,16 @@
    `(escape-glyph-face ((,class (:foreground ,dotshare-red))))
    `(header-line ((,class (:foreground ,dotshare-yellow
 				       :background ,dotshare-bg-1
-				       :box (:line-width 5 :color ,dotshare-bg-1)))))
+				       :box (:line-width 1 :color ,dotshare-bg-1)))))
    `(hl-line ((,class (:background ,dotshare-bg+1))))
    `(linum ((,class (:foreground "#505050" :background ,dotshare-bg))))
    `(minibuffer-prompt ((,class (:foreground ,dotshare-yellow))))
    `(menu ((,class (:foreground ,dotshare-fg :background ,dotshare-bg))))
    `(mode-line
      ((,class (:foreground ,dotshare-fg :background ,dotshare-bg+1
-			   :box (:line-width 5 :color ,dotshare-bg+1)))))
-   `(mode-line-inactive ((,class (:inherit mode-line :background ,dotshare-bg+1
-					   :box (:line-width 5 :color ,dotshare-bg-1)))))
+			   :box (:line-width 1 :color ,dotshare-bg+1)))))
+   `(mode-line-inactive ((,class (:inherit mode-line :background ,dotshare-bg+2
+					   :box (:line-width 1 :color ,dotshare-bg-1)))))
    `(mode-line-buffer-id ((,class (:inherit 'dotshare-yellow :weight bold))))
    `(mode-line-inactive
      ((,class (:foreground ,dotshare-green-1  :background ,dotshare-bg+1))))
@@ -471,7 +469,8 @@
 		   ,dotshare-blue ,dotshare-magenta ,dotshare-cyan ,dotshare-fg])
    `(ansi-term-color-vector
      ;; black, red, green, yellow, blue, magenta, cyan, white
-     [unspecified ,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow ,dotshare-blue ,dotshare-magenta ,dotshare-blue ,dotshare-fg])))
+     [unspecified ,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow
+		  ,dotshare-blue ,dotshare-magenta ,dotshare-blue ,dotshare-fg])))
 
 (provide-theme 'dotshare)
 
