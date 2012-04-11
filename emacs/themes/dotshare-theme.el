@@ -29,8 +29,8 @@
 
 ;;; Code
 
-(deftheme dotshare 
-"A colourful and dark theme")
+(deftheme dotshare
+  "A colourful, dark and terminal-friendly theme")
 
 (let ((class '((class color) (min-colors 89)))
       ;; color definitions
@@ -64,14 +64,14 @@
       (dotshare-blue-4		"#304a4f")
       (dotshare-blue-5		"#213236")
       (dotshare-magenta		"#9b64fb"))
-      
+
   (custom-theme-set-faces
    'dotshare
 
    ;;; basic coloring
    `(cursor ((,class (:foreground ,dotshare-fg))))
    `(default ((,class (:foreground ,dotshare-fg :background ,dotshare-bg-1))))
-   `(fringe ((,class (:foreground ,dotshare-fg :background ,dotshare-bg))))
+   `(fringe ((,class (:foreground ,dotshare-fg :background ,dotshare-bg-1))))
    `(escape-glyph-face ((,class (:foreground ,dotshare-red))))
    `(header-line ((,class (:foreground ,dotshare-yellow
 				       :background ,dotshare-bg-1
@@ -82,9 +82,9 @@
    `(menu ((,class (:foreground ,dotshare-fg :background ,dotshare-bg))))
    `(mode-line
      ((,class (:foreground ,dotshare-fg :background ,dotshare-bg+1
-			   :box (:line-width 5 :color ,dotshare-bg+1)))))
-   `(mode-line-inactive ((,class (:inherit mode-line :background ,dotshare-bg+1
-					   :box (:line-width 5 :color ,dotshare-bg-1)))))
+			   :box (:line-width 1 :color ,dotshare-bg+1)))))
+   `(mode-line-inactive ((,class (:inherit mode-line :background ,dotshare-bg+2
+					   :box (:line-width 1 :color ,dotshare-bg-1)))))
    `(mode-line-buffer-id ((,class (:inherit 'dotshare-yellow :weight bold))))
    `(mode-line-inactive
      ((,class (:foreground ,dotshare-green-1  :background ,dotshare-bg+1))))
@@ -460,12 +460,12 @@
 
   (custom-theme-set-variables
    'dotshare
-   
-   `(ansi-color-names-vector 
+
+   `(ansi-color-names-vector
      [,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow
-     ,dotshare-blue ,dotshare-magenta ,dotshare-cyan ,dotshare-fg])
+		   ,dotshare-blue ,dotshare-magenta ,dotshare-cyan ,dotshare-fg])
    `(ansi-term-color-vector
-   ;; black, red, green, yellow, blue, magenta, cyan, white
+     ;; black, red, green, yellow, blue, magenta, cyan, white
      [unspecified ,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow ,dotshare-blue ,dotshare-magenta ,dotshare-blue ,dotshare-fg])))
 
 (provide-theme 'dotshare)
