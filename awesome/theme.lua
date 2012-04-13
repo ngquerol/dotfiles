@@ -6,7 +6,7 @@
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "" }
+theme.wallpaper_cmd = { "feh --bg-fill Dropbox/wallpapers/elephant.jpg" }
 -- }}}
 
 -- {{{ Styles
@@ -26,8 +26,8 @@ theme.fg_minimize   = "#444444"
 -- {{{ Borders
 theme.border_width  = "1"
 theme.border_normal = "#CCCCCC"
---theme.border_focus  = "#66A9BA"
---theme.border_marked = "#91231c"
+theme.border_focus  = "#66A9BA"
+theme.border_marked = "#91231c"
 -- }}}
 
 -- {{{ Taglist and Tasklist
@@ -76,6 +76,7 @@ theme.widget_cpu    = theme.confdir .. "/icons/cpu.png"
 theme.widget_bat    = theme.confdir .. "/icons/ac.png"
 theme.widget_wifi   = theme.confdir .. "/icons/wifi.png"
 theme.widget_mail   = theme.confdir .. "/icons/mail.png"
+theme.widget_org    = theme.confdir .. "/icons/cal.png"
 theme.widget_date   = theme.confdir .. "/icons/clock.png"
 theme.widget_right  = theme.confdir .. "/icons/rside.png"
 theme.widget_left   = theme.confdir .. "/icons/lside.png"
