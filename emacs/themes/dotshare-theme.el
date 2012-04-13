@@ -31,9 +31,6 @@
 
 (deftheme dotshare
   "A colourful, dark and terminal-friendly theme")
-=======
-(deftheme dotshare 
-"A colourful, dark and terminal-friendly theme")
 
 (let ((class '((class color) (min-colors 89)))
       ;; color definitions
@@ -73,14 +70,14 @@
 
    ;;; basic coloring
    `(cursor ((,class (:foreground ,dotshare-fg))))
-   `(default ((,class (:foreground ,dotshare-fg :background ,dotshare-bg-1))))
-   `(fringe ((,class (:foreground ,dotshare-fg :background ,dotshare-bg-1))))
+   `(default ((,class (:foreground ,dotshare-fg :background ,dotshare-bg))))
+   `(fringe ((,class (:foreground ,dotshare-bg+2 :background ,dotshare-bg))))
    `(escape-glyph-face ((,class (:foreground ,dotshare-red))))
    `(header-line ((,class (:foreground ,dotshare-yellow
 				       :background ,dotshare-bg-1
 				       :box (:line-width 1 :color ,dotshare-bg-1)))))
    `(hl-line ((,class (:background ,dotshare-bg+1))))
-   `(linum ((,class (:foreground "#505050" :background ,dotshare-bg))))
+   `(linum ((,class (:foreground ,dotshare-bg+2 :background ,dotshare-bg-1))))
    `(minibuffer-prompt ((,class (:foreground ,dotshare-yellow))))
    `(menu ((,class (:foreground ,dotshare-fg :background ,dotshare-bg))))
    `(mode-line
@@ -131,7 +128,7 @@
    ;; auto-complete
    `(ac-candidate-face ((,class (:background ,dotshare-bg+2 :foreground "white"))))
    `(ac-selection-face ((,class (:background ,dotshare-blue-4 :foreground ,dotshare-fg))))
-   `(popup-tip-face ((,class (:background ,dotshare-yellow-2 :foreground "black"))))
+   `(popup-tip-face ((,class (:background ,dotshare-yellow-1 :foreground "black"))))
    `(popup-scroll-bar-foreground-face ((,class (:background "white"))))
    `(popup-scroll-bar-background-face ((,class (:background ,dotshare-bg-1))))
    `(popup-isearch-match ((,class (:background ,dotshare-bg :foreground ,dotshare-fg))))
@@ -469,8 +466,7 @@
 		   ,dotshare-blue ,dotshare-magenta ,dotshare-cyan ,dotshare-fg])
    `(ansi-term-color-vector
      ;; black, red, green, yellow, blue, magenta, cyan, white
-     [unspecified ,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow
-		  ,dotshare-blue ,dotshare-magenta ,dotshare-blue ,dotshare-fg])))
+     [unspecified ,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow ,dotshare-blue ,dotshare-magenta ,dotshare-blue ,dotshare-fg])))
 
 (provide-theme 'dotshare)
 
