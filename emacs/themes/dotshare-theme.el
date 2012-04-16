@@ -168,7 +168,7 @@
    `(erc-highlight-face ((,class (:inherit hover-highlight))))
    `(erc-input-face ((,class (:foreground ,dotshare-yellow))))
    `(erc-keyword-face ((,class (:foreground ,dotshare-yellow :weight bold))))
-   `(erc-nick-default-face ((,class (:weigth bold))))
+   `(erc-nick-default-face ((,class (:weight bold))))
    `(erc-nick-msg-face ((,class (:inherit erc-default))))
    `(erc-notice-face ((,class (:foreground ,dotshare-green))))
    `(erc-pal-face ((,class (:foreground ,dotshare-orange :weight bold))))
