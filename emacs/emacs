@@ -11,7 +11,7 @@
 ;; local sources
 (setq el-get-sources
       '(
-	(:name "yasnippet"
+	(:name yasnippet
 	       :description "YASnippet is a template system for Emacs."
 	       :type git
 	       :url "https://github.com/capitaomorte/yasnippet")
@@ -103,9 +103,11 @@
 (global-hl-line-mode 1)
 
 ;; indentation
-(setq standard-indent 4
-      indent-tabs-mode nil
-      tab-width 4)
+(setq c-basic-offset 4
+      c-default-style "bsd"
+      standard-indent 4
+      tab-width 4
+      indent-tabs-mode nil)
 
 ;; always end a file with a newline
 (setq require-final-newline t)
