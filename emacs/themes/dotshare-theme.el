@@ -126,11 +126,13 @@
    ;;; external
 
    ;; auto-complete
-   `(ac-candidate-face ((,class (:background ,dotshare-bg+2 :foreground "white"))))
-   `(ac-selection-face ((,class (:background ,dotshare-blue-4 :foreground ,dotshare-fg))))
-   `(popup-tip-face ((,class (:background ,dotshare-yellow-1 :foreground "black"))))
-   `(popup-scroll-bar-foreground-face ((,class (:background "white"))))
-   `(popup-scroll-bar-background-face ((,class (:background ,dotshare-bg-1))))
+   `(ac-candidate-face ((,class (:foreground ,dotshare-fg :background ,dotshare-bg+2))))
+   `(ac-candidate-mouse-face ((,class (:background ,dotshare-blue-4))))
+   `(ac-selection-face ((,class (:foreground "white" :background ,dotshare-blue-1))))
+   `(ac-completion-face ((,class (:foreground ,dotshare-bg+2 :underline t))))
+   `(popup-tip-face ((,class (:background ,dotshare-yellow :foreground ,dotshare-bg-1))))
+   `(popup-scroll-bar-foreground-face ((,class (:background ,dotshare-fg))))
+   `(popup-scroll-bar-background-face ((,class (:background ,dotshare-bg+2))))
    `(popup-isearch-match ((,class (:background ,dotshare-bg :foreground ,dotshare-fg))))
 
    ;; diff
@@ -153,44 +155,6 @@
    `(eshell-ls-product ((,class (:inherit font-lock-doc))))
    `(eshell-ls-special ((,class (:inherit dotshare-yellow :weight bold))))
    `(eshell-ls-symlink ((,class (:foreground ,dotshare-cyan :weight bold))))
-
-   ;; ecb
-   `(ecb-analyse-bucket-element-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-analyse-bucket-node-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-analyse-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-analyse-general-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-bucket-node-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-default-general-face ((,class (:inherit dotshare-fg))))
-   `(ecb-default-highlight-face ((,class (:foreground ,dotshare-green :background ,dotshare-bg :weight bold))))
-   `(ecb-directories-general-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-directory-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-directory-not-accessible-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-history-bucket-node-dir-soure-path-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-history-bucket-node-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-history-dead-buffer-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-history-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-history-general-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-history-indirect-buffer-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-method-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-method-non-semantic-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-methods-general-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-mode-line-data-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-mode-line-prefix-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-mode-line-win-nr-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-source-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-source-in-directories-buffer-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-source-read-only-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-sources-general-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-symboldef-prototype-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-symboldef-symbol-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-tag-header-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-tree-guide-line-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-type-tag-class-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-type-tag-enum-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-type-tag-group-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-type-tag-interface-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-type-tag-struct-face ((,class (:foreground ,dotshare-cyan :weight bold))))
-   `(ecb-type-tag-typedef-face ((,class (:foreground ,dotshare-cyan :weight bold))))
 
    ;; erc
    `(erc-action-face ((,class (:inherit erc-default-face))))
@@ -337,11 +301,11 @@
 
    ;; org-mode
    `(org-agenda-date-today
-     ((,class (:foreground "white" :slant italic :weight bold))) t)
+     ((,class (:foreground ,dotshare-fg :slant italic :weight bold))) t)
    `(org-agenda-structure
      ((,class (:inherit font-lock-comment-face))))
    `(org-archived ((,class (:foreground ,dotshare-fg :weight bold))))
-   `(org-checkbox ((,class (:background ,dotshare-bg+2 :foreground "white"
+   `(org-checkbox ((,class (:background ,dotshare-bg+2 :foreground ,dotshare-fg
 					:box (:line-width 1 :style released-button)))))
    `(org-date ((,class (:foreground ,dotshare-blue :underline t))))
    `(org-deadline-announce ((,class (:foreground ,dotshare-red-1))))
@@ -465,8 +429,8 @@
      [,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow
 		   ,dotshare-blue ,dotshare-magenta ,dotshare-cyan ,dotshare-fg])
    `(ansi-term-color-vector
-     ;; black, red, green, yellow, blue, magenta, cyan, white
-     [unspecified ,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow ,dotshare-blue ,dotshare-magenta ,dotshare-blue ,dotshare-fg])))
+     [unspecified ,dotshare-bg ,dotshare-red ,dotshare-green ,dotshare-yellow
+		  ,dotshare-blue ,dotshare-magenta ,dotshare-blue ,dotshare-fg])))
 
 (provide-theme 'dotshare)
 
