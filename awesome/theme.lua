@@ -26,8 +26,8 @@ theme.fg_minimize   = "#444444"
 -- {{{ Borders
 theme.border_width  = "1"
 theme.border_normal = "#CCCCCC"
---theme.border_focus  = "#66A9BA"
---theme.border_marked = "#91231c"
+theme.border_focus  = "#66A9BA"
+theme.border_marked = "#91231c"
 -- }}}
 
 -- {{{ Taglist and Tasklist
