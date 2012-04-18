@@ -48,6 +48,3 @@ zstyle ':vcs_info:*' unstagedstr ':U'
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' actionformats '%F{4}(%f%s%F{4})%F{3}-%F{4}[%F{2}%b%F{3}%c%u|%F{1}%a%F{4}]%f '
 zstyle ':vcs_info:*' formats '%F{4}(%f%s%F{4})%F{3}-%F{4}[%F{2}%b%F{4}%c%u]%f '
-
-# pacman-color completion
-compdef _pacman pacman-color=pacman

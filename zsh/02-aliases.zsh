@@ -16,9 +16,5 @@ alias mkdir='mkdir -p'
 # GREP
 alias grep='grep --color=auto'
 
-# Pacman-related aliases
-alias pacman='sudo pacman-color'
-alias sudo='sudo '
-
 # Emacs (terminal)
 alias e='emacsclient -t'
