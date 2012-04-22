@@ -17,7 +17,7 @@
 	      (list
 	       " "
 	       ;; file path
-	       '(:eval (propertize (shorten-directory default-directory 20)
+	       '(:eval (propertize (shorten-directory default-directory 25)
 				   'face 'mode-line-folder-face))
 	       ;; file name
 	       '(:eval (propertize "%b" 'face 'mode-line-buffer-name))
@@ -32,6 +32,6 @@
 	       " "
 	       '(:eval (propertize mode-name 'face 'mode-line-mode-face))
 	       " :: "
-	       ;; line #
-	       "line %l, %p"
+	       ;; line & column #
+	       '(:eval "%p (%l,%c)")
 	       ))
