@@ -32,6 +32,6 @@
 	       " "
 	       '(:eval (propertize mode-name 'face 'mode-line-mode-face))
 	       " :: "
-	       ;; line & column #
-	       '(:eval "%p (%l,%c)")
+	       ;; line & column number
+	       "%p (%2l,%2c)"
 	       ))
