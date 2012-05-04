@@ -1,0 +1,156 @@
+" 
+" (G)vim configuration file
+"
+" Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+" 
+
+set nocompatible
+filetype off
+
+" Vundle {{{
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
+
+" let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+" Vundles {{{
+" github repos
+Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/nerdtree'
+Bundle 'ervandew/supertab'
+Bundle 'garbas/vim-snipmate'
+Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'tomtom/tlib_vim'
+Bundle 'honza/snipmate-snippets'
+" vim-script repos
+Bundle 'taglist.vim'
+" non-github repos
+" }}}
+" }}}
+
+" General {{{
+filetype plugin indent on
+syntax on
+
+let mapleader=","
+let maplocalleader = "\\"
+
+set hidden
+set mouse=a
+set incsearch
+set hlsearch
+set history=1000
+set undolevels=1000
+set title
+set ttyfast
+set lazyredraw
+set novisualbell
+set noerrorbells
+set encoding=utf8
+" }}}
+
+" Appearance {{{
+
+" Gvim specific settings
+ if has('gui_running')
+    set guicursor+=a:blinkon0       " cursor doesn't blink - it's annoying
+    set guioptions-=m               " no menubar
+    set guioptions-=T               " no toolbar
+    set guioptions-=l               " no scrollbar left
+    set guioptions-=L               " no scrollbar left when split
+    set guioptions-=r               " no scrollbar right
+    set guioptions-=r               " no scrollbar right when split
+
+    set gfn=Inconsolata\ 12
+    colorscheme dotshare
+else
+    set t_Co=256
+    colorscheme xdefaults
+endif
+
+set cmdheight=1                 " command line height
+set laststatus=2                " condition to show status line, 2=always.
+set ruler                       " show cursor position in status line
+set showmode                    " show mode in status line
+set showcmd                     " show partial commands in status line
+set number                      " show line numbers
+
+" }}}
+
+" Settings {{{
+
+" Backup files {{{
+set nobackup
+set noswapfile
+" }}}
+
+" Tabstops {{{
+set autoindent
+set smartindent
+set tabstop=4
+set textwidth=80
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+" }}}
+
+" Folding {{{
+set foldmethod=marker
+set foldcolumn=0
+" }}}
+
+" Pairings {{{
+set showmatch
+" }}}
+
+" Completion {{{
+set completeopt=menu,menuone,longest
+set pumheight=15
+" }}}
+
+" Wrapping {{{
+set linebreak
+set showbreak=↳\ 
+" }}}
+
+" Scroll margins {{{
+set scrolloff=5
+set sidescroll=5
+" }}}
+
+" Keybindings {{{
+
+nmap <f1> :NERDTreeToggle<CR>
+nmap <f2> :TlistToggle<CR>
+
+" Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>rv :so $MYVIMRC<CR>
+
+set pastetoggle=<f3>
+
+" }}}
+
+" Plugin-specific {{{
+
+" NERDTree {{{
+let NERDTreeMinimalUI=1
+let NERDTreeWinSize=25
+let NERDTreeMouseMode=3
+" }}}
+
+" Taglist {{{
+let Tlist_Use_Right_Window=1
+let Tlist_Use_SingleClick=1
+let Tlist_Compact_Format=1
+let Tlist_Show_One_File=1
+" }}}
+
+" SuperTab {{{
+let g:SuperTabDefaultCompletionType = "context"
+" }}}
+
+" }}}
+
+" }}}

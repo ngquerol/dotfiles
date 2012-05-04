@@ -6,7 +6,7 @@
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "feh --bg-fill /home/nico/Dropbox/Wallpapers/elephant.jpg" }
+theme.wallpaper_cmd = { "" }
 -- }}}
 
 -- {{{ Styles
