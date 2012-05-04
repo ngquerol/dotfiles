@@ -38,16 +38,16 @@ layouts =
 				{ "", },
 				{"Terminal", "urxvtc"},
 				{ "", },
-				{ "Eclipse", "eclipse" },
-				{ "Emacs", "emacsclient -c" },
-				{ "Evince", "evince" },
 				{ "Firefox", "firefox"},
 				{ "GIMP", "gimp" },
+				{ "GVIM", "gvim" },
 				{ "Transmission", "transmission-gtk"},
+				{ "", },
+				{ "Logout", "awesome-logout" },
 				{ "", },
 				{ "Restart",  "sudo reboot" },
 				{ "Shutdown", "sudo shutdown -h now" },
-				{ "Sleep", "sudo pm-suspend-hybrid" }
+				{ "Sleep", "sudo pm-suspend" }
 				     }})
 
    mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
@@ -193,7 +193,8 @@ layouts =
 					       return awful.widget.tasklist.label.currenttags(c, s)
 					    end, mytasklist.buttons)
 
-      mywibox[s] = awful.wibox({ position = "bottom", height = "18", screen = s })
+      mywibox[s] = awful.wibox({ position = "top", height = "18", screen 
+= s })
       mywibox[s].widgets = {
 	 {
 	    mylauncher,
@@ -373,19 +374,16 @@ layouts =
 	properties = { tag = tags[1][2] }, { floating = "false" } },
       { rule = { name = "Téléchargements" },
 	properties = { floating = "true" } },
-      { rule = { class = "Eclipse" },
-	properties = { tag = tags[1][3] } },
    }
 
    client.add_signal("manage", function (c, startup)
 
-			c:add_signal("mouse::enter", function(c)
-					if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-					   and awful.client.focus.filter(c) then
-					client.focus = c
-					end
-						     end)
-
+       c:add_signal("mouse::enter", function(c)
+            if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+                and awful.client.focus.filter(c) then
+                client.focus = c
+            end
+       end)
 
 			if not startup then
 			   awful.client.setslave(c)
@@ -396,5 +394,5 @@ layouts =
 			end
 			       end)
 
-   client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-   client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)

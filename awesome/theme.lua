@@ -6,7 +6,7 @@
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "" }
+theme.wallpaper_cmd = { "feh --bg-fill /home/nico/Dropbox/Wallpapers/elephant.jpg" }
 -- }}}
 
 -- {{{ Styles
@@ -68,13 +68,11 @@ theme.taglist_squares_unsel = theme.confdir.. "/icons/tagunsel.png"
 
 -- {{{ Misc icons
 theme.awesome_icon        = theme.confdir.. "/icons/arch.png"
-theme.menu_submenu_icon   = theme.confdir.. "/icons/submenu.png"
 -- }}}
 
 -- {{{ Widget icons
 theme.widget_cpu    = theme.confdir .. "/icons/cpu.png"
 theme.widget_bat    = theme.confdir .. "/icons/ac.png"
-theme.widget_wifi   = theme.confdir .. "/icons/wifi.png"
 theme.widget_mail   = theme.confdir .. "/icons/mail.png"
 theme.widget_date   = theme.confdir .. "/icons/clock.png"
 theme.widget_right  = theme.confdir .. "/icons/rside.png"
