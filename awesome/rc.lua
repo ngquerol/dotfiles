@@ -40,10 +40,9 @@ layouts =
 				{ "", },
 				{ "Firefox", "firefox"},
 				{ "GIMP", "gimp" },
+                { "GMAMEUI", "gmameui" },
 				{ "GVIM", "gvim" },
 				{ "Transmission", "transmission-gtk"},
-				{ "", },
-				{ "Logout", "awesome-logout" },
 				{ "", },
 				{ "Restart",  "sudo reboot" },
 				{ "Shutdown", "sudo shutdown -h now" },
@@ -76,7 +75,6 @@ layouts =
    -- Gmail widget & tooltip
    gmailicon = widget({ type = "imagebox" })
    gmailicon.image = image(beautiful.widget_mail)
-   gmail_t = awful.tooltip({ objects = { gmailwidget },})
    gmailwidget = widget({ type = "textbox" })
    vicious.register(gmailwidget, vicious.widgets.gmail,
 		    function (widget, args)
@@ -88,7 +86,7 @@ layouts =
 		    end, 69)
 
    gmailicon:buttons(awful.util.table.join(
-			awful.button({ }, 1, function () awful.util.spawn_with_shell("urxvtc -geometry 100x25 -e mutt") end)))
+			awful.button({ }, 1, function () awful.util.spawn("firefox https://mail.google.com") end)))
 
    -- Battery percentage & state
    baticon = widget({ type = "imagebox" })
