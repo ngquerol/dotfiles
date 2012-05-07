@@ -6,11 +6,11 @@
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "" }
+theme.wallpaper_cmd = { "feh --bg-fill /home/nico/Dropbox/Wallpapers/elephant.jpg" }
 -- }}}
 
 -- {{{ Styles
-theme.font          = "Terminusmodx 10"
+theme.font          = "Neep Semicondensed 10"
 
 -- {{{ Colors
 theme.bg_normal     = "#191919"

@@ -191,7 +191,7 @@ layouts =
 					       return awful.widget.tasklist.label.currenttags(c, s)
 					    end, mytasklist.buttons)
 
-      mywibox[s] = awful.wibox({ position = "top", height = "18", screen 
+      mywibox[s] = awful.wibox({ position = "bottom", height = "18", screen 
 = s })
       mywibox[s].widgets = {
 	 {
