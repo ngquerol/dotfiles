@@ -25,7 +25,7 @@ Bundle 'tomtom/tlib_vim'
 Bundle 'honza/snipmate-snippets'
 Bundle 'Raimondi/delimitMate'
 Bundle 'majutsushi/tagbar'
-Bundle 'millermedeiros/vim-statline'
+Bundle 'sjbach/lusty'
 " vim-script repos
 " non-github repos
 " }}}
