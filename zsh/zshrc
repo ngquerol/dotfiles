@@ -12,6 +12,7 @@
 autoload -U colors && colors
 autoload -U compinit && compinit
 autoload -U bashcompinit && bashcompinit
+autoload -U select-word-style && select-word-style bash
 autoload -U vcs_info && vcs_info
 
 zmodload zsh/complist
@@ -19,20 +20,19 @@ zmodload zsh/terminfo
 
 # setopt
 setopt \
-  autocd \
-  extendedglob \
-  completeinword \
-  always_to_end \
-  inc_append_history \
-  hist_ignore_all_dups \
-  hist_ignore_space \
-  hist_reduce_blanks \
-  nohup \
-  no_beep \
-  listtypes \
-  prompt_subst \
-
-bindkey -e
+    hist_ignore_all_dups \
+    hist_ignore_space \
+    hist_reduce_blanks \
+    prompt_subst \
+    nobeep \
+    nocheckjobs \
+    nohup \
+    listpacked \
+    listtypes \
+    extendedglob \
+    completeinword \
+    alwaystoend \
+    correct \
 
 #=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Source seperate config files
