@@ -1,10 +1,9 @@
-
 ## Environment variables parsed by zsh
 
-export EDITOR="emacsclient -t"
+export EDITOR="vim"
 export LANG=fr_FR.UTF-8
 export BROWSER=firefox
-export PAGER="less -M"
+export PAGER="vimpager"
 export SHELL=/bin/zsh
 
 # History
@@ -14,7 +13,7 @@ export SAVEHIST=1000
 
 # Check if we are in X or in a tty, and load colors accordingly
 if [ $DISPLAY ]; then
-    export TERM="rxvt-unicode-256color"
+    export TERM="xterm-256color"
 else
     export TERM="linux"
     echo -en "\e]P0000000" #black
