@@ -64,8 +64,8 @@ set encoding=utf8
     set guioptions-=r               " no scrollbar right
     set guioptions-=r               " no scrollbar right when split
 
-    set gfn=Monaco\ 10
-    colorscheme dotshare
+    set gfn=Inconsolata\ 11
+    colorscheme nucolors
 else
     set t_Co=256
     colorscheme xdefaults
@@ -151,11 +151,6 @@ let g:tagbar_autoshowtag=1
 
 " SuperTab {{{
 let g:SuperTabDefaultCompletionType = "context"
-" }}}
-
-" statline {{{
-let g:statline_fugitive=1
-let g:statline_filename_relative=1
 " }}}
 
 " }}}

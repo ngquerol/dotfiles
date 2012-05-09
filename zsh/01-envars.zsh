@@ -1,10 +1,9 @@
-
 ## Environment variables parsed by zsh
 
-export EDITOR="emacsclient -t"
+export EDITOR="vim"
 export LANG=fr_FR.UTF-8
 export BROWSER=firefox
-export PAGER="less -M"
+export PAGER="vimpager"
 export SHELL=/bin/zsh
 
 # History
@@ -14,7 +13,12 @@ export SAVEHIST=1000
 
 # Check if we are in X or in a tty, and load colors accordingly
 if [ $DISPLAY ]; then
-    export TERM="rxvt-unicode-256color"
+    # Check if rxvt-unicode is installed, if not fall back to xterm
+    if command -v urxvt >/dev/null 2>&1; then
+        export TERM="rxvt-unicode-256color"
+    else
+        export TERM="xterm-256color"
+    fi
 else
     export TERM="linux"
     echo -en "\e]P0000000" #black
