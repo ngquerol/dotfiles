@@ -16,5 +16,5 @@ alias mkdir='mkdir -p'
 # GREP
 alias grep='grep --color=auto'
 
-# Emacs (terminal)
-alias e='emacsclient -t'
+# VIM
+alias v='vim'
