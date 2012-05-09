@@ -1,28 +1,28 @@
-!! File: .Xresources
-!! Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+!! File:    .Xresources
+!! Author:  Nicolas G. Querol <nicolas.gquerol@gmail.com>
 
 !-- Colors --!
 #include "/home/nico/.colors/nada"
 
 !-- Xft --!
-Xft.autohint:		0
+Xft.autohint:		    0
 Xft.lcdfilter:      	lcddefault
-Xft.hintstyle:  	hintfull
-Xft.hinting: 	  	1
-Xft.antialias:  	1
-Xft.rgba:		rgb
+Xft.hintstyle:  	    hintfull
+Xft.hinting: 	  	    1
+Xft.antialias:  	    1
+Xft.rgba:		        rgb
 
 !-- URxvt --!
 URxvt.font:             -misc-terminusmodx-medium-*-*-*-12-*-*-*-*-*-iso8859-1, \
                         -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1
 URxvt.boldFont:         -misc-terminusmodx-bold-*-*-*-12-*-*-*-*-*-iso8859-1, \
                         -misc-fixed-bold-r-normal--15-140-75-75-c-90-iso10646-1
-URxvt.scrollBar:	off
-URxvt.geometry: 	80x20
-URxvt.saveLines:	1000
-URxvt.jumpScroll:	true
+URxvt.scrollBar:	    off
+URxvt.geometry: 	    80x20
+URxvt.saveLines:	    1000
+URxvt.jumpScroll:	    true
 URxvt.buffered:     	false
 URxvt.perl-ext-common: 	default,matcher
-URxvt.urlLauncher: 	/usr/bin/firefox
+URxvt.urlLauncher: 	    /usr/bin/firefox
 URxvt.matcher.button: 	1
 URxvt.iconFile:     	/usr/share/icons/Faenza/apps/22/terminal.png
