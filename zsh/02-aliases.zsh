@@ -3,7 +3,7 @@ alias rm='rm -r'
 alias rmf='rm -rf'
 
 # CP
-alias cp='cp -r'
+alias cp='cp -ri'
 
 # LS
 alias ls='ls -Xp --color=auto'
