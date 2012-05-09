@@ -33,6 +33,7 @@ setopt \
     completeinword \
     alwaystoend \
     correct \
+    autocd \
 
 #=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Source seperate config files
