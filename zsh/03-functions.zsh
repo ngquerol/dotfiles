@@ -4,7 +4,7 @@ precmd() {
     setprompt
 
     case $TERM in
-	rxvt* )
+	xterm*|rxvt* )
 	    print -Pn "\e]0;%n@%m: %~\a" ;;
     esac
 
@@ -14,7 +14,7 @@ precmd() {
 
 preexec() {
     case $TERM in
-	rxvt* )
+	xterm*|rxvt* )
 	    print -Pn "\e]0;$1\a" ;;
     esac
 }

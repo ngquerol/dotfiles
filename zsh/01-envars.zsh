@@ -13,7 +13,12 @@ export SAVEHIST=1000
 
 # Check if we are in X or in a tty, and load colors accordingly
 if [ $DISPLAY ]; then
-    export TERM="xterm-256color"
+    # Check if rxvt-unicode is installed, if not fall back to xterm
+    if command -v urxvt >/dev/null 2>&1; then
+        export TERM="rxvt-unicode-256color"
+    else
+        export TERM="xterm-256color"
+    fi
 else
     export TERM="linux"
     echo -en "\e]P0000000" #black
