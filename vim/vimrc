@@ -26,6 +26,7 @@ Bundle 'honza/snipmate-snippets'
 Bundle 'Raimondi/delimitMate'
 Bundle 'majutsushi/tagbar'
 Bundle 'sjbach/lusty'
+Bundle 'fholgado/minibufexpl.vim'
 " vim-script repos
 " non-github repos
 " }}}
@@ -63,8 +64,9 @@ set encoding=utf8
     set guioptions-=L               " no scrollbar left when split
     set guioptions-=r               " no scrollbar right
     set guioptions-=r               " no scrollbar right when split
+    set lines=40 columns=100
 
-    set gfn=Inconsolata\ 11
+    set gfn=Monaco\ 10
     colorscheme nucolors
 else
     set t_Co=256
@@ -137,20 +139,27 @@ set pastetoggle=<f3>
 " Plugin-specific {{{
 
 " NERDTree {{{
-let NERDTreeMinimalUI=1
-let NERDTreeWinSize=25
-let NERDTreeMouseMode=3
+let NERDTreeMinimalUI = 1
+let NERDTreeWinSize = 25
+let NERDTreeMouseMode = 3
 " }}}
 
 " Tagbar {{{
-let g:tagbar_compact=1
-let g:tagbar_expand=1
-let g:tagbar_singleclick=1
-let g:tagbar_autoshowtag=1
+let g:tagbar_compact = 1
+let g:tagbar_expand = 1
+let g:tagbar_singleclick = 1
+let g:tagbar_autoshowtag = 1
+let g:tagbar_width = 30
 " }}}
 
 " SuperTab {{{
 let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabLongestHighlight = 1
+" }}}
+
+" Mini BufferExplorer {{{
+let g:miniBufExplSplitToEdge = 0
+let g:miniBufExplUseSingleClick = 1
 " }}}
 
 " }}}
