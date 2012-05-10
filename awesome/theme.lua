@@ -10,7 +10,7 @@ theme.wallpaper_cmd = { "feh --bg-fill /home/nico/Dropbox/Wallpapers/elephant.jp
 -- }}}
 
 -- {{{ Styles
-theme.font          = "Neep Semicondensed 10"
+theme.font          = "terminusmodx 9"
 
 -- {{{ Colors
 theme.bg_normal     = "#191919"
@@ -32,7 +32,7 @@ theme.border_marked = "#91231c"
 
 -- {{{ Taglist and Tasklist
 theme.taglist_bg_focus		= "#191919"
-theme.taglist_fg_urgent		= "#ffffff"
+theme.taglist_fg_urgent		= "#E64444"
 theme.tasklist_fg_focus		= "#ffffff"
 theme.tasklist_bg_urgent	= "#E64444"
 theme.tasklist_fg_urgent	= "#ffffff"
