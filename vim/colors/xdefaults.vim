@@ -57,12 +57,12 @@ hi MoreMsg        ctermfg=229
 hi Operator       ctermfg=13
 
 " complete menu
-hi Pmenu          ctermfg=81    ctermbg=16
-hi PmenuSel                     ctermbg=244
-hi PmenuSbar                    ctermbg=232
-hi PmenuThumb     ctermfg=81
+hi Pmenu          ctermfg=255   ctermbg=235
+hi PmenuSel                     ctermbg=255   cterm=bold
+hi PmenuSbar                    ctermbg=235
+hi PmenuThumb     ctermfg=255
 
-hi PreCondit      ctermfg=10                 cterm=bold
+hi PreCondit      ctermfg=10                  cterm=bold
 hi PreProc        ctermfg=10
 hi Question       ctermfg=81
 hi Repeat         ctermfg=13                  cterm=bold
