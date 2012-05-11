@@ -10,7 +10,8 @@ theme.wallpaper_cmd = { "feh --bg-fill /home/nico/Dropbox/Wallpapers/elephant.jp
 -- }}}
 
 -- {{{ Styles
-theme.font          = "terminusmodx 9"
+
+theme.font          = "Neep Semicondensed 10"
 
 -- {{{ Colors
 theme.bg_normal     = "#191919"
@@ -51,8 +52,8 @@ theme.mouse_finder_color = "#CC9393"
 -- }}}
 
 -- {{{ Menu
-theme.menu_height	= "15"
-theme.menu_width        = "100"
+theme.menu_height	    = "15"
+theme.menu_width        = "110"
 theme.menu_fg_focus     = "#ffffff"
 theme.menu_bg_focus     = "#303030"
 theme.menu_border_width = "0"
@@ -60,14 +61,16 @@ theme.menu_border_width = "0"
 
 -- }}}
 
-
 -- {{{ Icons
+
+-- Taglist {{{
 theme.taglist_squares_sel   = theme.confdir.. "/icons/tagsel.png"
 theme.taglist_squares_unsel = theme.confdir.. "/icons/tagunsel.png"
 -- }}}
 
 -- {{{ Misc icons
-theme.awesome_icon        = theme.confdir.. "/icons/arch.png"
+theme.awesome_icon          = theme.confdir .. "/icons/arch.png"
+theme.menu_submenu_icon     = theme.confdir .. "/icons/submenu.png"
 -- }}}
 
 -- {{{ Widget icons
@@ -79,7 +82,6 @@ theme.widget_right  = theme.confdir .. "/icons/rside.png"
 theme.widget_left   = theme.confdir .. "/icons/lside.png"
 -- }}}
 
-
 -- {{{ Layout icons
 theme.layout_fairh	    = theme.confdir.. "/icons/layouts/fairhw.png"
 theme.layout_fairv	    = theme.confdir.. "/icons/layouts/fairvw.png"
@@ -88,6 +90,8 @@ theme.layout_tilebottom = theme.confdir.. "/icons/layouts/tilebottomw.png"
 theme.layout_tileleft   = theme.confdir.. "/icons/layouts/tileleftw.png"
 theme.layout_tile	    = theme.confdir.. "/icons/layouts/tilew.png"
 theme.layout_tiletop	= theme.confdir.. "/icons/layouts/tiletopw.png"
+-- }}}
+
 -- }}}
 
 return theme

@@ -3,7 +3,7 @@
 export EDITOR="vim"
 export LANG=fr_FR.UTF-8
 export BROWSER=firefox
-export PAGER="vimpager"
+export PAGER="less -M"
 export SHELL=/bin/zsh
 
 # History

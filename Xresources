@@ -1,28 +1,35 @@
-!! File:    .Xresources
-!! Author:  Nicolas G. Querol <nicolas.gquerol@gmail.com>
+!! File : .Xresources
+!! Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 
 !-- Colors --!
-#include "/home/nico/.colors/nada"
+#include "/home/nico/.colors/dotshare"
 
 !-- Xft --!
 Xft.autohint:		    0
-Xft.lcdfilter:      	lcddefault
+Xft.lcdfilter:          lcddefault
 Xft.hintstyle:  	    hintfull
 Xft.hinting: 	  	    1
 Xft.antialias:  	    1
 Xft.rgba:		        rgb
 
 !-- URxvt --!
-URxvt.font:             -misc-terminusmodx-medium-*-*-*-12-*-*-*-*-*-iso8859-1, \
-                        -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1
-URxvt.boldFont:         -misc-terminusmodx-bold-*-*-*-12-*-*-*-*-*-iso8859-1, \
-                        -misc-fixed-bold-r-normal--15-140-75-75-c-90-iso10646-1
-URxvt.scrollBar:	    off
-URxvt.geometry: 	    80x20
-URxvt.saveLines:	    1000
-URxvt.jumpScroll:	    true
-URxvt.buffered:     	false
-URxvt.perl-ext-common: 	default,matcher
-URxvt.urlLauncher: 	    /usr/bin/firefox
-URxvt.matcher.button: 	1
-URxvt.iconFile:     	/usr/share/icons/Faenza/apps/22/terminal.png
+URxvt*font:             -*-montecarlo-medium-*-*-*-11-*-*-*-*-*-*-*, \
+                        -*-fixed-medium-*-*-*-12-*-*-*-*-*-*-*
+                       
+URxvt*boldFont:         -*-montecarlo-bold-*-*-*-11-*-*-*-*-*-*-*, \
+                        -*-fixed-bold-*-*-*-12-*-*-*-*-*-*-*
+
+URxvt*cursorUnderline:  false
+URxvt*scrollBar:	    off
+URxvt*geometry: 	    90x20
+URxvt*saveLines:	    1000
+URxvt*jumpScroll:	    true
+URxvt*buffered:     	true
+URxvt*urgentOnBell:     true
+URxvt*pointerBlank:     true
+
+URxvt*perl-ext-common: 	default,matcher
+URxvt*urlLauncher: 	    /usr/bin/firefox
+URxvt*matcher.button: 	1
+
+URxvt*iconFile:     	/usr/share/icons/Faenza/apps/24/terminal.png

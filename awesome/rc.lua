@@ -4,16 +4,17 @@
 require("awful")
 require("awful.autofocus")
 require("awful.rules")
-require("vicious")
 require("beautiful")
+require("vicious")
 
 beautiful.init("/home/nico/.config/awesome/theme.lua")
 
 os.setlocale("fr_FR.UTF-8")
 
-local home = os.getenv("HOME")
-local terminal = "urxvtc"
-local modkey = "Mod4"
+local home          = os.getenv("HOME")
+local terminal      = "urxvtc"
+local editor_cmd    = "vim"
+local modkey        = "Mod4"
 
 layouts =
    {
@@ -31,26 +32,38 @@ layouts =
       tags[s] = awful.tag({ "main", "web", "dev" }, s, layouts[1])
    end
 
+   myawesomemenu = {
+        { "Edit rc.lua", terminal .. " --geometry 100x50 -e " .. editor_cmd .. " " .. awesome.conffile },
+        { "Edit theme.lua", terminal .. " --geometry 100x50 -e " .. editor_cmd .. " " .. theme.confdir .. "/theme.lua" },
+        { "", },
+        { "Restart", awesome.restart },
+        { "Quit", awesome.quit }
+    }
 
+   mylogoutmenu = {
+        { "Restart", "sudo reboot" },
+		{ "Shutdown", "sudo shutdown -h now" },
+        { "Sleep", "sudo pm-suspend" }
+   }
 
    mymainmenu = awful.menu({ items = {
 				{ "Files", "thunar" },
 				{ "", },
 				{"Terminal", "urxvtc"},
 				{ "", },
-				{ "Firefox", "firefox"},
+				{ "Firefox", "firefox" },
 				{ "GIMP", "gimp" },
                 { "GMAMEUI", "gmameui" },
 				{ "GVIM", "gvim" },
-				{ "Transmission", "transmission-gtk"},
+				{ "Transmission", "transmission-gtk" },
+                { "", },
+                { "Awesome", myawesomemenu },
 				{ "", },
-				{ "Restart",  "sudo reboot" },
-				{ "Shutdown", "sudo shutdown -h now" },
-				{ "Sleep", "sudo pm-suspend" }
-				     }})
-
+				{ "Logout", mylogoutmenu }
+			    }})
+    
    mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
-					menu = mymainmenu })
+					                    menu = mymainmenu })
 
    -- Date and time
    dateicon = widget({ type = "imagebox" })
@@ -234,10 +247,10 @@ layouts =
 	       )
 
    globalkeys = awful.util.table.join(
-      awful.key({ modkey,           }, "e",  function () awful.util.spawn("emacsclient -c") end),
       awful.key({ }, "XF86AudioMute",        function () awful.util.spawn(home .. "/.bin/dvol -t") end),
       awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn(home .. "/.bin/dvol -i 5") end),
       awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn(home .. "/.bin/dvol -d 5") end),
+      awful.key({ modkey,           }, "v",  function () awful.util.spawn("gvim") end),
       awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
       awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
       awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
@@ -369,7 +382,9 @@ layouts =
 		       buttons = clientbuttons } },
 
       { rule = { class = "Firefox" },
-	properties = { tag = tags[1][2] }, { floating = "false" } },
+	properties = { tag = tags[1][2] } },    
+      { rule = { name = "weechat*" }, 
+    properties = { tag = tags[1][2] } },
       { rule = { name = "Téléchargements" },
 	properties = { floating = "true" } },
    }
