@@ -59,7 +59,7 @@ hi Operator       ctermfg=13
 " complete menu
 hi Pmenu          ctermfg=255   ctermbg=235
 hi PmenuSel                     ctermbg=255   cterm=bold
-hi PmenuSbar                    ctermbg=235
+hi PmenuSbar      ctermfg=228   ctermbg=235
 hi PmenuThumb     ctermfg=255
 
 hi PreCondit      ctermfg=10                  cterm=bold
@@ -107,8 +107,8 @@ hi User2          ctermfg=1     ctermbg=235   cterm=bold
 hi User3          ctermfg=2     ctermbg=235   cterm=bold
 hi User4          ctermfg=234   ctermbg=3     cterm=bold
 hi User5          ctermfg=250   ctermbg=235   cterm=none
-hi User6					ctermfg=233		ctermbg=235		cterm=none
-hi User7					ctermfg=233		ctermbg=235		cterm=bold
+hi User6          ctermfg=233	ctermbg=235	  cterm=none
+hi User7		  ctermfg=233	ctermbg=235	  cterm=bold
 hi StatusLine     ctermfg=228   ctermbg=235   cterm=bold
 hi StatusLineNC   ctermfg=240   ctermbg=235   cterm=bold
 
