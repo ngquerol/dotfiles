@@ -1,7 +1,5 @@
--------------------------------
---   "Nada" awesomewm theme  --
---    By Nicolas G. Querol   --
--------------------------------
+-- File: AwesomeWM "Nada" theme
+-- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 
 -- {{{ Main
 theme = {}
@@ -11,7 +9,7 @@ theme.wallpaper_cmd = { "feh --bg-fill /home/nico/Dropbox/Wallpapers/elephant.jp
 
 -- {{{ Styles
 
-theme.font          = "Neep Semicondensed 10"
+theme.font          = "Terminusmodx 10"
 
 -- {{{ Colors
 theme.bg_normal     = "#191919"
@@ -43,7 +41,7 @@ theme.tasklist_bg_focus		= "#191919"
 -- {{{ Tooltips
 theme.tooltip_bg_color     = "#191919"
 theme.tooltip_fg_color     = "#AAAAAA"
-theme.tooltip_border_color = "#404040"
+theme.tooltip_border_color = "#CCCCCC"
 theme.tooltip_border_width = "1"
 --- }}}
 
