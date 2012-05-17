@@ -268,6 +268,8 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn(home .. "/.bin/dvol -i 5") end),
     awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn(home .. "/.bin/dvol -d 5") end),
     awful.key({ modkey,           }, "v",  function () awful.util.spawn("gvim") end),
+    awful.key({ modkey,           }, "f",  function () awful.util.spawn("firefox") end),
+    awful.key({ modkey,           }, "t",  function () awful.util.spawn("thunar") end),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
