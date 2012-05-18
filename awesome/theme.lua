@@ -16,6 +16,7 @@ theme.bg_normal     = "#191919"
 theme.bg_focus      = "#ffffff"
 theme.bg_urgent     = "#191919"
 theme.bg_minimize   = "#191919"
+theme.bg_systray    = theme.bg_normal
 theme.fg_normal     = "#AAAAAA"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#E64444"
@@ -45,10 +46,6 @@ theme.tooltip_border_color = "#CCCCCC"
 theme.tooltip_border_width = "1"
 --- }}}
 
--- {{{ Mouse finder
-theme.mouse_finder_color = "#CC9393"
--- }}}
-
 -- {{{ Menu
 theme.menu_height	    = "15"
 theme.menu_width        = "110"
@@ -62,8 +59,8 @@ theme.menu_border_width = "0"
 -- {{{ Icons
 
 -- Taglist {{{
-theme.taglist_squares_sel   = theme.confdir.. "/icons/tagsel.png"
-theme.taglist_squares_unsel = theme.confdir.. "/icons/tagunsel.png"
+theme.taglist_squares_sel   = theme.confdir .. "/icons/tagsel.png"
+theme.taglist_squares_unsel = theme.confdir .. "/icons/tagunsel.png"
 -- }}}
 
 -- {{{ Misc icons
@@ -81,13 +78,13 @@ theme.widget_left   = theme.confdir .. "/icons/lside.png"
 -- }}}
 
 -- {{{ Layout icons
-theme.layout_fairh	    = theme.confdir.. "/icons/layouts/fairhw.png"
-theme.layout_fairv	    = theme.confdir.. "/icons/layouts/fairvw.png"
-theme.layout_floating	= theme.confdir.. "/icons/layouts/floatingw.png"
-theme.layout_tilebottom = theme.confdir.. "/icons/layouts/tilebottomw.png"
-theme.layout_tileleft   = theme.confdir.. "/icons/layouts/tileleftw.png"
-theme.layout_tile	    = theme.confdir.. "/icons/layouts/tilew.png"
-theme.layout_tiletop	= theme.confdir.. "/icons/layouts/tiletopw.png"
+theme.layout_fairh	    = theme.confdir .. "/icons/layouts/fairhw.png"
+theme.layout_fairv	    = theme.confdir .. "/icons/layouts/fairvw.png"
+theme.layout_floating	= theme.confdir .. "/icons/layouts/floatingw.png"
+theme.layout_tilebottom = theme.confdir .. "/icons/layouts/tilebottomw.png"
+theme.layout_tileleft   = theme.confdir .. "/icons/layouts/tileleftw.png"
+theme.layout_tile	    = theme.confdir .. "/icons/layouts/tilew.png"
+theme.layout_tiletop	= theme.confdir .. "/icons/layouts/tiletopw.png"
 -- }}}
 
 -- }}}

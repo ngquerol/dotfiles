@@ -6,6 +6,7 @@
 require("awful")
 require("awful.autofocus")
 require("awful.rules")
+require("wibox")
 require("beautiful")
 require("naughty")
 require("vicious")
@@ -49,7 +50,8 @@ myawesomemenu = {
 mylogoutmenu = {
     { "Restart", "sudo reboot" },
     { "Shutdown", "sudo shutdown -h now" },
-    { "Sleep", "sudo pm-suspend" }
+    { "Sleep", "sudo pm-suspend" },
+    theme = { width = 80, height = 15 }
 }
 
 mymainmenu = awful.menu({ 
@@ -70,35 +72,35 @@ mymainmenu = awful.menu({
     }
 })
     
-mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
+mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 -- }}}
 
 -- Wibox {{{
 -- Date and time
-dateicon       = widget({ type = "imagebox" })
-dateicon.image = image(beautiful.widget_date)
-datewidget     = widget({ type = "textbox" })
-vicious.register(datewidget, vicious.widgets.date, "%d/%m/%y,<span weight='bold'> %R</span>", 60)
+dateicon       = wibox.widget.imagebox()
+dateicon:set_image(beautiful.widget_date)
+datewidget     = wibox.widget.textbox()
+vicious.register(datewidget, vicious.widgets.date, "%d/%m/%y,<span weight='bold'> %R</span>", 59)
 
 -- Spacers
-spacer1      = widget({ type = "textbox" })
-spacer1.text = " | "
-spacer2      = widget({ type = "textbox" })
-spacer2.text = " "
+spacer1      = wibox.widget.textbox()
+spacer1:set_text(" | ")
+spacer2      = wibox.widget.textbox()
+spacer2:set_text(" ")
 
 -- Left side
-lside       = widget({ type = "imagebox" })
-lside.image = image(beautiful.widget_left)
+lside       = wibox.widget.imagebox()
+lside:set_image(beautiful.widget_left)
 
 -- Right side
-rside       = widget({ type = "imagebox" })
-rside.image = image(beautiful.widget_right)
+rside       = wibox.widget.imagebox()
+rside:set_image(beautiful.widget_right)
 
 -- Gmail widget & tooltip
-gmailicon       = widget({ type = "imagebox" })
-gmailicon.image = image(beautiful.widget_mail)
-gmailwidget     = widget({ type = "textbox" })
+gmailicon       = wibox.widget.imagebox()
+gmailicon:set_image(beautiful.widget_mail)
+gmailwidget     = wibox.widget.textbox()
 vicious.register(gmailwidget, vicious.widgets.gmail,
     function (widget, args)
         if args['{count}'] > 0 then
@@ -106,15 +108,15 @@ vicious.register(gmailwidget, vicious.widgets.gmail,
         else
             return args['{count}']
         end
-    end, 69)
+    end, 67)
 
 gmailicon:buttons(awful.util.table.join(
     awful.button({ }, 1, function () awful.util.spawn("firefox https://mail.google.com") end)))
 
 -- Battery percentage & state
-baticon       = widget({ type = "imagebox" })
-baticon.image = image(beautiful.widget_bat)
-batwidget     = widget({ type = "textbox", align = "right" })
+baticon       = wibox.widget.imagebox()
+baticon:set_image(beautiful.widget_bat)
+batwidget     = wibox.widget.textbox()
 vicious.register(batwidget, vicious.widgets.bat,
     function (widget, args)
         -- full/charged
@@ -135,15 +137,17 @@ vicious.register(batwidget, vicious.widgets.bat,
             end
         end
     end, 61, "BAT0")
+vicious.cache(vicious.widgets.bat)
 
 -- CPU usage
-cpuicon       = widget({ type = "imagebox" })
-cpuicon.image = image(beautiful.widget_cpu)
-cpuwidget     = widget({ type = "textbox", align = "right" })
+cpuicon       = wibox.widget.imagebox()
+cpuicon:set_image(beautiful.widget_cpu)
+cpuwidget     = wibox.widget.textbox()
 vicious.register(cpuwidget, vicious.widgets.cpu, "<span weight='bold'>$1</span>%", 2)
+vicious.cache(vicious.widgets.cpu)
 
 -- CPU temperature
-thermalwidget = widget({ type = "textbox" })
+thermalwidget = wibox.widget.textbox()
 vicious.register(thermalwidget, vicious.widgets.thermal,
     function (widget, args)
         if args[1] >= 70 then
@@ -152,8 +156,6 @@ vicious.register(thermalwidget, vicious.widgets.thermal,
             return " @ <span weight='bold'>"..args[1].."</span>°C"
         end
     end, 19, {"coretemp.0", "core"})
-
-mysystray = widget({ type = "systray" })
 
 mywibox     = {}
 mypromptbox = {}
@@ -200,8 +202,7 @@ mytasklist.buttons = awful.util.table.join(
 )
 
 for s = 1, screen.count() do
-    mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
-
+    mypromptbox[s] = awful.widget.prompt()
 
     mylayoutbox[s] = awful.widget.layoutbox(s)
     mylayoutbox[s]:buttons(awful.util.table.join(
@@ -211,48 +212,49 @@ for s = 1, screen.count() do
         awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)
     ))
 
-    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, mytaglist.buttons)
+    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
 
-    mytasklist[s] = awful.widget.tasklist(function(c)
-                        return awful.widget.tasklist.label.currenttags(c, s)
-                    end, mytasklist.buttons)
+    mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     mywibox[s] = awful.wibox({ position = "bottom", height = "18", screen = s })
 
-    mywibox[s].widgets = {
-    {
-    mylauncher,
-    spacer2,
-    mytaglist[s],
-    spacer2,
-    mylayoutbox[s],
-    spacer2,
-    mypromptbox[s],
-    spacer2,
-    layout = awful.widget.layout.horizontal.leftright
-    },
-    rside,
-    spacer2,
-    s == 1 and mysystray or nil,
-    spacer1,
-    datewidget,
-    dateicon,
-    spacer1,
-    gmailwidget,
-    gmailicon,
-    spacer1,
-    batwidget,
-    baticon,
-    spacer1,
-    thermalwidget,
-    cpuwidget,
-    cpuicon,
-    spacer2,
-    lside,
-    spacer2,
-    mytasklist[s],
-    layout = awful.widget.layout.horizontal.rightleft
-   }
+    local left_layout = wibox.layout.fixed.horizontal()
+    left_layout:add(mylauncher)
+    left_layout:add(spacer2)
+    left_layout:add(mytaglist[s])
+    left_layout:add(spacer2)
+    left_layout:add(mylayoutbox[s])
+    left_layout:add(spacer2)
+    left_layout:add(mypromptbox[s])
+    left_layout:add(spacer2)
+
+    local right_layout = wibox.layout.fixed.horizontal()
+    right_layout:add(spacer2)
+    right_layout:add(lside)
+    right_layout:add(spacer2)
+    right_layout:add(cpuicon)
+    right_layout:add(cpuwidget)
+    right_layout:add(thermalwidget)
+    right_layout:add(spacer1)
+    right_layout:add(baticon)
+    right_layout:add(batwidget)
+    right_layout:add(spacer1)
+    right_layout:add(gmailicon)
+    right_layout:add(gmailwidget)
+    right_layout:add(spacer1)
+    right_layout:add(dateicon)
+    right_layout:add(datewidget)
+    right_layout:add(spacer1)
+    if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(spacer2)
+    right_layout:add(rside)
+    
+    local layout = wibox.layout.align.horizontal()
+    layout:set_left(left_layout)
+    layout:set_middle(mytasklist[s])
+    layout:set_right(right_layout)
+
+    mywibox[s]:set_widget(layout)
 end
 -- }}}
 
@@ -267,9 +269,6 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioMute",        function () awful.util.spawn(home .. "/.bin/dvol -t") end),
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn(home .. "/.bin/dvol -i 5") end),
     awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn(home .. "/.bin/dvol -d 5") end),
-    awful.key({ modkey,           }, "v",  function () awful.util.spawn("gvim") end),
-    awful.key({ modkey,           }, "f",  function () awful.util.spawn("firefox") end),
-    awful.key({ modkey,           }, "t",  function () awful.util.spawn("thunar") end),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
@@ -420,9 +419,9 @@ awful.rules.rules = {
 -- }}}
 
 -- Signals {{{
-client.add_signal("manage", function (c, startup)
+client.connect_signal("manage", function (c, startup)
 
-    c:add_signal("mouse::enter", function(c)
+    c:connect_signal("mouse::enter", function(c)
         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
             and awful.client.focus.filter(c) then
             client.focus = c
@@ -438,6 +437,6 @@ client.add_signal("manage", function (c, startup)
     end
 end)
 
-client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
