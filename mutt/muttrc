@@ -27,7 +27,7 @@ mailboxes !
 
 ## Abook
 set query_command   = "abook --mutt-query '%s'"
-macro indexager     a "<pipe-message>abook --add-email-quiet<return>" "Ajouter cet expéditeur dans Abook"
+macro index,pager   a "<pipe-message>abook --add-email-quiet<return>" "Ajouter cet expéditeur dans Abook"
 
 ## Mailing lists
 subscribe awesome@naquadah.org
