@@ -9,13 +9,11 @@ set message_cachedir        = "~/.mutt/cache/bodies"
 
 ## SMTP configuration
 set smtp_url  = "smtp://nicolas.gquerol@smtp.gmail.com:587/"
-set smtp_pass = ""
 
 ## IMAP configuration
 set folder                  = "imaps://imap.gmail.com:993"
 set spoolfile               = "+INBOX"
 set imap_user               = "nicolas.gquerol@gmail.com"
-set imap_pass               = ""
 set imap_authenticators     = "login"
 set imap_check_subscribed   = "yes"
 set imap_list_subscribed    = "yes"
@@ -51,3 +49,4 @@ source ~/.mutt/colors
 source ~/.mutt/display
 source ~/.mutt/sidebar
 source ~/.mutt/keys
+source ~/.mutt/secret
