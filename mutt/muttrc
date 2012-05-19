@@ -1,46 +1,46 @@
 ## Basic settings
-
-set realname = "Nicolas G. Querol"
-set hostname = "gmail.com"
-my_hdr From: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+set realname                = "Nicolas Gaulard Querol"
+set hostname                = "gmail.com"
+my_hdr                      From: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 set use_envelope_from
-set envelope_from_address="nicolas.gquerol@gmail.com"
-set header_cache =~/.mutt/cache/headers
-set message_cachedir =~/.mutt/cache/bodies
+set envelope_from_address   = "nicolas.gquerol@gmail.com"
+set header_cache            = "~/.mutt/cache/headers"
+set message_cachedir        = "~/.mutt/cache/bodies"
 
 ## SMTP configuration
-
-set smtp_url = "smtp://nicolas.gquerol@smtp.gmail.com:587/"
+set smtp_url  = "smtp://nicolas.gquerol@smtp.gmail.com:587/"
 set smtp_pass = ""
 
 ## IMAP configuration
-
-set folder = "imaps://imap.gmail.com:993"
-set spoolfile= "+INBOX"
-set imap_user = "nicolas.gquerol@gmail.com"
-set imap_pass = ""
-set imap_authenticators = "login"
-set imap_check_subscribed= "yes"
-set imap_list_subscribed = "yes"
-set trash = "+[Gmail]/Corbeille"
-set postponed = "+[Gmail]/Brouillons"
-set record = "+[Gmail]/Messages envoyés"
+set folder                  = "imaps://imap.gmail.com:993"
+set spoolfile               = "+INBOX"
+set imap_user               = "nicolas.gquerol@gmail.com"
+set imap_pass               = ""
+set imap_authenticators     = "login"
+set imap_check_subscribed   = "yes"
+set imap_list_subscribed    = "yes"
+set trash                   = "+[Gmail]/Corbeille"
+set postponed               = "+[Gmail]/Brouillons"
+set record                  = "+[Gmail]/Messages envoyés"
 
 mailboxes !
+
+## Abook
+set query_command   = "abook --mutt-query '%s'"
+macro indexager     a "<pipe-message>abook --add-email-quiet<return>" "Ajouter cet expéditeur dans Abook"
 
 ## Mailing lists
 subscribe awesome@naquadah.org
 
 ## How often we should check for new mail
-set mail_check = 300
-set timeout = 30
+set mail_check  = 300
+set timeout     = 30
 
 ## Various tweaks
-
-set move=no
+set move         = "no"
 set fast_reply
-set copy = "no"
-set signature='~/.mutt/signature.txt'
+set copy         = "no"
+set signature    ='~/.mutt/signature.txt'
 set mailcap_path ='~/.mutt/mailcap'
 
 # Delete without confirmation

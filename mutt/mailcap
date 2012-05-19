@@ -1,3 +1,3 @@
-text/html; w3m -I %{charset} -T text/html; copiousoutput;
-application/pdf; evince %s;
-image/*; gpicview %s;
+text/html;       w3m -I %{charset} -T text/html; copiousoutput;
+application/pdf; epdfview %s;
+image/*;         feh  %s;
