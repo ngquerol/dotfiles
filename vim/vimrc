@@ -16,41 +16,48 @@ Bundle 'gmarik/vundle'
 
 " Vundles {{{
 " github repos
-Bundle 'tpope/vim-fugitive'
-Bundle 'scrooloose/nerdtree'
-Bundle 'ervandew/supertab'
-Bundle 'garbas/vim-snipmate'
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'tomtom/tlib_vim'
-Bundle 'honza/snipmate-snippets'
-Bundle 'Raimondi/delimitMate'
+Bundle 'tangledhelix/vim-octopress'
 Bundle 'majutsushi/tagbar'
-Bundle 'sjbach/lusty'
-Bundle 'fholgado/minibufexpl.vim'
+Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'SirVer/ultisnips'
+Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/neocomplcache-snippets-complete'
+Bundle 'Raimondi/delimitMate'
+Bundle 'sjl/gundo.vim'
 " vim-script repos
 " non-github repos
 " }}}
+
 " }}}
 
 " General {{{
 filetype plugin indent on
 syntax on
 
+" Filetypes {{{
+au BufRead,BufNewFile *.md set filetype=markdown
+au BufRead /tmp/mutt* set tw=72
+" }}}
+
 let mapleader=","
 let maplocalleader = "\\"
 
 set hidden
 set mouse=a
+set backspace=indent,eol,start
 set incsearch
 set hlsearch
+set ignorecase
+set smartcase
 set history=1000
-set undolevels=1000
 set title
 set ttyfast
 set lazyredraw
 set novisualbell
 set noerrorbells
-set encoding=utf8
+"set encoding=utf-8
+"set termencoding=utf-8
 " }}}
 
 " Appearance {{{
@@ -66,7 +73,7 @@ set encoding=utf8
     set guioptions-=r               " no scrollbar right when split
     set lines=40 columns=100
 
-    set gfn=Monaco\ 10
+    set gfn=Inconsolata\ 12
     colorscheme nucolors
 else
     set t_Co=256
@@ -82,9 +89,13 @@ set number                      " show line numbers
 
 " }}}
 
-" Settings {{{
+ " Settings {{{
 
 " Backup files {{{
+set undodir=/tmp              " put those files where they will be trashed upon reboot
+set undofile
+set undolevels=1000           " maximum number of changes that can be undone
+set undoreload=10000          " maximum number lines to save for undo on a buffer reload
 set nobackup
 set noswapfile
 " }}}
@@ -123,25 +134,31 @@ set scrolloff=5
 set sidescroll=5
 " }}}
 
-" Keybindings {{{
+"  Keybindings {{{
 
-nmap <f1> :NERDTreeToggle<CR>
-nmap <f2> :TagbarToggle<CR>
+" Plugins
+nnoremap <silent><F1> :NERDTreeToggle<CR>
+nnoremap <silent><F2> :TagbarToggle<CR>
+nnoremap <silent><F3> :GundoToggle<CR>
 
 " Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>rv :so $MYVIMRC<CR>
+nnoremap <silent><leader>ev :e $MYVIMRC<CR>
+nnoremap <silent><leader>rv :so $MYVIMRC<CR>
 
-set pastetoggle=<f3>
+" Toggle paste mode
+set pastetoggle=<leader>p
+
+" Clear last search highlighting
+nnoremap <silent><CR> :noh<CR><CR>
 
 " }}}
 
 " Plugin-specific {{{
 
 " NERDTree {{{
-let NERDTreeMinimalUI = 1
-let NERDTreeWinSize = 25
-let NERDTreeMouseMode = 3
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeWinSize = 25
+let g:NERDTreeMouseMode = 3
 " }}}
 
 " Tagbar {{{
@@ -150,16 +167,28 @@ let g:tagbar_expand = 1
 let g:tagbar_singleclick = 1
 let g:tagbar_autoshowtag = 1
 let g:tagbar_width = 30
+"  }}}
+
+" Neocomplcache {{{
+
 " }}}
 
-" SuperTab {{{
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabLongestHighlight = 1
+" delimitMate {{{
+let g:delimitMate_expand_cr = 1
+let g:delimitMate_expand_space = 1
 " }}}
 
-" Mini BufferExplorer {{{
+" Mini Buffer Explorer {{{
 let g:miniBufExplSplitToEdge = 0
 let g:miniBufExplUseSingleClick = 1
+let g:miniBufExplModSelTarget = 1 
+" }}}
+
+" Gundo {{{
+let g:gundo_width = 30
+let g:gundo_help = 0
+let g:gundo_preview_statusline = "Gundo [Preview] %=%-5.(%l,%c%V%) %P"
+let g:gundo_tree_statusline = "Gundo [Tree] %=%-5.(%l,%c%V%) %P"
 " }}}
 
 " }}}
