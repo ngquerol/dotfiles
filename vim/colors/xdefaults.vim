@@ -56,7 +56,7 @@ hi ModeMsg        ctermfg=229
 hi MoreMsg        ctermfg=229
 hi Operator       ctermfg=13
 
-" complete menu
+" Complete menu
 hi Pmenu          ctermfg=255   ctermbg=235
 hi PmenuSel                     ctermbg=255   cterm=bold
 hi PmenuSbar                    ctermbg=235
@@ -67,7 +67,8 @@ hi PreProc        ctermfg=10
 hi Question       ctermfg=81
 hi Repeat         ctermfg=13                  cterm=bold
 hi Search         ctermfg=253   ctermbg=66
-" marks column
+
+" Marks column
 hi SignColumn     ctermfg=10    ctermbg=235
 hi SpecialChar    ctermfg=13                  cterm=bold
 hi SpecialComment ctermfg=245
@@ -100,6 +101,7 @@ hi CursorColumn                 ctermbg=235
 hi LineNr         ctermfg=238   ctermbg=233
 hi NonText        ctermfg=238
 
+" Mail
 hi mailHeaderKey ctermfg=cyan
 hi mailSubject   ctermfg=green       ctermbg=darkcyan term=bold
 hi mailHeader    ctermfg=darkcyan
@@ -119,8 +121,8 @@ hi User2          ctermfg=1     ctermbg=235   cterm=bold
 hi User3          ctermfg=2     ctermbg=235   cterm=bold
 hi User4          ctermfg=234   ctermbg=3     cterm=bold
 hi User5          ctermfg=250   ctermbg=235   cterm=none
-hi User6					ctermfg=233		ctermbg=235		cterm=none
-hi User7					ctermfg=233		ctermbg=235		cterm=bold
+hi User6          ctermfg=233	ctermbg=235	  cterm=none
+hi User7		  ctermfg=233	ctermbg=235	  cterm=bold
 hi StatusLine     ctermfg=228   ctermbg=235   cterm=bold
 hi StatusLineNC   ctermfg=240   ctermbg=235   cterm=bold
 
