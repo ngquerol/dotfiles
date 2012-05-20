@@ -37,7 +37,7 @@ syntax on
 
 " Filetypes {{{
 au BufRead,BufNewFile *.md set filetype=markdown
-au BufRead /tmp/mutt* set tw=72
+au BufRead /tmp/mutt* set tw=72 
 " }}}
 
 let mapleader=","
@@ -56,14 +56,14 @@ set ttyfast
 set lazyredraw
 set novisualbell
 set noerrorbells
-"set encoding=utf-8
-"set termencoding=utf-8
+set encoding=utf-8
+set termencoding=utf-8
 " }}}
 
 " Appearance {{{
 
 " Gvim specific settings
- if has('gui_running')
+if has('gui_running')
     set guicursor+=a:blinkon0       " cursor doesn't blink - it's annoying
     set guioptions-=m               " no menubar
     set guioptions-=T               " no toolbar
@@ -76,8 +76,22 @@ set noerrorbells
     set gfn=Inconsolata\ 12
     colorscheme nucolors
 else
-    set t_Co=256
-    colorscheme xdefaults
+    if $TERM =~ '^rxvt-unicode-256color'
+        set t_Co=256
+        colorscheme xdefaults
+    elseif $TERM =~ '^rxvt-unicode'
+        set t_Co=88
+        colorscheme default 
+    elseif $TERM =~ '^xterm.*'
+        set t_Co=256
+        colorscheme xdefaults
+    elseif $TERM =~ '^linux'
+        set t_Co=8
+        colorscheme default
+    else
+        set t_Co=16
+        colorscheme default
+    endif
 endif
 
 set cmdheight=1                 " command line height
