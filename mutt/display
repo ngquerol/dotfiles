@@ -31,7 +31,7 @@ set smart_wrap
 # Editor & mailcap
 set implicit_autoview
 auto_view text/x-vcard text/html text/enriched
-set editor="emacsclient -t"
+set editor="vim"
 
 # Pager
 set pager_index_lines = 5
