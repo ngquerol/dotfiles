@@ -1,163 +1,144 @@
-" Vim color scheme
+" Vim color file
 "
-" Name:        nucolors.vim
-" Maintainer:  Christian Brassat <crshd@mail.com>
-" License:     public domain
+" Author: Christian Brassat <christian@crshd.cc>
 "
-" Based on a port of the RailsCasts TextMate theme [1] to Vim.
-" Some parts of this theme were borrowed from the well-documented Lucius theme [2].
-" 
-" [1] http://railscasts.com/about 
-" [2] http://www.vim.org/scripts/script.php?script_id=2536
+" Note: Based on my Xdefaults colors, will be updated
+" when I update my Xdefaults
+"
+
+hi clear
 
 set background=dark
-hi clear
-if exists("syntax_on")
-  syntax reset
+if version > 580
+    " no guarantees for version 5.8 and below, but this makes it stop
+    " complaining
+    hi clear
+    if exists("syntax_on")
+        syntax reset
+    endif
 endif
-let g:colors_name = "nucolors"
+let g:colors_name="xdefaults"
 
-" Colors
-" Brown        #FFFFB9
-" Dark Blue    #7DC1CF
-" Dark Green   #B8D68F
-" Dark Orange  #E1AA5D
-" Light Blue   #4E9FB1
-" Light Green  #A0CF5D
-" Tan          #F39D21
-" Red          #E84F4F
-"
-hi Nontext                   guifg=#404040
-hi Normal                    guifg=#E6E1DC guibg=#151515
-hi Cursor                    guibg=#FF8939
-hi CursorLine                guibg=#202020
-hi LineNr                    guifg=#665544 guibg=#101010
-hi Search                    guibg=#5A647E
-hi VertSplit                 guifg=#1b1b1b guibg=#1b1b1b
-hi Visual                    guibg=#5A647E
+hi Boolean        ctermfg=10
+hi Character      ctermfg=4
+hi Number         ctermfg=10
+hi String         ctermfg=15
+hi Conditional    ctermfg=112
+hi Constant       ctermfg=202
+hi Cursor         ctermfg=16    ctermbg=1
+hi Debug          ctermfg=225                 cterm=none
+hi Define         ctermfg=1
+hi Delimiter      ctermfg=241 
+hi DiffAdd        ctermfg=2     ctermbg=232
+hi DiffChange     ctermfg=4     ctermbg=232
+hi DiffDelete     ctermfg=1     ctermbg=232
+hi DiffText       ctermbg=232
 
-" Folds
-" line used for closed folds
-hi Folded                    guifg=#5A647E guibg=#202020 
-hi FoldColumn                guifg=#505050 guibg=#050505
+hi Directory      ctermfg=12
+hi Error          ctermfg=233   ctermbg=1
+hi ErrorMsg       ctermfg=9     ctermbg=233
+hi Exception      ctermfg=3
+hi Float          ctermfg=2
+hi FoldColumn     ctermfg=232   ctermbg=235
+hi Folded         ctermfg=232   ctermbg=235
+hi Function       ctermfg=255
+hi Identifier     ctermfg=2
+hi Ignore         ctermfg=3     ctermbg=232
+hi IncSearch      ctermfg=3     ctermbg=16
 
-" Misc
-" ----
-" directory names and other special names in listings
-hi Directory                 guifg=#A0CF5D 
+hi Keyword        ctermfg=1                   cterm=none
+hi Label          ctermfg=229
+hi Macro          ctermfg=193
+hi SpecialKey     ctermfg=81
 
-" Popup Menu
-" ----------
-" normal item in popup
-hi Pmenu                     guifg=#F6F3E8 guibg=#444444 
-" selected item in popup
-hi PmenuSel                  guifg=#000000 guibg=#A0CF5D 
-" scrollbar in popup
-hi PMenuSbar                 guibg=#5A647E 
-" thumb of the scrollbar in the popup
-hi PMenuThumb                guibg=#AAAAAA 
+hi MatchParen     ctermfg=233    ctermbg=202
+hi ModeMsg        ctermfg=229
+hi MoreMsg        ctermfg=229
+hi Operator       ctermfg=13
 
+" complete menu
+hi Pmenu          ctermfg=255   ctermbg=235
+hi PmenuSel                     ctermbg=255   cterm=bold
+hi PmenuSbar                    ctermbg=235
+hi PmenuThumb     ctermfg=255
 
-"rubyComment
-hi Comment                   guifg=#809080 
-hi Todo                      guifg=#809080 guibg=NONE 
+hi PreCondit      ctermfg=10                  cterm=bold
+hi PreProc        ctermfg=10
+hi Question       ctermfg=81
+hi Repeat         ctermfg=13                  cterm=bold
+hi Search         ctermfg=253   ctermbg=66
+" marks column
+hi SignColumn     ctermfg=10    ctermbg=235
+hi SpecialChar    ctermfg=13                  cterm=bold
+hi SpecialComment ctermfg=245
+hi Special        ctermfg=11
+hi SpecialKey     ctermfg=245
+hi Statement      ctermfg=1 
 
-"Invisibles
-hi NonText                   guifg=#665544
-hi SpecialKey                guifg=#665544
+hi StorageClass   ctermfg=10
+hi Structure      ctermfg=81
+hi Tag            ctermfg=13 
+hi Title          ctermfg=166
+hi Todo           ctermfg=231   ctermbg=232   cterm=bold
 
-"rubyPseudoVariable
-"nil, self, symbols, etc
-hi Constant                  guifg=#7DC1CF
+hi Typedef        ctermfg=1
+hi Type           ctermfg=14                  cterm=none
+hi Underlined     ctermfg=244                 cterm=underline
 
-"rubyClass, rubyModule, rubyDefine
-"def, end, include, etc
-hi Define                    guifg=#FFFFB9 gui=bold
+hi TabLine        ctermfg=241   ctermbg=234   cterm=none
+hi TabLineFill    ctermbg=234									cterm=none
+hi VertSplit      ctermfg=234   ctermbg=234   cterm=none
+hi VisualNOS                    ctermbg=235
+hi Visual                       ctermbg=235
+hi WarningMsg     ctermfg=231   ctermbg=238   cterm=bold
+hi WildMenu       ctermfg=59    ctermbg=15
 
-"rubyInterpolation
-hi Delimiter                 guifg=#B8D68F
+hi Normal         ctermfg=248
+hi Comment        ctermfg=241									cterm=none
+hi CursorLine                   ctermbg=234   cterm=none
+hi CursorColumn                 ctermbg=235
+hi LineNr         ctermfg=238   ctermbg=233
+hi NonText        ctermfg=238
 
-"rubyError, rubyInvalidVariable
-hi Error                     guifg=#FFFFFF guibg=#990000
-
-"rubyFunction
-hi Function                  guifg=#E84F4F gui=bold 
-
-"rubyIdentifier
-"@var, @@var, $var, etc
-hi Identifier                guifg=#4E9FB1 
-
-"rubyInclude
-"include, autoload, extend, load, require
-hi Include                   guifg=#E1AA5D gui=bold 
-
-"rubyKeyword, rubyKeywordAsMethod
-"alias, undef, super, yield, callcc, caller, lambda, proc
-hi Keyword                   guifg=#E1AA5D
-
-" same as define
-hi Macro                     guifg=#E1AA5D 
-
-"rubyInteger
-hi Number                    guifg=#A0CF5D
-
-" #if, #else, #endif
-hi PreCondit                 guifg=#E1AA5D 
-
-" generic preprocessor
-hi PreProc                   guifg=#E1AA5D 
-
-"rubyControl, rubyAccess, rubyEval
-"case, begin, do, for, if unless, while, until else, etc.
-hi Statement                 guifg=#E1AA5D 
-
-"rubyString
-hi String                    guifg=#A0CF5D
-
-hi Title                     guifg=#FFFFFF
-
-"rubyConstant
-hi Type                      guifg=#E84F4F 
-
-hi DiffAdd                   guifg=#E6E1DC guibg=#144212
-hi DiffDelete                guifg=#E6E1DC guibg=#660000
-
-hi link htmlTag              xmlTag
-hi link htmlTagName          xmlTagName
-hi link htmlEndTag           xmlEndTag
-
-hi xmlTag                    guifg=#E8BF6A
-hi xmlTagName                guifg=#E8BF6A
-hi xmlEndTag                 guifg=#E8BF6A
+hi mailHeaderKey ctermfg=cyan
+hi mailSubject   ctermfg=green       ctermbg=darkcyan term=bold
+hi mailHeader    ctermfg=darkcyan
+hi mailEmail     ctermfg=yellow      cterm=underline  term=underline
+hi mailSignature ctermfg=238
+hi mailQuoted1   ctermfg=darkgreen
+hi mailQuoted2   ctermfg=darkcyan
+hi mailQuoted3   ctermfg=darkmagenta
+hi mailQuoted4   ctermfg=blue
+hi mailQuoted5   ctermfg=darkblue
+hi mailQuoted6   ctermfg=black
 
 " Status line - changes colors depending on insert mode
 " Standard
-hi User1          guifg=#E8BF6A   guibg=#202020   gui=bold
-hi User2          guifg=#E84F4F   guibg=#202020   gui=bold
-hi User3          guifg=#A0CF5D   guibg=#202020   gui=bold
-hi User4          guifg=#202020   guibg=#E8BF6A   gui=bold
-hi User5          guifg=#909090   guibg=#202020   
-hi User6          guifg=#40352D   guibg=#202020   
-hi User7          guifg=#202020   guibg=#202020   gui=bold
-hi StatusLine     guifg=#E6E1DC   guibg=#202020   gui=bold
-hi StatusLineNC   guifg=#606060   guibg=#202020   gui=bold
+hi User1          ctermfg=3     ctermbg=235   cterm=bold
+hi User2          ctermfg=1     ctermbg=235   cterm=bold
+hi User3          ctermfg=2     ctermbg=235   cterm=bold
+hi User4          ctermfg=234   ctermbg=3     cterm=bold
+hi User5          ctermfg=250   ctermbg=235   cterm=none
+hi User6					ctermfg=233		ctermbg=235		cterm=none
+hi User7					ctermfg=233		ctermbg=235		cterm=bold
+hi StatusLine     ctermfg=228   ctermbg=235   cterm=bold
+hi StatusLineNC   ctermfg=240   ctermbg=235   cterm=bold
 
 function! InsertStatuslineColor(mode)
 
   if a:mode == 'i' " Insert Mode
-    hi User4      guifg=#202020   guibg=#7DC1CF
+    hi User4      ctermfg=234   ctermbg=4
 
   elseif a:mode == 'r' " Replace Mode
-    hi User4      guifg=#202020   guibg=#E84F4F
+    hi User4      ctermfg=234   ctermbg=1
 
   else
-    hi User4      guifg=#202020   guibg=#E8BF6A
+    hi User4      ctermfg=234   ctermbg=3 
 
   endif
 endfunction
 
 " Call function
 au InsertEnter * call InsertStatuslineColor(v:insertmode)
-au InsertLeave * hi statusline guifg=#E6E1DC   guibg=#202020
-au InsertLeave * hi User4      guifg=#202020   guibg=#E8BF6A
-
+au InsertLeave * hi statusline ctermfg=228  ctermbg=235
+au InsertLeave * hi User4      ctermfg=234  ctermbg=3
