@@ -102,17 +102,17 @@ hi LineNr         ctermfg=238   ctermbg=233
 hi NonText        ctermfg=238
 
 " Mail
-hi mailHeaderKey ctermfg=cyan
-hi mailSubject   ctermfg=green       ctermbg=darkcyan term=bold
-hi mailHeader    ctermfg=darkcyan
-hi mailEmail     ctermfg=yellow      cterm=underline  term=underline
+hi mailHeaderKey ctermfg=white       ctermbg=234
+hi mailSubject   ctermfg=green       ctermbg=234      term=bold
+hi mailHeader    ctermfg=white       ctermbg=234
+hi mailEmail     ctermfg=lightblue   cterm=underline  term=underline
 hi mailSignature ctermfg=238
-hi mailQuoted1   ctermfg=darkgreen
-hi mailQuoted2   ctermfg=darkcyan
-hi mailQuoted3   ctermfg=darkmagenta
-hi mailQuoted4   ctermfg=blue
-hi mailQuoted5   ctermfg=darkblue
-hi mailQuoted6   ctermfg=black
+hi mailQuoted1   ctermfg=yellow
+hi mailQuoted2   ctermfg=green
+hi mailQuoted3   ctermfg=blue
+hi mailQuoted4   ctermfg=red
+hi mailQuoted5   ctermfg=darkgreen
+hi mailQuoted6   ctermfg=darkyellow
 
 " Status line - changes colors depending on insert mode
 " Standard
