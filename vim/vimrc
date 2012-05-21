@@ -19,7 +19,6 @@ Bundle 'gmarik/vundle'
 Bundle 'tangledhelix/vim-octopress'
 Bundle 'majutsushi/tagbar'
 Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/nerdcommenter'
 Bundle 'SirVer/ultisnips'
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/neocomplcache-snippets-complete'
@@ -37,7 +36,6 @@ syntax on
 
 " Filetypes {{{
 au BufRead,BufNewFile *.md set filetype=markdown
-au BufRead /tmp/mutt* set tw=72 
 " }}}
 
 let mapleader=","
@@ -95,11 +93,11 @@ else
 endif
 
 set cmdheight=1                 " command line height
-set laststatus=2                " condition to show status line, 2=always.
 set ruler                       " show cursor position in status line
 set showmode                    " show mode in status line
 set showcmd                     " show partial commands in status line
 set number                      " show line numbers
+set cursorline                  " highlight the line where the cursor is
 
 " }}}
 
@@ -161,6 +159,9 @@ nnoremap <silent><leader>rv :so $MYVIMRC<CR>
 
 " Toggle paste mode
 set pastetoggle=<leader>p
+
+" Toggle cursor line highlighting (on by default)
+nnoremap <silent><leader>cl :set cursorline!<CR>
 
 " Clear last search highlighting
 nnoremap <silent><CR> :noh<CR><CR>
