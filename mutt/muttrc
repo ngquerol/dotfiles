@@ -17,6 +17,7 @@ set imap_user               = "nicolas.gquerol@gmail.com"
 set imap_authenticators     = "login"
 set imap_check_subscribed   = "yes"
 set imap_list_subscribed    = "yes"
+set imap_keepalive          = 900
 set trash                   = "+[Gmail]/Corbeille"
 set postponed               = "+[Gmail]/Brouillons"
 set record                  = "+[Gmail]/Messages envoyés"
