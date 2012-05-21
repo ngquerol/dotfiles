@@ -58,13 +58,15 @@ mymainmenu = awful.menu({
     items = {
         { "Files", "thunar" },
         { "", },
-        {"Terminal", "urxvtc"},
+        {"Terminal", terminal },
         { "", },
         { "Firefox", "firefox" },
         { "GIMP", "gimp" },
         { "GMAMEUI", "gmameui" },
         { "GVIM", "gvim" },
+        { "MCabber", terminal .. " -e mcabber"},
         { "Transmission", "transmission-gtk" },
+        { "Weechat", terminal .. " -e weechat-curses"},
         { "", },
         { "Awesome", myawesomemenu },
         { "", },
@@ -111,7 +113,7 @@ vicious.register(gmailwidget, vicious.widgets.gmail,
     end, 67)
 
 gmailicon:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("firefox https://mail.google.com") end)))
+    awful.button({ }, 1, function () awful.util.spawn("urxvtc -e mutt") end)))
 
 -- Battery percentage & state
 baticon       = wibox.widget.imagebox()
@@ -156,6 +158,12 @@ vicious.register(thermalwidget, vicious.widgets.thermal,
             return " @ <span weight='bold'>"..args[1].."</span>°C"
         end
     end, 19, {"coretemp.0", "core"})
+
+-- RAM usage
+memicon     = wibox.widget.imagebox()
+memicon:set_image(beautiful.widget_mem)
+memwidget   = wibox.widget.textbox()
+vicious.register(memwidget, vicious.widgets.mem, "<span weight='bold'>$1</span>%", 5)
 
 mywibox     = {}
 mypromptbox = {}
@@ -235,6 +243,9 @@ for s = 1, screen.count() do
     right_layout:add(cpuicon)
     right_layout:add(cpuwidget)
     right_layout:add(thermalwidget)
+    right_layout:add(spacer1)
+    right_layout:add(memicon)
+    right_layout:add(memwidget)
     right_layout:add(spacer1)
     right_layout:add(baticon)
     right_layout:add(batwidget)
@@ -412,7 +423,9 @@ awful.rules.rules = {
                      size_hints_honor = false,
                      buttons = clientbuttons } },
     { rule = { class = "Firefox" },
-      properties = { tag = tags[1][2] } },    
+      properties = { tag = tags[1][2] } }, 
+    { rule = { class = "plugin-container" },
+      properties = { floating = true } },    
     { rule = { name = "Téléchargements" },
       properties = { floating = "true" } },
 }

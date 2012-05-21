@@ -1,5 +1,7 @@
--- File: AwesomeWM "Nada" theme
--- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+-----------------------------------------------------------
+-- File: AwesomeWM "Nada" theme                          --
+-- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com> --
+-----------------------------------------------------------
 
 -- {{{ Main
 theme = {}
@@ -69,12 +71,13 @@ theme.menu_submenu_icon     = theme.confdir .. "/icons/submenu.png"
 -- }}}
 
 -- {{{ Widget icons
-theme.widget_cpu    = theme.confdir .. "/icons/cpu.png"
-theme.widget_bat    = theme.confdir .. "/icons/ac.png"
-theme.widget_mail   = theme.confdir .. "/icons/mail.png"
-theme.widget_date   = theme.confdir .. "/icons/clock.png"
-theme.widget_right  = theme.confdir .. "/icons/rside.png"
-theme.widget_left   = theme.confdir .. "/icons/lside.png"
+theme.widget_cpu    = theme.confdir .. "/icons/widgets/cpu.png"
+theme.widget_mem    = theme.confdir .. "/icons/widgets/mem.png"
+theme.widget_bat    = theme.confdir .. "/icons/widgets/ac.png"
+theme.widget_mail   = theme.confdir .. "/icons/widgets/mail.png"
+theme.widget_date   = theme.confdir .. "/icons/widgets/clock.png"
+theme.widget_right  = theme.confdir .. "/icons/widgets/rside.png"
+theme.widget_left   = theme.confdir .. "/icons/widgets/lside.png"
 -- }}}
 
 -- {{{ Layout icons
