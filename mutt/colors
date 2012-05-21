@@ -15,7 +15,7 @@ color tree       red         default
 color normal     white       default
 color tilde      green       default
 color bold       brightblue  default
-color markers    red         default
+color markers    brightblack default
 
 # Colour definitions when on a mono screen
 mono bold      bold
