@@ -98,6 +98,7 @@ hi Normal         ctermfg=248
 hi Comment        ctermfg=241									cterm=none
 hi CursorLine                   ctermbg=234   cterm=none
 hi CursorColumn                 ctermbg=235
+hi CursorLineNr   ctermfg=247                 cterm=bold
 hi LineNr         ctermfg=238   ctermbg=233
 hi NonText        ctermfg=238
 
