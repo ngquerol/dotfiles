@@ -123,18 +123,18 @@ vicious.register(batwidget, vicious.widgets.bat,
     function (widget, args)
         -- full/charged
         if args[1] == "↯" then
-            return "<span color='#9EDB58'><span weight='bold'>"..args[2].."</span>%</span>"
+            return "<span color='#9EDB58' weight='bold'>"..args[2].."%</span>"
         else
             -- charging
             if args[1] == "+" then
-                return "<span weight='bold'>"..args[1]..args[2].."</span>% ("..args[3]..")"
+                return "<span weight='bold'>"..args[1]..args[2].."%</span> ("..args[3]..")"
             else
                 -- low battery
                 if args[2] <= 10 then
-                    return "<span color='#E84F4F'><span weight='bold'>"..args[2].."</span>%</span>"
+                    return "<span color='#E84F4F' weight='bold'>"..args[2].."%</span>"
                 else
                 -- discharging
-                    return "<span weight='bold'>"..args[2].."</span>%"
+                    return "<span weight='bold'>"..args[2].."%</span>"
                 end
             end
         end
@@ -145,7 +145,7 @@ vicious.cache(vicious.widgets.bat)
 cpuicon       = wibox.widget.imagebox()
 cpuicon:set_image(beautiful.widget_cpu)
 cpuwidget     = wibox.widget.textbox()
-vicious.register(cpuwidget, vicious.widgets.cpu, "<span weight='bold'>$1</span>%", 2)
+vicious.register(cpuwidget, vicious.widgets.cpu, "<span weight='bold'>$1%</span>", 2)
 vicious.cache(vicious.widgets.cpu)
 
 -- CPU temperature
@@ -153,9 +153,9 @@ thermalwidget = wibox.widget.textbox()
 vicious.register(thermalwidget, vicious.widgets.thermal,
     function (widget, args)
         if args[1] >= 70 then
-            return "<span weight='bold'>, <span color='#E84F4F'>"..args[1].."°C</span></span>"
+            return " @ <span weight='bold' color='#E84F4F'>"..args[1].."°C</span></span>"
         else
-            return " @ <span weight='bold'>"..args[1].."</span>°C"
+            return " @ <span weight='bold'>"..args[1].."°C</span>"
         end
     end, 19, {"coretemp.0", "core"})
 
@@ -163,7 +163,7 @@ vicious.register(thermalwidget, vicious.widgets.thermal,
 memicon     = wibox.widget.imagebox()
 memicon:set_image(beautiful.widget_mem)
 memwidget   = wibox.widget.textbox()
-vicious.register(memwidget, vicious.widgets.mem, "<span weight='bold'>$1</span>%", 5)
+vicious.register(memwidget, vicious.widgets.mem, "<span weight='bold'>$2M</span>", 5)
 
 mywibox     = {}
 mypromptbox = {}
