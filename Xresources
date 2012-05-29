@@ -7,7 +7,7 @@
 !-- Xft --!
 Xft.autohint:		    0
 Xft.lcdfilter:          lcddefault
-Xft.hintstyle:  	    hintfull
+Xft.hintstyle:  	    hintslight
 Xft.hinting: 	  	    1
 Xft.antialias:  	    1
 Xft.rgba:		        rgb
@@ -19,14 +19,16 @@ URxvt*font:             -*-terminusmodx-medium-*-*-*-12-*-*-*-*-*-*-*, \
 URxvt*boldFont:         -*-terminusmodx-bold-*-*-*-12-*-*-*-*-*-*-*, \
                         -*-fixed-bold-*-*-*-12-*-*-*-*-*-iso10646-1
 
-URxvt*cursorUnderline:  false
-URxvt*scrollBar:	    off
-URxvt*geometry: 	    90x20
-URxvt*saveLines:	    1000
-URxvt*jumpScroll:	    true
 URxvt*buffered:     	true
-URxvt*urgentOnBell:     true
+URxvt*cursorUnderline:  false
+URxvt*geometry: 	    90x20
+URxvt*jumpScroll:	    true
 URxvt*pointerBlank:     true
+URxvt*saveLines:	    1000
+URxvt*scrollBar:	    off
+URxvt*scrollTtyOutput:  False 
+URxvt*scrollWithBuffer: True
+URxvt*urgentOnBell:     true
 
 URxvt*perl-ext-common: 	default,matcher
 URxvt*urlLauncher: 	    /usr/bin/firefox
