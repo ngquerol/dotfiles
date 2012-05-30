@@ -1,7 +1,8 @@
------------------------------------------------------------
--- File: AwesomeWM configuration file                    --
--- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com> --
------------------------------------------------------------
+--
+-- AwesomeWM configuration file
+--
+-- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+--
 
 require("awful")
 require("awful.autofocus")

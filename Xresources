@@ -1,5 +1,7 @@
+!!
 !! File : .Xresources
 !! Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+!!
 
 !-- Colors --!
 #include "/home/nico/.colors/dotshare"

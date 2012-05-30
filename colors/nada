@@ -1,3 +1,4 @@
+! vim: set filetype=xdefaults :
 URxvt*background: #191919
 URxvt*foreground: #ffffff
 URxvt.cursorColor: #FDA53C

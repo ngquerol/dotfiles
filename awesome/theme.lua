@@ -1,7 +1,8 @@
------------------------------------------------------------
--- File: AwesomeWM "Nada" theme                          --
--- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com> --
------------------------------------------------------------
+--
+-- AwesomeWM "Nada" theme
+--
+-- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+--
 
 -- {{{ Main
 theme = {}
