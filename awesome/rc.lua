@@ -65,9 +65,10 @@ mymainmenu = awful.menu({
         { "GIMP", "gimp" },
         { "GMAMEUI", "gmameui" },
         { "GVIM", "gvim" },
-        { "MCabber", terminal .. " -e mcabber"},
+        { "MCabber", terminal .. " -e mcabber" },
+        { "Ncmpcpp", terminal .. " -e ncmpcpp" },
         { "Transmission", "transmission-gtk" },
-        { "Weechat", terminal .. " -e weechat-curses"},
+        { "Weechat", terminal .. " -e weechat-curses" },
         { "", },
         { "Awesome", myawesomemenu },
         { "", },
@@ -114,7 +115,7 @@ vicious.register(gmailwidget, vicious.widgets.gmail,
     end, 67)
 
 gmailicon:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("urxvtc -e mutt") end)))
+    awful.button({ }, 1, function () awful.util.spawn("firefox https://mail.google.com/mail/") end)))
 
 -- Battery percentage & state
 baticon       = wibox.widget.imagebox()
@@ -154,7 +155,7 @@ thermalwidget = wibox.widget.textbox()
 vicious.register(thermalwidget, vicious.widgets.thermal,
     function (widget, args)
         if args[1] >= 70 then
-            return " @ <span weight='bold' color='#E84F4F'>"..args[1].."°C</span></span>"
+            return " @ <span weight='bold' color='#E84F4F'>"..args[1].."°C</span>"
         else
             return " @ <span weight='bold'>"..args[1].."°C</span>"
         end
