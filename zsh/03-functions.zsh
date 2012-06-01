@@ -4,47 +4,53 @@ precmd() {
     setprompt
 
     case $TERM in
-	xterm*|rxvt* )
+	xterm*|rxvt*)
 	    print -Pn "\e]0;%n@%m: %~\a" ;;
     esac
 
     vcs_info
-
 }
 
 preexec() {
+
     case $TERM in
-	xterm*|rxvt* )
+	xterm*|rxvt*)
 	    print -Pn "\e]0;$1\a" ;;
     esac
 }
 
 ## Compress/decompress various archive types
 unpack() {
-    case $1 in
-	*.tar.bz2) tar xvjf $1 ;;
-	*.tar.gz) tar xvzf $1 ;;
-	*.bz2) bunzip2 $1 ;;
-	*.rar) unrar x $1 ;;
-	*.gz) gunzip $1 ;;
-	*.tar) tar xvf $1 ;;
-	*.tbz2) tar xvjf $1 ;;
-	*.tgz) tar xvzf $1 ;;
-	*.zip) unzip $1 ;;
-	*.Z) uncompress $1 ;;
-	*.7z) 7z x $1 ;;
-	*.xz) xz -d $1 ;;
-	*.tar.xz) tar -xvJf $1 ;;
-	*) echo "Erreur: l'archive '$1' n'a pas pu être décompressée." ;;
-    esac
+
+    if [[ $# -lt 1 ]]; then
+        echo "Veuillez spécifier au moins une archive à décompresser."
+    fi
+    for a in $@; do
+        case $a in
+            *.tar.bz2) tar xvjf $a ;;
+            *.tar.gz) tar xvzf $a ;;
+            *.bz2) bunzip2 $a ;;
+            *.rar) unrar x $a ;;
+            *.gz) gunzip $a ;;
+            *.tar) tar xvf $a ;;
+            *.tbz2) tar xvjf $a ;;
+            *.tgz) tar xvzf $a ;;
+            *.zip) unzip $a ;;
+            *.Z) uncompress $a ;;
+            *.7z) 7z x $a ;;
+            *.xz) xz -d $a ;;
+            *.tar.xz) tar -xvJf $a ;;
+            *) echo "Erreur: l'archive '$a' n'a pas pu être décompressée." ;;
+        esac
+    done
 }
 
 pack() {
 
     if [[ $# -lt 2 ]]; then
-	echo "Compresse fichiers et répertoires via:"
-	echo "  pack archive_file file [dir|file]*"
-	return 1
+        echo "Compresse fichiers et répertoires via:"
+        echo "  pack archive_file file [dir|file]*"
+        return 1
     fi
 
     [[ -f $1 ]] && echo "Erreur: le fichier de destination existe déjà." && return 1
@@ -69,9 +75,10 @@ pack() {
 
 ## Coloring man pages
 man() {
+
     env \
 	LESS_TERMCAP_mb=$(printf "\e[1;34m") \
-	LESS_TERMCAP_md=$(printf "\e[1;34m") \
+	LESS_TERMCAP_md=$(printf "\e[1;32m") \
 	LESS_TERMCAP_me=$(printf "\e[0m") \
 	LESS_TERMCAP_se=$(printf "\e[0m") \
 	LESS_TERMCAP_so=$(printf "\e[1;47;30m") \
