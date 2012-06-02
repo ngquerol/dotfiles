@@ -1,0 +1,5 @@
+[user]
+	name = Nicolas G. Querol
+	email = nicolas.gquerol@gmail.com
+[credential]
+	helper = cache
