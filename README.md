@@ -2,11 +2,11 @@
 
 This is where I keep my dotfiles for backup purposes. Currently it contains dotfiles for:
 
-* (G)vim (which I now use more than Emacs, we'll see how it goes)
 * AwesomeWM
-* Emacs
+* (G)vim
+* Git
 * Ncmpcpp
+* URxvt
 * Various terminal color schemes
+* Weechat
 * Zsh
-
-... And there's probably more to come. Pull requests are welcome!
