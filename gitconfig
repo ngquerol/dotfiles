@@ -3,3 +3,5 @@
 	email = nicolas.gquerol@gmail.com
 [credential]
 	helper = cache
+[color]
+	ui = auto
