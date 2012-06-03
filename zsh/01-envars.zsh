@@ -22,7 +22,11 @@ if [ $DISPLAY ]; then
             export TERM="rxvt-unicode"
         fi
     else
-        export TERM="xterm-256color"
+        if [ -f /usr/share/terminfo/x/xterm-256color ]; then
+            export TERM="xterm-256color"
+        else
+            export TERM="xterm"
+        fi
     fi
 else
     export TERM="linux"
