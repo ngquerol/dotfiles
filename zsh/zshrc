@@ -41,3 +41,7 @@ for r in $HOME/.zsh/*.zsh; do
 done
 
 eval `dircolors -b`
+
+# Disable this bloody XOFF
+stty ixany
+stty ixoff -ixon
