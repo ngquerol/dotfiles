@@ -1,9 +1,10 @@
-" Vim color file
+"
+" Vim terminal colorscheme
 "
 " Author: Christian Brassat <christian@crshd.cc>
 "
-" Note: Based on my Xdefaults colors, will be updated
-" when I update my Xdefaults
+" Note: Small additions/deletions from
+"       Nicolas G. Querol <nicolas.gquerol@gmail.com>
 "
 
 hi clear
@@ -87,7 +88,7 @@ hi Type           ctermfg=14                  cterm=none
 hi Underlined     ctermfg=244                 cterm=underline
 
 hi TabLine        ctermfg=241   ctermbg=234   cterm=none
-hi TabLineFill    ctermbg=234									cterm=none
+hi TabLineFill    ctermbg=234                                   cterm=none
 hi VertSplit      ctermfg=234   ctermbg=234   cterm=none
 hi VisualNOS                    ctermbg=235
 hi Visual                       ctermbg=235
@@ -95,53 +96,13 @@ hi WarningMsg     ctermfg=231   ctermbg=238   cterm=bold
 hi WildMenu       ctermfg=59    ctermbg=15
 
 hi Normal         ctermfg=248
-hi Comment        ctermfg=241									cterm=none
+hi Comment        ctermfg=241                                   cterm=none
 hi CursorLine                   ctermbg=234   cterm=none
 hi CursorColumn                 ctermbg=235
 hi CursorLineNr   ctermfg=247                 cterm=bold
 hi LineNr         ctermfg=238   ctermbg=233
 hi NonText        ctermfg=238
 
-" Mail
-hi mailHeaderKey ctermfg=white       ctermbg=234
-hi mailSubject   ctermfg=green       ctermbg=234      term=bold
-hi mailHeader    ctermfg=white       ctermbg=234
-hi mailEmail     ctermfg=lightblue   cterm=underline  term=underline
-hi mailSignature ctermfg=238
-hi mailQuoted1   ctermfg=yellow
-hi mailQuoted2   ctermfg=green
-hi mailQuoted3   ctermfg=blue
-hi mailQuoted4   ctermfg=red
-hi mailQuoted5   ctermfg=darkgreen
-hi mailQuoted6   ctermfg=darkyellow
-
-" Status line - changes colors depending on insert mode
-" Standard
-hi User1          ctermfg=3     ctermbg=235   cterm=bold
-hi User2          ctermfg=1     ctermbg=235   cterm=bold
-hi User3          ctermfg=2     ctermbg=235   cterm=bold
-hi User4          ctermfg=234   ctermbg=3     cterm=bold
-hi User5          ctermfg=250   ctermbg=235   cterm=none
-hi User6          ctermfg=233	ctermbg=235	  cterm=none
-hi User7		  ctermfg=233	ctermbg=235	  cterm=bold
+" Status line
 hi StatusLine     ctermfg=228   ctermbg=235   cterm=bold
 hi StatusLineNC   ctermfg=240   ctermbg=235   cterm=bold
-
-function! InsertStatuslineColor(mode)
-
-  if a:mode == 'i' " Insert Mode
-    hi User4      ctermfg=234   ctermbg=4
-
-  elseif a:mode == 'r' " Replace Mode
-    hi User4      ctermfg=234   ctermbg=1
-
-  else
-    hi User4      ctermfg=234   ctermbg=3 
-
-  endif
-endfunction
-
-" Call function
-au InsertEnter * call InsertStatuslineColor(v:insertmode)
-au InsertLeave * hi statusline ctermfg=228  ctermbg=235
-au InsertLeave * hi User4      ctermfg=234  ctermbg=3

@@ -4,8 +4,7 @@
 # Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 #
 
-# load stuffs
-
+# load stuff
 autoload -U colors && colors
 autoload -U compinit && compinit
 autoload -U bashcompinit && bashcompinit
@@ -32,7 +31,6 @@ setopt \
     autocd \
 
 # Source seperate config files
-
 for r in $HOME/.zsh/*.zsh; do
   if [[ $DEBUG > 0 ]]; then
     echo "zsh: sourcing $r"
