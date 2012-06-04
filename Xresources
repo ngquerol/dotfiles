@@ -16,25 +16,25 @@ Xft.antialias:  	    1
 Xft.rgba:		        rgb
 
 !-- URxvt --!
-URxvt*font:             -*-terminusmodx-medium-*-*-*-12-*-*-*-*-*-*-*, \
+URxvt.font:             -*-terminusmodx-medium-*-*-*-12-*-*-*-*-*-*-*, \
                         -*-fixed-medium-*-*-*-12-*-*-*-*-*-iso10646-1
                        
-URxvt*boldFont:         -*-terminusmodx-bold-*-*-*-12-*-*-*-*-*-*-*, \
+URxvt.boldFont:         -*-terminusmodx-bold-*-*-*-12-*-*-*-*-*-*-*, \
                         -*-fixed-bold-*-*-*-12-*-*-*-*-*-iso10646-1
 
-URxvt*buffered:     	true
-URxvt*cursorUnderline:  false
-URxvt*geometry: 	    90x20
-URxvt*jumpScroll:	    true
-URxvt*pointerBlank:     true
-URxvt*saveLines:	    1000
-URxvt*scrollBar:	    off
-URxvt*scrollTtyOutput:  False 
-URxvt*scrollWithBuffer: True
-URxvt*urgentOnBell:     true
+URxvt.buffered:     	  true
+URxvt.cursorUnderline:    false
+URxvt.geometry: 	      90x20
+URxvt.jumpScroll:	      true
+URxvt.pointerBlank:       true
+URxvt.saveLines:	      1000
+URxvt.scrollBar:	      off
+URxvt.scrollTtyOutput:    false
+URxvt.scrollWithBuffer:   true
+URxvt.urgentOnBell:       true
 
-URxvt*perl-ext-common: 	default,matcher
-URxvt*urlLauncher: 	    /usr/bin/firefox
-URxvt*matcher.button: 	1
+URxvt.perl-ext-common: 	default,matcher
+URxvt.urlLauncher: 	    /usr/bin/firefox
+URxvt.matcher.button: 	1
 
-URxvt*iconFile:     	/usr/share/icons/Faenza/apps/24/terminal.png
+URxvt.iconFile:     	/usr/share/icons/Faenza/apps/24/terminal.png
