@@ -1,7 +1,8 @@
------------------------------------------------------------
--- File: AwesomeWM configuration file                    --
--- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com> --
------------------------------------------------------------
+--
+-- AwesomeWM configuration file
+--
+-- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+--
 
 require("awful")
 require("awful.autofocus")
@@ -62,6 +63,7 @@ mymainmenu = awful.menu({
         { "", },
         { "Firefox", "firefox" },
         { "GIMP", "gimp" },
+        { "GMAMEUI", "gmameui" },
         { "GVIM", "gvim" },
         { "MCabber", terminal .. " -e mcabber" },
         { "Ncmpcpp", terminal .. " -e ncmpcpp" },
@@ -122,11 +124,11 @@ batwidget     = wibox.widget.textbox()
 vicious.register(batwidget, vicious.widgets.bat,
     function (widget, args)
         -- full/charged
-        if args[1] ~= "↯" then
+        if args[1] == "↯" then
             return "<span color='#9EDB58' weight='bold'>"..args[2].."%</span>"
         else
             -- charging
-            if args[1] ~= "+" then
+            if args[1] == "+" then
                 return "<span weight='bold'>"..args[1]..args[2].."%</span> ("..args[3]..")"
             else
                 -- low battery
