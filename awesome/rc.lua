@@ -427,7 +427,7 @@ awful.rules.rules = {
                      buttons = clientbuttons } },
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2] } }, 
-    { rule = { class = "plugin-container" },
+    { rule = { class = "Plugin-container" },
       properties = { floating = true } },    
     { rule = { name = "Téléchargements" },
       properties = { floating = "true" } },
