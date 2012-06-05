@@ -48,7 +48,7 @@ local function fair(p, orientation)
             end
 
             -- Useless gap.
-            useless_gap = 4
+            useless_gap = 10
             if useless_gap > 0
             then
                 -- Top and left clients are shrinked by two steps and
