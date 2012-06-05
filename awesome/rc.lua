@@ -1,7 +1,7 @@
 --
 -- AwesomeWM configuration file
 --
--- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com
+-- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 --
 
 require("awful")
@@ -35,9 +35,13 @@ layouts = {
 -- }}}
 
 -- Tags {{{
-tags = {}
+tags = {
+    names  = { "main", "web", "dev" },
+    layout = { layouts[1], layouts[2], layouts[1] }
+}
+
 for s = 1, screen.count() do
-    tags[s] = awful.tag({ "main", "web", "dev" }, s, layouts[1])
+    tags[s] = awful.tag(tags.names, s, tags.layout)
 end
 -- }}}
 
@@ -54,8 +58,8 @@ myawesomemenu = {
 mylogoutmenu = {
     { "Redémarrer", "sudo reboot" },
     { "Éteindre", "sudo shutdown -h now" },
-    { "Veille", "sudo pm-suspend" },
-    theme = { width = 90, height = 15 }
+    { "Mise en veille", "sudo pm-suspend" },
+    theme = { width = 125, height = 15 }
 }
 
 mymainmenu = awful.menu({ 
