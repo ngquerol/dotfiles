@@ -1,7 +1,7 @@
 --
 -- AwesomeWM configuration file
 --
--- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+-- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com
 --
 
 require("awful")
@@ -14,6 +14,8 @@ require("vicious")
 
 -- Variable definitions {{{
 beautiful.init("/home/nico/.config/awesome/theme.lua")
+
+os.setlocale(os.getenv("LANG"))
 
 local home       = os.getenv("HOME")
 local terminal   = "urxvtc"
@@ -41,38 +43,37 @@ end
 
 -- Menu {{{
 myawesomemenu = {
-    { "Edit rc.lua", editor_cmd .. "  " ..  awesome.conffile },
-    { "Edit theme.lua", editor_cmd .. "  " .. theme.confdir .. "/theme.lua" },
+    { "Éditer rc.lua", editor_cmd .. "  " ..  awesome.conffile },
+    { "Éditer theme.lua", editor_cmd .. "  " .. theme.confdir .. "/theme.lua" },
     { "", },
-    { "Restart", awesome.restart },
-    { "Quit", awesome.quit }
+    { "Redémarrer", awesome.restart },
+    { "Quitter", awesome.quit },
+    theme = { width = 125, height = 15 }
 }
 
 mylogoutmenu = {
-    { "Restart", "sudo reboot" },
-    { "Shutdown", "sudo shutdown -h now" },
-    { "Sleep", "sudo pm-suspend" },
-    theme = { width = 80, height = 15 }
+    { "Redémarrer", "sudo reboot" },
+    { "Éteindre", "sudo shutdown -h now" },
+    { "Veille", "sudo pm-suspend" },
+    theme = { width = 90, height = 15 }
 }
 
 mymainmenu = awful.menu({ 
     items = {
-        { "Files", "thunar" },
+        { "Fichiers", "thunar" },
         { "", },
         {"Terminal", terminal },
         { "", },
         { "Firefox", "firefox" },
         { "GIMP", "gimp" },
-        { "GMAMEUI", "gmameui" },
         { "GVIM", "gvim" },
-        { "MCabber", terminal .. " -e mcabber" },
         { "Ncmpcpp", terminal .. " -e ncmpcpp" },
         { "Transmission", "transmission-gtk" },
         { "Weechat", terminal .. " -e weechat-curses" },
         { "", },
         { "Awesome", myawesomemenu },
         { "", },
-        { "Logout", mylogoutmenu }
+        { "Déconnexion", mylogoutmenu }
     }
 })
     
@@ -328,7 +329,7 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey },            "r",
         function ()
-            awful.prompt.run({ prompt = "<span weight='bold'>Run: </span>" },
+            awful.prompt.run({ prompt = "<span weight='bold'>Exécuter: </span>" },
                 mypromptbox[mouse.screen].widget,
                 function (cmd) awful.util.spawn(cmd) end,
                 awful.completion.shell,
@@ -337,7 +338,7 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Shift"   }, "r",
         function ()
-            awful.prompt.run({ prompt = "<span weight='bold'>Run in terminal: </span>" },
+            awful.prompt.run({ prompt = "<span weight='bold'>Exécuter dans un terminal: </span>" },
                 mypromptbox[mouse.screen].widget,
                 function (cmd) awful.util.spawn(terminal .. ' -e "' .. cmd .. '"') end,
                 awful.completion.shell,
