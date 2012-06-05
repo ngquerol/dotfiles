@@ -1,10 +1,9 @@
-"
-" Vim terminal colorscheme
+" Vim color file
 "
 " Author: Christian Brassat <christian@crshd.cc>
 "
-" Note: Small additions/deletions from
-"       Nicolas G. Querol <nicolas.gquerol@gmail.com>
+" Note: Based on my Xdefaults colors, will be updated
+" when I update my Xdefaults
 "
 
 hi clear
@@ -52,7 +51,7 @@ hi Label          ctermfg=229
 hi Macro          ctermfg=193
 hi SpecialKey     ctermfg=81
 
-hi MatchParen     ctermfg=233    ctermbg=202
+hi MatchParen     ctermfg=233    ctermbg=202  cterm=bold
 hi ModeMsg        ctermfg=229
 hi MoreMsg        ctermfg=229
 hi Operator       ctermfg=13
@@ -88,7 +87,7 @@ hi Type           ctermfg=14                  cterm=none
 hi Underlined     ctermfg=244                 cterm=underline
 
 hi TabLine        ctermfg=241   ctermbg=234   cterm=none
-hi TabLineFill    ctermbg=234                                   cterm=none
+hi TabLineFill    ctermbg=234									cterm=none
 hi VertSplit      ctermfg=234   ctermbg=234   cterm=none
 hi VisualNOS                    ctermbg=235
 hi Visual                       ctermbg=235
@@ -96,13 +95,31 @@ hi WarningMsg     ctermfg=231   ctermbg=238   cterm=bold
 hi WildMenu       ctermfg=59    ctermbg=15
 
 hi Normal         ctermfg=248
-hi Comment        ctermfg=241                                   cterm=none
+hi Comment        ctermfg=241									cterm=none
 hi CursorLine                   ctermbg=234   cterm=none
 hi CursorColumn                 ctermbg=235
-hi CursorLineNr   ctermfg=247                 cterm=bold
+hi CursorLineNr   ctermfg=yellow              cterm=bold
 hi LineNr         ctermfg=238   ctermbg=233
-hi NonText        ctermfg=238
+hi NonText        ctermfg=240
 
-" Status line
+" Mail
+hi mailHeaderKey ctermfg=white       ctermbg=234
+hi mailSubject   ctermfg=green       ctermbg=234      term=bold
+hi mailHeader    ctermfg=white       ctermbg=234
+hi mailEmail     ctermfg=lightblue   cterm=underline  term=underline
+hi mailSignature ctermfg=238
+hi mailQuoted1   ctermfg=yellow
+hi mailQuoted2   ctermfg=green
+hi mailQuoted3   ctermfg=blue
+hi mailQuoted4   ctermfg=red
+hi mailQuoted5   ctermfg=darkgreen
+hi mailQuoted6   ctermfg=darkyellow
+
+" Status line 
 hi StatusLine     ctermfg=228   ctermbg=235   cterm=bold
 hi StatusLineNC   ctermfg=240   ctermbg=235   cterm=bold
+
+" NERDTree
+hi NERDTreeDirSlash ctermfg=white
+hi NERDTreeCWD      ctermfg=green             cterm=bold
+hi NERDTreeOpenable ctermfg=red
