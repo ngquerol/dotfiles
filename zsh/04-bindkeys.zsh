@@ -34,6 +34,4 @@ case $TERM in
         bindkey "\e[6~" end-of-history       # PageDown
         bindkey "\e[2~" quoted-insert        # Ins
         bindkey "\e[3~" delete-char          # Del
-        bindkey "\e[C"  emacs-forward-word   # Ctrl-Right
-        bindkey "\e[D"  emacs-backward-word  # Ctrl-Left
 esac
