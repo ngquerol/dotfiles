@@ -1,13 +1,12 @@
---
--- AwesomeWM "Nada" theme
---
--- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
---
+-----------------------------------------------------------
+-- File: AwesomeWM "Nada" theme                          --
+-- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com> --
+-----------------------------------------------------------
 
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "feh --bg-fill /home/nico/Dropbox/Wallpapers/elephant.jpg" }
+theme.wallpaper_cmd = { "feh --bg-fill /home/nico/Dropbox/wallpapers/bluecube.png" }
 -- }}}
 
 -- {{{ Styles
@@ -34,23 +33,24 @@ theme.border_marked = "#91231c"
 -- }}}
 
 -- {{{ Taglist and Tasklist
-theme.taglist_bg_focus		= "#191919"
-theme.taglist_fg_urgent		= "#E64444"
-theme.tasklist_fg_focus		= "#ffffff"
-theme.tasklist_bg_urgent	= "#E64444"
-theme.tasklist_fg_urgent	= "#ffffff"
-theme.tasklist_bg_focus		= "#191919"
+theme.taglist_bg_focus      = "#191919"
+theme.taglist_fg_urgent     = "#E64444"
+theme.tasklist_fg_focus     = "#ffffff"
+theme.tasklist_bg_urgent    = "#E64444"
+theme.tasklist_fg_urgent    = "#ffffff"
+theme.tasklist_bg_focus     = "#191919"
 -- }}}
 
 -- {{{ Tooltips
 theme.tooltip_bg_color     = "#191919"
 theme.tooltip_fg_color     = "#AAAAAA"
 theme.tooltip_border_color = "#CCCCCC"
+theme.tooltip_fg_color_urgent = "#000000"
 theme.tooltip_border_width = "1"
 --- }}}
 
 -- {{{ Menu
-theme.menu_height	    = "15"
+theme.menu_height       = "15"
 theme.menu_width        = "110"
 theme.menu_fg_focus     = "#ffffff"
 theme.menu_bg_focus     = "#303030"
@@ -82,13 +82,15 @@ theme.widget_left   = theme.confdir .. "/icons/widgets/lside.png"
 -- }}}
 
 -- {{{ Layout icons
-theme.layout_fairh	    = theme.confdir .. "/icons/layouts/fairhw.png"
-theme.layout_fairv	    = theme.confdir .. "/icons/layouts/fairvw.png"
-theme.layout_floating	= theme.confdir .. "/icons/layouts/floatingw.png"
+theme.layout_fairh      = theme.confdir .. "/icons/layouts/fairhw.png"
+theme.layout_fairv      = theme.confdir .. "/icons/layouts/fairvw.png"
+theme.layout_floating   = theme.confdir .. "/icons/layouts/floatingw.png"
 theme.layout_tilebottom = theme.confdir .. "/icons/layouts/tilebottomw.png"
 theme.layout_tileleft   = theme.confdir .. "/icons/layouts/tileleftw.png"
-theme.layout_tile	    = theme.confdir .. "/icons/layouts/tilew.png"
-theme.layout_tiletop	= theme.confdir .. "/icons/layouts/tiletopw.png"
+theme.layout_tile       = theme.confdir .. "/icons/layouts/tilew.png"
+theme.layout_tiletop    = theme.confdir .. "/icons/layouts/tiletopw.png"
+theme.layout_spiral     = theme.confdir .. "/icons/layouts/spiral.png"
+theme.layout_dwindle    = theme.confdir .. "/icons/layouts/dwindle.png"
 -- }}}
 
 -- }}}
