@@ -8,13 +8,12 @@ BG="#191919"        # background colour of window
 FG="#AAAAAA"        # foreground colour of text/icon
 BAR_FG="#AAAAAA"    # foreground colour of volume bar
 BAR_BG="#555555"    # background colour of volume bar
-XPOS="850"          # horizontal positioning
+XPOS="828"          # horizontal positioning
 YPOS="500"          # vertical positioning
 HEIGHT="20"         # window height
 WIDTH="235"         # window width
 BAR_WIDTH="165"     # width of volume bar
 ICON=~/.config/awesome/icons/vol-hi.xbm
-FONT="-*-fixed-bold-r-*-*-12-*-*-*-*-*-*-*"
 ICON_VOL=~/.config/awesome/icons/vol-hi.xbm
 ICON_VOL_MUTE=~/.config/awesome/icons/vol-mute.xbm
 ICON=$ICON_VOL
@@ -75,9 +74,9 @@ fi
 #Also prevents multiple volume bar instances
 if [ ! -e "$PIPE" ]; then
   mkfifo "$PIPE"
-  (dzen2 -tw "$WIDTH" -h "$HEIGHT" -x "$XPOS" -y "$YPOS" -fn "$FONT" -bg "$BG" -fg "$FG" < "$PIPE"
+  (dzen2 -tw "$WIDTH" -h "$HEIGHT" -x "$XPOS" -y "$YPOS" -bg "$BG" -fg "$FG" < "$PIPE"
    rm -f "$PIPE") &
 fi
 
 #Feed the pipe!
-(echo "$VOL" | gdbar -l "^i(${ICON})" -fg "$BAR_FG" -bg "$BAR_BG" -w "$BAR_WIDTH" ; sleep "$SECS") > "$PIPE"
+(echo "$VOL" | gdbar -l "^i(${ICON})  " -fg "$BAR_FG" -bg "$BAR_BG" -w "$BAR_WIDTH" ; sleep "$SECS") > "$PIPE"

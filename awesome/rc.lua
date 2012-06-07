@@ -33,6 +33,8 @@ layouts = {
     awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
 }
 -- }}}
 
@@ -243,7 +245,7 @@ for s = 1, screen.count() do
 
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
-    mywibox[s] = awful.wibox({ position = "bottom", height = "18", screen = s })
+    mywibox[s] = awful.wibox({ position = "top", height = "18", screen = s })
 
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mylauncher)
@@ -296,9 +298,9 @@ awful.button({ }, 3, function () mymainmenu:toggle() end)
 
 -- Key bindings {{{
 globalkeys = awful.util.table.join(
-awful.key({ }, "XF86AudioMute",        function () awful.util.spawn(home .. "/.bin/dvol -t") end),
-awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn(home .. "/.bin/dvol -i 5") end),
-awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn(home .. "/.bin/dvol -d 5") end),
+awful.key({ }, "XF86AudioMute",        function () awful.util.spawn("dvol -t") end),
+awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("dvol -i 5") end),
+awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("dvol -d 5") end),
 awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
 awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
 awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
