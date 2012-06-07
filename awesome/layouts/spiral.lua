@@ -48,7 +48,7 @@ local function spiral(p, spiral)
 
 
             -- Useless gap.
-            useless_gap = 10
+            useless_gap = 5
             if useless_gap > 0
             then
                 -- Top and left clients are shrinked by two steps and
