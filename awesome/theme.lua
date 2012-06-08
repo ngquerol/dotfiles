@@ -1,7 +1,8 @@
------------------------------------------------------------
--- File: AwesomeWM "Nada" theme                          --
--- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com> --
------------------------------------------------------------
+--
+-- AwesomeWM "Nada" theme
+--
+-- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+--
 
 -- {{{ Main
 theme = {}
@@ -42,11 +43,11 @@ theme.tasklist_bg_focus     = "#191919"
 -- }}}
 
 -- {{{ Tooltips
-theme.tooltip_bg_color     = "#191919"
-theme.tooltip_fg_color     = "#AAAAAA"
-theme.tooltip_border_color = "#CCCCCC"
+theme.tooltip_bg_color        = "#191919"
+theme.tooltip_fg_color        = "#AAAAAA"
+theme.tooltip_border_color    = "#CCCCCC"
 theme.tooltip_fg_color_urgent = "#000000"
-theme.tooltip_border_width = "1"
+theme.tooltip_border_width    = "0"
 --- }}}
 
 -- {{{ Menu

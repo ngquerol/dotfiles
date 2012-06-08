@@ -5,7 +5,7 @@ precmd() {
 
     case $TERM in
 	xterm*|rxvt*)
-	    print -Pn "\e]0;%n@%m: %~\a" ;;
+	    print -Pn "\e]0;%n@%m : %~\a" ;;
     esac
 
     vcs_info
