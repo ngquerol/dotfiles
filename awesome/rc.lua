@@ -11,7 +11,6 @@ require("wibox")
 require("beautiful")
 require("naughty")
 require("vicious")
-require("cal")
 
 -- Variable definitions {{{
 beautiful.init("/home/nico/.config/awesome/theme.lua")
@@ -19,12 +18,11 @@ beautiful.init("/home/nico/.config/awesome/theme.lua")
 os.setlocale(os.getenv("LANG"))
 
 local home       = os.getenv("HOME")
-local browser    = os.getenv("BROWSER") or "browser"
-local editor     = os.getenv("EDITOR") or "editor"
 local terminal   = "urxvtc"
+local editor     = "vim"
 local editor_cmd = terminal .. " -e " .. editor
 local fm         = "thunar"
-
+local browser    = "firefox"
 local modkey     = "Mod4"
 
 layouts = {
@@ -106,11 +104,11 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 dateicon       = wibox.widget.imagebox()
 dateicon:set_image(beautiful.widget_date)
 datewidget     = wibox.widget.textbox()
-vicious.register(datewidget, vicious.widgets.date, "%d/%m/%y, <b>%R</b>", 59)
-cal.register(datewidget)
+vicious.register(datewidget, vicious.widgets.date, "%d/%m/%y,<span weight='bold'> %R</span>", 59)
+
 -- Spacers
-spacer1      = wibox.widget.imagebox()
-spacer1:set_image(beautiful.widget_spacer)
+spacer1      = wibox.widget.textbox()
+spacer1:set_text(" | ")
 spacer2      = wibox.widget.textbox()
 spacer2:set_text(" ")
 
@@ -126,14 +124,11 @@ rside:set_image(beautiful.widget_right)
 gmailicon       = wibox.widget.imagebox()
 gmailicon:set_image(beautiful.widget_mail)
 gmailwidget     = wibox.widget.textbox()
-gmail_t   = awful.tooltip({ objects = { gmailicon }, })
 vicious.register(gmailwidget, vicious.widgets.gmail,
 function (widget, args)
     if args['{count}'] > 0 then
-        gmail_t:set_text("<b> Dernier mail reçu : </b>\n\n " .. args["{subject}"])
-        return "<span color ='#66AABB'><b>" .. args["{count}"] .. "</b></span>"
+        return "<span color ='#66AABB' weight ='bold'>" .. args["{count}"] .. "</span>"
     else
-        gmail_t:set_text(" Aucun nouveau mail ")
         return args['{count}']
     end
 end, 67)
@@ -145,25 +140,24 @@ awful.button({ }, 1, function () awful.util.spawn(browser .. " https://mail.goog
 baticon       = wibox.widget.imagebox()
 baticon:set_image(beautiful.widget_bat)
 batwidget     = wibox.widget.textbox()
-bat_t = awful.tooltip({ objects = { baticon }, })
 vicious.register(batwidget, vicious.widgets.bat,
 function (widget, args)
     -- full/charged
     if args[1] == "↯" then
-        bat_t:set_text("<b> État de la batterie : </b>chargée \n")
-        return "<span color='#9EDB58'><b>chargée</b></span>"
-    -- charging
-    elseif args[1] == "+" then
-        bat_t:set_text("<b> État de la batterie : </b>en charge \n\n (environ " .. args[3] .. " restante(s)) ")
-        return "<span weight='bold'>" .. args[1] .. args[2] .. "%</span>"
-    -- low battery
-    elseif args[2] <= 10 then
-        bat_t:set_text("<b> État de la batterie : </b>faible \n\n (environ " .. args[3] .. " restante(s)) ")
-        return "<span color='#E84F4F' weight='bold'>" .. args[2] .. "%</span>"
+        return "<span color='#9EDB58' weight='bold'>" .. args[2] .. "%</span>"
     else
-        -- discharging
-        bat_t:set_text("<b> État de la batterie : </b>en décharge \n\n (environ " .. args[3] .. " restante(s)) ")
-        return "<span weight='bold'>" .. args[2] .. "%</span>"
+        -- charging
+        if args[1] == "+" then
+            return "<span weight='bold'>" .. args[1] .. args[2] .. "%</span> (" .. args[3] .. ")"
+        else
+            -- low battery
+            if args[2] <= 10 then
+                return "<span color='#E84F4F' weight='bold'>" .. args[2] .. "%</span>"
+            else
+                -- discharging
+                return "<span weight='bold'>" .. args[2] .. "%</span>"
+            end
+        end
     end
 end, 61, "BAT0")
 vicious.cache(vicious.widgets.bat)
@@ -172,14 +166,7 @@ vicious.cache(vicious.widgets.bat)
 cpuicon       = wibox.widget.imagebox()
 cpuicon:set_image(beautiful.widget_cpu)
 cpuwidget     = wibox.widget.textbox()
-vicious.register(cpuwidget, vicious.widgets.cpu,
-function (widget, args)
-    if args[1] >= 75 then
-        return "<span weight='bold' color='#E84F4F'>" .. args[1] .. "%</span>"
-    else
-        return "<b>".. args[1] .. "%</b>"
-    end
-end, 3)
+vicious.register(cpuwidget, vicious.widgets.cpu, "<span weight='bold'>$1%</span>", 2)
 vicious.cache(vicious.widgets.cpu)
 
 -- CPU temperature
@@ -187,9 +174,9 @@ thermalwidget = wibox.widget.textbox()
 vicious.register(thermalwidget, vicious.widgets.thermal,
 function (widget, args)
     if args[1] >= 70 then
-        return " @ <span color='#E84F4F'><b>" .. args[1] .. "°C</b></span>"
+        return " @ <span weight='bold' color='#E84F4F'>" .. args[1] .. "°C</span>"
     else
-        return " @ <b>" .. args[1] .. "°C</b>"
+        return " @ <span weight='bold'>" .. args[1] .. "°C</span>"
     end
 end, 19, {"coretemp.0", "core"})
 
@@ -197,16 +184,7 @@ end, 19, {"coretemp.0", "core"})
 memicon     = wibox.widget.imagebox()
 memicon:set_image(beautiful.widget_mem)
 memwidget   = wibox.widget.textbox()
-mem_t = awful.tooltip({ objects = { memicon }, })
-vicious.register(memwidget, vicious.widgets.mem,
-function (widget, args)
-    mem_t:set_text("<b> Usage RAM : </b>" .. args[1] .. "%\n\n (" .. args[2] .. "M/" .. args[3] .. "M, soit " .. args[4] .. "M libre(s)) ")
-    if args[1] >= 75 then
-        return "<span color='#E84F4F'><b>" .. args[2] .. "M</b></span>"
-    else
-        return "<b>" .. args[2] .. "M</b>"
-    end
-end, 5)
+vicious.register(memwidget, vicious.widgets.mem, "<span weight='bold'>$2M</span>", 5)
 
 mywibox     = {}
 mypromptbox = {}
@@ -263,11 +241,9 @@ for s = 1, screen.count() do
     awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)
     ))
 
-    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all,
-    mytaglist.buttons)
+    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
 
-    mytasklist[s] = awful.widget.tasklist(s,
-    awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
+    mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     mywibox[s] = awful.wibox({ position = "top", height = "18", screen = s })
 
@@ -282,7 +258,9 @@ for s = 1, screen.count() do
     left_layout:add(spacer2)
 
     local right_layout = wibox.layout.fixed.horizontal()
+    right_layout:add(spacer2)
     right_layout:add(lside)
+    right_layout:add(spacer2)
     right_layout:add(cpuicon)
     right_layout:add(cpuwidget)
     right_layout:add(thermalwidget)
@@ -300,6 +278,7 @@ for s = 1, screen.count() do
     right_layout:add(datewidget)
     right_layout:add(spacer1)
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(spacer2)
     right_layout:add(rside)
 
     local layout = wibox.layout.align.horizontal()
@@ -368,7 +347,7 @@ awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
 awful.key({ modkey },            "r",
 function ()
-    awful.prompt.run({ prompt = "<span weight='bold'>Exécuter : </span>" },
+    awful.prompt.run({ prompt = "<span weight='bold'>Exécuter: </span>" },
     mypromptbox[mouse.screen].widget,
     function (cmd) awful.util.spawn(cmd) end,
     awful.completion.shell,
@@ -377,7 +356,7 @@ end),
 
 awful.key({ modkey, "Shift"   }, "r",
 function ()
-    awful.prompt.run({ prompt = "<span weight='bold'>Exécuter dans un terminal : </span>" },
+    awful.prompt.run({ prompt = "<span weight='bold'>Exécuter dans un terminal: </span>" },
     mypromptbox[mouse.screen].widget,
     function (cmd) awful.util.spawn(terminal .. ' -e "' .. cmd .. '"') end,
     awful.completion.shell,

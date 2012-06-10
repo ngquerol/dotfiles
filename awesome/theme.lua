@@ -78,9 +78,8 @@ theme.widget_mem    = theme.confdir .. "/icons/widgets/mem.png"
 theme.widget_bat    = theme.confdir .. "/icons/widgets/ac.png"
 theme.widget_mail   = theme.confdir .. "/icons/widgets/mail.png"
 theme.widget_date   = theme.confdir .. "/icons/widgets/clock.png"
-theme.widget_spacer = theme.confdir .. "/icons/widgets/spacer.png"
-theme.widget_left   = theme.confdir .. "/icons/widgets/left.png"
-theme.widget_right  = theme.confdir .. "/icons/widgets/right.png"
+theme.widget_right  = theme.confdir .. "/icons/widgets/rside.png"
+theme.widget_left   = theme.confdir .. "/icons/widgets/lside.png"
 -- }}}
 
 -- {{{ Layout icons
