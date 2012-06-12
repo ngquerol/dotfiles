@@ -4,7 +4,7 @@
 # audio channel: Master|PCM
 IF="Master"
 # sleep $SECS
-SECS="1"
+SECS="2"
 # background colour of window
 BG="#191919"
 # foreground colour of text/icon
