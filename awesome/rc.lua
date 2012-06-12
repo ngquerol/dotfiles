@@ -330,9 +330,9 @@ awful.button({ }, 3, function () mymainmenu:toggle() end)
 
 -- Key bindings {{{
 globalkeys = awful.util.table.join(
-awful.key({ }, "XF86AudioMute",        function () awful.util.spawn("dvol -t") end),
-awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("dvol -i 5") end),
-awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("dvol -d 5") end),
+awful.key({ }, "XF86AudioMute",        function () awful.util.spawn_with_shell( home .. "/.bin/dvol -t") end),
+awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn_with_shell( home .. "/.bin/dvol -i 5") end),
+awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn_with_shell( home .. "/.bin/dvol -d 5") end),
 awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
 awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
 awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
