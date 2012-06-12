@@ -20,8 +20,8 @@ beautiful.init("/home/nico/.config/awesome/theme.lua")
 os.setlocale(os.getenv("LANG"))
 
 local home       = os.getenv("HOME")
-local browser    = os.getenv("BROWSER") or "browser"
-local editor     = os.getenv("EDITOR") or "editor"
+local browser    = os.getenv("BROWSER") or "firefox"
+local editor     = os.getenv("EDITOR") or "vim"
 local terminal   = "urxvtc"
 local editor_cmd = terminal .. " -e " .. editor
 local fm         = "thunar"
