@@ -324,8 +324,8 @@ end
 
 -- Mouse bindings {{{
 root.buttons(
+awful.button({ }, 1, function () mymainmenu:hide() end),
 awful.button({ }, 3, function () mymainmenu:toggle() end)
-setw -g window-status-current-attr none
 )
 -- }}}
 
