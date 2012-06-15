@@ -19,14 +19,14 @@ beautiful.init("/home/nico/.config/awesome/theme.lua")
 
 os.setlocale(os.getenv("LANG"))
 
-local home       = os.getenv("HOME")
-local browser    = os.getenv("BROWSER") or "firefox"
-local editor     = os.getenv("EDITOR") or "vim"
-local terminal   = "urxvtc"
-local editor_cmd = terminal .. " -e " .. editor
-local fm         = "thunar"
+home       = os.getenv("HOME")
+browser    = os.getenv("BROWSER") or "firefox"
+editor     = os.getenv("EDITOR") or "vim"
+terminal   = "urxvtc"
+editor_cmd = terminal .. " -e " .. editor
+fm         = "thunar"
 
-local modkey     = "Mod4"
+modkey     = "Mod4"
 
 layouts = {
     awful.layout.suit.floating,
@@ -182,11 +182,14 @@ vicious.cache(vicious.widgets.bat)
 cpuicon       = wibox.widget.imagebox()
 cpuicon:set_image(beautiful.widget_cpu)
 cpuwidget     = wibox.widget.textbox()
+cpu_t = awful.tooltip({ objects = { cpuicon }, })
 vicious.register(cpuwidget, vicious.widgets.cpu,
 function (widget, args)
     if args[1] >= 75 then
+        cpu_t:set_text("<b> Charge CPU 0 :</b> " .. args[2] .. "% \n <b>Charge CPU 1 :</b> " .. args[3] .. "%")
         return "<span weight='bold' color='#E84F4F'>" .. args[1] .. "%</span>"
     else
+        cpu_t:set_text("<b> Charge CPU 0 :</b> " .. args[2] .. "% \n <b>Charge CPU 1 :</b> " .. args[3] .. "%")
         return "<b>".. args[1] .. "%</b>"
     end
 end, 3)
@@ -331,9 +334,9 @@ awful.button({ }, 3, function () mymainmenu:toggle() end)
 
 -- Key bindings {{{
 globalkeys = awful.util.table.join(
-awful.key({ }, "XF86AudioMute",        function () awful.util.spawn_with_shell( home .. "/.bin/dvol -t") end),
-awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn_with_shell( home .. "/.bin/dvol -i 5") end),
-awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn_with_shell( home .. "/.bin/dvol -d 5") end),
+awful.key({ }, "XF86AudioMute",        function () awful.util.spawn_with_shell(home .. "/.bin/dvol -t") end),
+awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn_with_shell(home .. "/.bin/dvol -i 5") end),
+awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn_with_shell(home .. "/.bin/dvol -d 5") end),
 awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
 awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
 awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
