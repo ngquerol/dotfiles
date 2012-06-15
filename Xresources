@@ -8,12 +8,12 @@
 #include "/home/nico/.colors/dotshare"
 
 !-- Xft --!
-Xft.autohint:		    0
+Xft.autohint:           0
 Xft.lcdfilter:          lcddefault
-Xft.hintstyle:  	    hintslight
-Xft.hinting: 	  	    1
-Xft.antialias:  	    1
-Xft.rgba:		        rgb
+Xft.hintstyle:          hintslight
+Xft.hinting:            1
+Xft.antialias:          1
+Xft.rgba:               rgb
 
 !-- URxvt --!
 URxvt.font:             -*-terminusmodx-medium-*-*-*-12-*-*-*-*-*-*-*, \
@@ -22,19 +22,19 @@ URxvt.font:             -*-terminusmodx-medium-*-*-*-12-*-*-*-*-*-*-*, \
 URxvt.boldFont:         -*-terminusmodx-bold-*-*-*-12-*-*-*-*-*-*-*, \
                         -*-fixed-bold-*-*-*-12-*-*-*-*-*-iso10646-1
 
-URxvt.buffered:     	  true
+URxvt.buffered:           true
 URxvt.cursorUnderline:    false
-URxvt.geometry: 	      90x20
-URxvt.jumpScroll:	      true
+URxvt.geometry:           90x20
+URxvt.jumpScroll:         true
 URxvt.pointerBlank:       true
-URxvt.saveLines:	      1000
-URxvt.scrollBar:	      off
+URxvt.saveLines:          1000
+URxvt.scrollBar:          off
 URxvt.scrollTtyOutput:    false
 URxvt.scrollWithBuffer:   true
 URxvt.urgentOnBell:       true
 
-URxvt.perl-ext-common: 	default,matcher
-URxvt.urlLauncher: 	    /usr/bin/firefox
-URxvt.matcher.button: 	1
+URxvt.perl-ext-common:  default,matcher
+URxvt.urlLauncher:      /usr/bin/firefox
+URxvt.matcher.button:   1
 
-URxvt.iconFile:     	/usr/share/icons/Faenza/apps/24/terminal.png
+URxvt.iconFile:         /usr/share/icons/Faenza/apps/24/terminal.png
