@@ -7,7 +7,7 @@
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "feh --bg-fill --no-fehbg /home/nico/Dropbox/wallpapers/kimbra.jpg" }
+theme.wallpaper_cmd = { "" }
 -- }}}
 
 -- {{{ Styles
