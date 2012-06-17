@@ -48,10 +48,6 @@ tags = {
     icons  = { "/home/nico/.config/awesome/icons/taglist/main.png", "/home/nico/.config/awesome/icons/taglist/web.png", "/home/nico/.config/awesome/icons/taglist/dev.png" }
 }
 
---for s = 1, screen.count() do
---    tags[s] = awful.tag(tags.names, s, tags.layout)
---end
-
 for s = 1, screen.count() do
   tags[s] = awful.tag(tags.names, s, tags.layout)
 
