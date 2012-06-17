@@ -44,12 +44,22 @@ layouts = {
 -- Tags {{{
 tags = {
     names  = { "main", "web", "dev" },
-    layout = { layouts[1], layouts[2], layouts[1] }
+    layout = { layouts[1], layouts[2], layouts[1] },
+    icons  = { "/home/nico/.config/awesome/icons/taglist/main.png", "/home/nico/.config/awesome/icons/taglist/web.png", "/home/nico/.config/awesome/icons/taglist/dev.png" }
 }
 
+--for s = 1, screen.count() do
+--    tags[s] = awful.tag(tags.names, s, tags.layout)
+--end
+
 for s = 1, screen.count() do
-    tags[s] = awful.tag(tags.names, s, tags.layout)
+  tags[s] = awful.tag(tags.names, s, tags.layout)
+
+  for i, t in ipairs(tags[s]) do
+      awful.tag.seticon(tags.icons[i], t)
+  end
 end
+
 -- }}}
 
 -- Menu {{{
@@ -283,13 +293,12 @@ for s = 1, screen.count() do
     mywibox[s] = awful.wibox({ position = "top", height = "18", screen = s })
 
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(mylauncher)
-    left_layout:add(spacer2)
+    left_layout:add(lside)
     left_layout:add(mytaglist[s])
-    left_layout:add(spacer2)
+    left_layout:add(spacer1)
     left_layout:add(mylayoutbox[s])
+    left_layout:add(rside)
     left_layout:add(mypromptbox[s])
-    left_layout:add(spacer2)
 
     local right_layout = wibox.layout.fixed.horizontal()
     right_layout:add(lside)
@@ -327,7 +336,6 @@ end
 
 -- Mouse bindings {{{
 root.buttons(
-awful.button({ }, 1, function () mymainmenu:hide() end),
 awful.button({ }, 3, function () mymainmenu:toggle() end)
 )
 -- }}}

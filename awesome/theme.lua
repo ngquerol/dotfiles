@@ -7,7 +7,7 @@
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "feh --bg-fill --no-fehbg /home/nico/Dropbox/wallpapers/bluecube.png" }
+theme.wallpaper_cmd = { "feh --bg-fill --no-fehbg /home/nico/Dropbox/wallpapers/kimbra.jpg" }
 -- }}}
 
 -- {{{ Styles
@@ -63,8 +63,8 @@ theme.menu_border_width = "0"
 -- {{{ Icons
 
 -- Taglist {{{
-theme.taglist_squares_sel   = theme.confdir .. "/icons/tagsel.png"
-theme.taglist_squares_unsel = theme.confdir .. "/icons/tagunsel.png"
+theme.taglist_squares_sel   = theme.confdir .. "/icons/taglist/tagsel.png"
+theme.taglist_squares_unsel = theme.confdir .. "/icons/taglist/tagunsel.png"
 -- }}}
 
 -- {{{ Misc icons
