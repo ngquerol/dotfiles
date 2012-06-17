@@ -124,8 +124,6 @@ cal.register(dateicon, "<span color='#66AABB'><b>%s</b></span>")
 -- Spacers
 spacer1      = wibox.widget.imagebox()
 spacer1:set_image(beautiful.widget_spacer)
-spacer2      = wibox.widget.textbox()
-spacer2:set_text(" ")
 
 -- Left side
 lside       = wibox.widget.imagebox()
@@ -153,6 +151,7 @@ function (widget, args)
         return args['{count}']
     end
 end, 67)
+vicious.cache(vicious.widgets.gmail)
 
 gmailicon:buttons(awful.util.table.join(
 awful.button({ }, 1, function () awful.util.spawn(browser .. " https://mail.google.com/mail/") end)))
@@ -226,6 +225,7 @@ function (widget, args)
         return "<b>" .. args[2] .. "M</b>"
     end
 end, 5)
+vicious.cache(vicious.widgets.mem)
 
 mywibox     = {}
 mypromptbox = {}
@@ -323,7 +323,6 @@ for s = 1, screen.count() do
 
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
-    layout:set_middle(mytasklist[s])
     layout:set_right(right_layout)
 
     mywibox[s]:set_widget(layout)
@@ -509,6 +508,7 @@ client.connect_signal("manage", function (c, startup)
             awful.placement.no_offscreen(c)
         end
     end
+
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
