@@ -41,9 +41,9 @@ theme.taglist_fg_urgent     = "#E64444"
 -- {{{ Tooltips
 theme.tooltip_bg_color        = "#191919"
 theme.tooltip_fg_color        = "#AAAAAA"
-theme.tooltip_border_color    = "#CCCCCC"
+theme.tooltip_border_color    = "#404040"
 theme.tooltip_fg_color_urgent = "#000000"
-theme.tooltip_border_width    = "0"
+theme.tooltip_border_width    = "1"
 --- }}}
 
 -- {{{ Menu
