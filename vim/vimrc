@@ -52,8 +52,8 @@ set laststatus=2                " Always show status line
 " Interface options
 set novisualbell noerrorbells   " Never, ever beep or flash the screen
 set mouse=a                     " Enable mouse usage (all modes) in terminals
-set ttimeout ttimeoutlen=10     " Time out on key codes but not mappings...
-set notimeout                   " ... basically, make terminal vim work sanely
+set ttimeout                    " Time out on key codes but not mappings...
+set ttimeoutlen=10              " ... basically, make terminal Vim work sanely!
 set lazyredraw                  " Do not redraw the screen while executing macros
 set ttyfast                     " Indicate a fast terminal connection
 set splitbelow                  " Put the new window below the current one...
@@ -82,7 +82,7 @@ if has("gui_running")
 
     set guifont=Inconsolata-dz\ for\ Powerline\ 10
     set lines=50 columns=100
-    colorscheme molokai
+    colorscheme badwolf
 else
     " Terminal Vim should always be readable, under any circumstances
     if $TERM =~ '^rxvt-unicode-256color' || '^xterm-256color'
