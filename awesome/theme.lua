@@ -51,7 +51,8 @@ theme.menu_height       = "15"
 theme.menu_width        = "110"
 theme.menu_fg_focus     = "#ffffff"
 theme.menu_bg_focus     = "#303030"
-theme.menu_border_width = "0"
+theme.menu_border_color = "#404040"
+theme.menu_border_width = "1"
 -- }}}
 
 -- }}}
