@@ -20,59 +20,58 @@ filetype plugin indent on
 syntax on
 
 " Buffer (File) Options
-set hidden                      " Edit multiple unsaved files at the same time
-set confirm                     " Prompt to save unsaved changes when exiting
-set encoding=utf-8              " Set the character encoding used inside Vim
-set nobackup                    " Do not create backup files
+set hidden                       " Edit multiple unsaved files at the same time
+set confirm                      " Prompt to save unsaved changes when exiting
+set encoding=utf-8               " Set the character encoding used inside Vim
+set nobackup                     " Do not create backup files
 
 " Search Options
-set hlsearch                    " Highlight searches
-set ignorecase                  " Do case insensitive matching...
-set smartcase                   " ... except when using capital letters explicitly
-set incsearch                   " Incremental search
+set hlsearch                     " Highlight searches
+set ignorecase                   " Do case insensitive matching...
+set smartcase                    " ... except when using capital letters explicitly
+set incsearch                    " Incremental search
 
 " Insert Options
-set backspace=indent,eol,start  " Allow backspace in insert mode
-set autoindent                  " Sane indenting even when filetype not recognised
-set smartindent                 " Do smart auto-indenting when starting a new line
-set nopaste                     " Start in normal, non-paste mode
-set noshowmode                  " Don't show mode in the command line
+set backspace=indent,eol,start   " Allow backspace in insert mode
+set autoindent                   " Sane indenting even when filetype not recognised
+set smartindent                  " Do smart auto-indenting when starting a new line
+set nopaste                      " Start in normal, non-paste mode
+set noshowmode                   " Don't show mode in the command line
+set ttimeout ttimeoutlen=10      " Time out on key codes...
+set notimeout                    " ... but not mappings. Terminal Vim is usable again.
 
 " Indentation Options
-set shiftwidth=4                " Number of spaces for each indent level...
-set softtabstop=4               " ... even when using tabs
-set expandtab                   " When pressing <Tab>, indent with spaces
+set shiftwidth=4                 " Number of spaces for each indent level...
+set softtabstop=4                " ... even when using tabs
+set expandtab                    " When pressing <Tab>, indent with spaces
 
 " Status / Command Line Options
-set wildmenu                    " Better command line completion
-set wildmode=longest,full       " Complete longest common string, then list alternatives
-set showcmd                     " Show partial commands in command line
-set laststatus=2                " Always show status line
+set wildmenu                     " Better command line completion
+set wildmode=longest,full        " Complete longest common string, then list alternatives
+set showcmd                      " Show partial commands in command line
+set laststatus=2                 " Always show status line
 
 " Interface options
-set novisualbell noerrorbells   " Never, ever beep or flash the screen
-set mouse=a                     " Enable mouse usage (all modes) in terminals
-set ttimeout                    " Time out on key codes but not mappings...
-set ttimeoutlen=10              " ... basically, make terminal Vim work sanely!
-set lazyredraw                  " Do not redraw the screen while executing macros
-set ttyfast                     " Indicate a fast terminal connection
-set splitbelow                  " Put the new window below the current one...
-set splitright                  " ... and right of the current one
-set title                       " Set the title of the window
-set shortmess=tI                " Make Vim less verbose on specific occasions
-set linebreak                   " Wrap long lines...
-set showbreak=↳\                " ... and put a character in front of them
-set cursorline                  " Highlight the line where the cursor is
-set showmatch                   " Show matching parentheses
-set scrolloff=10                " Keep some context when scrolling vertically
-set foldenable                  " All folds are shown closed by default
-set foldmethod=marker           " Set the kind of folding used
-
+set novisualbell noerrorbells    " Never, ever beep or flash the screen
+set lazyredraw                   " Do not redraw the screen while executing macros
+set splitbelow                   " Put the new window below the current one...
+set splitright                   " ... and right of the current one
+set title                        " Set the title of the window
+set shortmess=tI                 " Make Vim less verbose on specific occasions
+set linebreak                    " Wrap long lines...
+set showbreak=↳\                 " ... and put a character in front of them
+set cursorline                   " Highlight the line where the cursor is
+set showmatch                    " Show matching parentheses
+set scrolloff=10                 " Keep some context when scrolling vertically
+set foldenable                   " All folds are shown closed by default
+set foldmethod=marker            " Set the kind of folding used
 " }}}
 
 " GUI or Terminal specific settings {{{
 
 if has("gui_running")
+    " GUI Vim
+
     set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
     set guioptions-=T               " No toolbar
     set guioptions-=l               " No scrollbar left
@@ -83,8 +82,11 @@ if has("gui_running")
     set guifont=Inconsolata-dz\ for\ Powerline\ 10
     set lines=50 columns=100
     colorscheme badwolf
+
 else
-    " Terminal Vim should always be readable, under any circumstances
+    " Terminal Vim
+
+    " Should always be readable, under any circumstances
     if $TERM =~ '^rxvt-unicode-256color' || '^xterm-256color'
         set t_Co=256
         colorscheme xdefaults
@@ -101,6 +103,12 @@ else
         set t_Co=16
         colorscheme default
     endif
+
+    " Enable mouse usage (all modes) in terminals
+    set mouse=a
+    " Indicate a fast terminal connection
+    set ttyfast
+
 endif
 
 " }}}
@@ -109,13 +117,17 @@ endif
 
 " Set the leader key
 let mapleader=","
+let maplocalleader="\\"
 
 " Plugins
 nnoremap <silent><F1> :NERDTreeToggle<CR>
+inoremap <silent><F1> <ESC>:NERDTreeToggle<CR>
 nnoremap <silent><F2> :TagbarToggle<CR>
+inoremap <silent><F2> <ESC>:TagbarToggle<CR>
 
 " Toggle line numbers
 nnoremap <silent><F3> :set invnumber<CR>
+inoremap <silent><F3> <ESC>:set invnumber<CR>
 
 " Toggle paste mode
 set pastetoggle=<F4>
@@ -131,6 +143,13 @@ nnoremap <leader>tc :tabclose<CR>
 
 " Clear last search highlighting
 nnoremap <silent><CR> :noh<CR><CR>
+
+" Clean trailing whitespace
+nnoremap <leader>w mz:%s/\s\+$//<cr>:let @/=''<cr>`z
+
+" Emacs bindings in command line mode
+cnoremap <c-a> <home>
+cnoremap <c-e> <end>
 
 " Use space to toggle folds
 nnoremap <Space> za
@@ -158,9 +177,20 @@ augroup cline
     au InsertLeave * set cursorline
 augroup END
 
+" Resize splits when the window is resized
+au VimResized * :wincmd =
+
+" Save when losing focus
+au FocusLost * :silent! wall
+
 " }}}
 
 " Plugin-specific settings {{{
+
+" Ctrl-P {{{
+let g:ctrlp_map = '<leader>,'
+let g:ctrlp_reuse_window = 'NERD_tree_2'
+" }}}
 
 " NERDTree {{{
 let g:NERDTreeMinimalUI = 1
