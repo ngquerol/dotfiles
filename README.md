@@ -3,7 +3,6 @@
 This is where I keep my dotfiles for backup purposes. Currently it contains dotfiles for:
 
 * AwesomeWM
-* (G)vim
 * Git
 * Ncmpcpp
 * URxvt
