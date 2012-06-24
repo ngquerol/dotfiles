@@ -1,88 +1,102 @@
-" 
+"
 " (G)vim configuration file
 "
-" Author: Nicolas G. Querol <nicolas dot gquerol at gmail dot com>
-" 
+" Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
+"
 
+" Use Vim, not vi
 set nocompatible
+
+" Pathogen {{{
 filetype off
-
-" Vundle {{{
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
-
-" let Vundle manage Vundle
-Bundle 'gmarik/vundle'
-
-" Vundles {{{
-" github repos
-Bundle 'tangledhelix/vim-octopress'
-Bundle 'majutsushi/tagbar'
-Bundle 'scrooloose/nerdtree'
-Bundle 'SirVer/ultisnips'
-Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/neocomplcache-snippets-complete'
-Bundle 'Raimondi/delimitMate'
-Bundle 'sjl/gundo.vim'
-" vim-script repos
-" non-github repos
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
 " }}}
 
-" }}}
+" Options {{{
 
-" General {{{
+" Filetype & Syntax Highlighting
 filetype plugin indent on
 syntax on
 
-" Filetypes {{{
-au BufRead,BufNewFile *.md set filetype=markdown
+" Buffer (File) Options
+set hidden                       " Edit multiple unsaved files at the same time
+set confirm                      " Prompt to save unsaved changes when exiting
+set encoding=utf-8               " Set the character encoding used inside Vim
+set nobackup                     " Do not create backup files
+set autoread                     " Automatically re-read a file when modified outside of Vim
+
+" Search Options
+set hlsearch                     " Highlight searches
+set ignorecase                   " Do case insensitive matching...
+set smartcase                    " ... except when using capital letters explicitly
+set incsearch                    " Incremental search
+
+" Insert Options
+set backspace=indent,eol,start   " Allow backspace in insert mode
+set autoindent                   " Sane indenting even when filetype not recognised
+set smartindent                  " Do smart auto-indenting when starting a new line
+set nopaste                      " Start in normal, non-paste mode
+set noshowmode                   " Don't show mode in the command line
+set ttimeout ttimeoutlen=10      " Time out on key codes...
+set notimeout                    " ... but not mappings. Terminal Vim is usable again.
+
+" Indentation Options
+set shiftwidth=4                 " Number of spaces for each indent level...
+set softtabstop=4                " ... even when using tabs
+set expandtab                    " When pressing <Tab>, indent with spaces
+
+" Status / Command Line Options
+set wildmenu                     " Better command line completion
+set wildmode=longest,full        " Complete longest common string, then list alternatives
+set showcmd                      " Show partial commands in command line
+set laststatus=2                 " Always show status line
+
+" Interface options
+set novisualbell noerrorbells    " Never, ever beep or flash the screen
+set lazyredraw                   " Do not redraw the screen while executing macros
+set splitbelow                   " Put the new window below the current one...
+set splitright                   " ... and right of the current one
+set title                        " Set the title of the window
+set shortmess=tI                 " Make Vim less verbose on specific occasions
+set linebreak                    " Wrap long lines...
+set showbreak=↳\                 " ... and put a character in front of them
+set cursorline                   " Highlight the line where the cursor is
+set showmatch                    " Show matching parentheses
+set scrolloff=10                 " Keep some context when scrolling vertically
+set foldenable                   " All folds are shown closed by default
+set foldmethod=marker            " Set the kind of folding used
 " }}}
 
-let mapleader=","
-let maplocalleader = "\\"
+" GUI or Terminal specific settings {{{
 
-set hidden
-set mouse=a
-set backspace=indent,eol,start
-set incsearch
-set hlsearch
-set ignorecase
-set smartcase
-set history=1000
-set title
-set ttyfast
-set lazyredraw
-set novisualbell
-set noerrorbells
-set encoding=utf-8
-set termencoding=utf-8
-" }}}
+if has("gui_running")
+    " GUI Vim
 
-" Appearance {{{
+    set guicursor+=a:blinkon0       " Cursor doesn't blink - it's annoying
+    set guioptions-=T               " No toolbar
+    set guioptions-=l               " No scrollbar left
+    set guioptions-=L               " No scrollbar left when split
+    set guioptions-=r               " No scrollbar right
+    set guioptions-=r               " No scrollbar right when split
 
-" Gvim specific settings
-if has('gui_running')
-    set guicursor+=a:blinkon0       " cursor doesn't blink - it's annoying
-    set guioptions-=m               " no menubar
-    set guioptions-=T               " no toolbar
-    set guioptions-=l               " no scrollbar left
-    set guioptions-=L               " no scrollbar left when split
-    set guioptions-=r               " no scrollbar right
-    set guioptions-=r               " no scrollbar right when split
-    set lines=40 columns=100
+    set guifont=Inconsolata-dz\ for\ Powerline\ 10
+    set lines=50 columns=100
+    colorscheme badwolf
 
-    set gfn=Inconsolata\ 12
-    colorscheme nucolors
 else
-    if $TERM =~ '^rxvt-unicode-256color'
+    " Terminal Vim
+
+    " Should always be readable, under any circumstances
+    if $TERM =~ '^rxvt-unicode-256color' || '^xterm-256color'
         set t_Co=256
         colorscheme xdefaults
     elseif $TERM =~ '^rxvt-unicode'
         set t_Co=88
-        colorscheme default 
+        colorscheme default
     elseif $TERM =~ '^xterm.*'
-        set t_Co=256
-        colorscheme xdefaults
+        set t_Co=16
+        colorscheme default
     elseif $TERM =~ '^linux'
         set t_Co=8
         colorscheme default
@@ -90,122 +104,124 @@ else
         set t_Co=16
         colorscheme default
     endif
+
+    " Enable mouse usage (all modes) in terminals
+    set mouse=a
+    " Indicate a fast terminal connection
+    set ttyfast
+
 endif
 
-set cmdheight=1                 " command line height
-set ruler                       " show cursor position in status line
-set showmode                    " show mode in status line
-set showcmd                     " show partial commands in status line
-set number                      " show line numbers
-set cursorline                  " highlight the line where the cursor is
-
 " }}}
 
- " Settings {{{
+" Keybindings {{{
 
-" Backup files {{{
-set undodir=/tmp              " put those files where they will be trashed upon reboot
-set undofile
-set undolevels=1000           " maximum number of changes that can be undone
-set undoreload=10000          " maximum number lines to save for undo on a buffer reload
-set nobackup
-set noswapfile
-" }}}
-
-" Tabstops {{{
-set autoindent
-set smartindent
-set tabstop=4
-set textwidth=80
-set shiftwidth=4
-set softtabstop=4
-set expandtab
-" }}}
-
-" Folding {{{
-set foldmethod=marker
-set foldcolumn=0
-" }}}
-
-" Pairings {{{
-set showmatch
-" }}}
-
-" Completion {{{
-set completeopt=menu,menuone,longest
-set pumheight=15
-" }}}
-
-" Wrapping {{{
-set linebreak
-set showbreak=↳\ 
-" }}}
-
-" Scroll margins {{{
-set scrolloff=5
-set sidescroll=5
-" }}}
-
-"  Keybindings {{{
+" Set the leader key
+let mapleader=","
+let maplocalleader="\\"
 
 " Plugins
 nnoremap <silent><F1> :NERDTreeToggle<CR>
+inoremap <silent><F1> <ESC>:NERDTreeToggle<CR>
 nnoremap <silent><F2> :TagbarToggle<CR>
-nnoremap <silent><F3> :GundoToggle<CR>
+inoremap <silent><F2> <ESC>:TagbarToggle<CR>
+
+" Toggle line numbers
+nnoremap <silent><F3> :set invnumber<CR>
+inoremap <silent><F3> <ESC>:set invnumber<CR>
+
+" Toggle paste mode
+set pastetoggle=<F4>
 
 " Quickly edit/reload the vimrc file
 nnoremap <silent><leader>ev :e $MYVIMRC<CR>
 nnoremap <silent><leader>rv :so $MYVIMRC<CR>
 
-" Toggle paste mode
-set pastetoggle=<leader>p
-
-" Toggle cursor line highlighting (on by default)
-nnoremap <silent><leader>cl :set cursorline!<CR>
+" Tab navigation
+nnoremap <leader>te :tabedit<Space>
+nnoremap <leader>tt :tabnew<CR>
+nnoremap <leader>tc :tabclose<CR>
 
 " Clear last search highlighting
 nnoremap <silent><CR> :noh<CR><CR>
 
+" Clean trailing whitespace
+nnoremap <leader>w mz:%s/\s\+$//<cr>:let @/=''<cr>`z
+
+" Emacs bindings in command line mode
+cnoremap <c-a> <home>
+cnoremap <c-e> <end>
+
+" Use space to toggle folds
+nnoremap <Space> za
+vnoremap <Space> za
+
 " }}}
 
-" Plugin-specific {{{
+" Auto Commands {{{
+
+" Make sure Vim returns to the same line when you reopen a file
+augroup line_return
+    au!
+    au BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \ execute 'normal! g`"zvzz' |
+        \ endif
+augroup END
+
+" Only show cursorline in the current window and in normal mode
+augroup cline
+    au!
+    au WinLeave * set nocursorline
+    au WinEnter * set cursorline
+    au InsertEnter * set nocursorline
+    au InsertLeave * set cursorline
+augroup END
+
+" Resize splits when the window is resized
+au VimResized * :wincmd =
+
+" Save when losing focus
+au FocusLost * :silent! wall
+
+" }}}
+
+" Plugin-specific settings {{{
+
+" Ctrl-P {{{
+let g:ctrlp_map = '<leader>,'
+let g:ctrlp_reuse_window = 'NERD_tree_2'
+" }}}
 
 " NERDTree {{{
 let g:NERDTreeMinimalUI = 1
-let g:NERDTreeWinSize = 25
 let g:NERDTreeMouseMode = 3
+let g:NERDTreeWinSize   = 25
+" }}}
+
+" Powerline {{{
+let g:Powerline_stl_path_style = 'short'
+let g:Powerline_symbols        = 'fancy'
+call Pl#Theme#InsertSegment('ws_marker', 'after', 'lineinfo')
+" }}}
+
+" Syntastic {{{
+let g:syntastic_enable_signs  = 1
+let g:syntastic_check_on_open = 1
 " }}}
 
 " Tagbar {{{
-let g:tagbar_compact = 1
-let g:tagbar_expand = 1
-let g:tagbar_singleclick = 1
 let g:tagbar_autoshowtag = 1
-let g:tagbar_width = 30
-"  }}}
-
-" Neocomplcache {{{
-
+let g:tagbar_compact     = 1
+let g:tagbar_expand      = 1
+let g:tagbar_width       = 30
 " }}}
 
-" delimitMate {{{
-let g:delimitMate_expand_cr = 1
-let g:delimitMate_expand_space = 1
-" }}}
-
-" Mini Buffer Explorer {{{
-let g:miniBufExplSplitToEdge = 0
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplModSelTarget = 1 
-" }}}
-
-" Gundo {{{
-let g:gundo_width = 30
-let g:gundo_help = 0
-let g:gundo_preview_statusline = "Gundo [Preview] %=%-5.(%l,%c%V%) %P"
-let g:gundo_tree_statusline = "Gundo [Tree] %=%-5.(%l,%c%V%) %P"
-" }}}
-
+" UltiSnips {{{
+let g:UltiSnipsExpandTrigger       = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsJumpForwardTrigger  = "<tab>"
+let g:UltiSnipsSnippetDirectories  = ["UltiSnips", "snippets"]
 " }}}
 
 " }}}

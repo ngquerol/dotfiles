@@ -19,14 +19,14 @@ beautiful.init("/home/nico/.config/awesome/theme.lua")
 
 os.setlocale(os.getenv("LANG"))
 
-local home       = os.getenv("HOME")
-local browser    = os.getenv("BROWSER") or "firefox"
-local editor     = os.getenv("EDITOR") or "vim"
-local terminal   = "urxvtc"
-local editor_cmd = terminal .. " -e " .. editor
-local fm         = "thunar"
+home       = os.getenv("HOME")
+browser    = os.getenv("BROWSER") or "firefox"
+editor     = os.getenv("EDITOR") or "vim"
+terminal   = "urxvtc"
+editor_cmd = terminal .. " -e " .. editor
+fm         = "thunar"
 
-local modkey     = "Mod4"
+modkey     = "Mod4"
 
 layouts = {
     awful.layout.suit.floating,
@@ -44,12 +44,18 @@ layouts = {
 -- Tags {{{
 tags = {
     names  = { "main", "web", "dev" },
-    layout = { layouts[1], layouts[2], layouts[1] }
+    layout = { layouts[1], layouts[2], layouts[1] },
+    icons  = { "/home/nico/.config/awesome/icons/taglist/main.png", "/home/nico/.config/awesome/icons/taglist/web.png", "/home/nico/.config/awesome/icons/taglist/dev.png" }
 }
 
 for s = 1, screen.count() do
-    tags[s] = awful.tag(tags.names, s, tags.layout)
+  tags[s] = awful.tag(tags.names, s, tags.layout)
+
+  for i, t in ipairs(tags[s]) do
+      awful.tag.seticon(tags.icons[i], t)
+  end
 end
+
 -- }}}
 
 -- Menu {{{
@@ -118,8 +124,6 @@ cal.register(dateicon, "<span color='#66AABB'><b>%s</b></span>")
 -- Spacers
 spacer1      = wibox.widget.imagebox()
 spacer1:set_image(beautiful.widget_spacer)
-spacer2      = wibox.widget.textbox()
-spacer2:set_text(" ")
 
 -- Left side
 lside       = wibox.widget.imagebox()
@@ -147,6 +151,7 @@ function (widget, args)
         return args['{count}']
     end
 end, 67)
+vicious.cache(vicious.widgets.gmail)
 
 gmailicon:buttons(awful.util.table.join(
 awful.button({ }, 1, function () awful.util.spawn(browser .. " https://mail.google.com/mail/") end)))
@@ -182,11 +187,14 @@ vicious.cache(vicious.widgets.bat)
 cpuicon       = wibox.widget.imagebox()
 cpuicon:set_image(beautiful.widget_cpu)
 cpuwidget     = wibox.widget.textbox()
+cpu_t = awful.tooltip({ objects = { cpuicon }, })
 vicious.register(cpuwidget, vicious.widgets.cpu,
 function (widget, args)
     if args[1] >= 75 then
+        cpu_t:set_text("<b> Charge CPU 0 :</b> " .. args[2] .. "% \n <b>Charge CPU 1 :</b> " .. args[3] .. "%")
         return "<span weight='bold' color='#E84F4F'>" .. args[1] .. "%</span>"
     else
+        cpu_t:set_text("<b> Charge CPU 0 :</b> " .. args[2] .. "% \n <b>Charge CPU 1 :</b> " .. args[3] .. "%")
         return "<b>".. args[1] .. "%</b>"
     end
 end, 3)
@@ -217,6 +225,7 @@ function (widget, args)
         return "<b>" .. args[2] .. "M</b>"
     end
 end, 5)
+vicious.cache(vicious.widgets.mem)
 
 mywibox     = {}
 mypromptbox = {}
@@ -280,13 +289,12 @@ for s = 1, screen.count() do
     mywibox[s] = awful.wibox({ position = "top", height = "18", screen = s })
 
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(mylauncher)
-    left_layout:add(spacer2)
+    left_layout:add(lside)
     left_layout:add(mytaglist[s])
-    left_layout:add(spacer2)
+    left_layout:add(spacer1)
     left_layout:add(mylayoutbox[s])
+    left_layout:add(rside)
     left_layout:add(mypromptbox[s])
-    left_layout:add(spacer2)
 
     local right_layout = wibox.layout.fixed.horizontal()
     right_layout:add(lside)
@@ -315,7 +323,6 @@ for s = 1, screen.count() do
 
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
-    layout:set_middle(mytasklist[s])
     layout:set_right(right_layout)
 
     mywibox[s]:set_widget(layout)
@@ -331,9 +338,9 @@ awful.button({ }, 3, function () mymainmenu:toggle() end)
 
 -- Key bindings {{{
 globalkeys = awful.util.table.join(
-awful.key({ }, "XF86AudioMute",        function () awful.util.spawn_with_shell( home .. "/.bin/dvol -t") end),
-awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn_with_shell( home .. "/.bin/dvol -i 5") end),
-awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn_with_shell( home .. "/.bin/dvol -d 5") end),
+awful.key({ }, "XF86AudioMute",        function () awful.util.spawn_with_shell(home .. "/.bin/dvol -t") end),
+awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn_with_shell(home .. "/.bin/dvol -i 5") end),
+awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn_with_shell(home .. "/.bin/dvol -d 5") end),
 awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
 awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
 awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
@@ -502,6 +509,7 @@ client.connect_signal("manage", function (c, startup)
             awful.placement.no_offscreen(c)
         end
     end
+
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)

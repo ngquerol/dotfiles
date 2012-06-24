@@ -7,7 +7,7 @@
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "feh --bg-fill --no-fehbg /home/nico/Dropbox/wallpapers/bluecube.png" }
+theme.wallpaper_cmd = { "" }
 -- }}}
 
 -- {{{ Styles
@@ -28,7 +28,7 @@ theme.fg_minimize   = "#444444"
 
 -- {{{ Borders
 theme.border_width  = "1"
-theme.border_normal = "#CCCCCC"
+theme.border_normal = "#404040"
 theme.border_focus  = "#66A9BA"
 theme.border_marked = "#91231c"
 -- }}}
@@ -36,18 +36,14 @@ theme.border_marked = "#91231c"
 -- {{{ Taglist and Tasklist
 theme.taglist_bg_focus      = "#191919"
 theme.taglist_fg_urgent     = "#E64444"
-theme.tasklist_fg_focus     = "#ffffff"
-theme.tasklist_bg_urgent    = "#E64444"
-theme.tasklist_fg_urgent    = "#ffffff"
-theme.tasklist_bg_focus     = "#191919"
 -- }}}
 
 -- {{{ Tooltips
 theme.tooltip_bg_color        = "#191919"
 theme.tooltip_fg_color        = "#AAAAAA"
-theme.tooltip_border_color    = "#CCCCCC"
+theme.tooltip_border_color    = "#404040"
 theme.tooltip_fg_color_urgent = "#000000"
-theme.tooltip_border_width    = "0"
+theme.tooltip_border_width    = "1"
 --- }}}
 
 -- {{{ Menu
@@ -55,7 +51,8 @@ theme.menu_height       = "15"
 theme.menu_width        = "110"
 theme.menu_fg_focus     = "#ffffff"
 theme.menu_bg_focus     = "#303030"
-theme.menu_border_width = "0"
+theme.menu_border_color = "#404040"
+theme.menu_border_width = "1"
 -- }}}
 
 -- }}}
@@ -63,8 +60,8 @@ theme.menu_border_width = "0"
 -- {{{ Icons
 
 -- Taglist {{{
-theme.taglist_squares_sel   = theme.confdir .. "/icons/tagsel.png"
-theme.taglist_squares_unsel = theme.confdir .. "/icons/tagunsel.png"
+theme.taglist_squares_sel   = theme.confdir .. "/icons/taglist/tagsel.png"
+theme.taglist_squares_unsel = theme.confdir .. "/icons/taglist/tagunsel.png"
 -- }}}
 
 -- {{{ Misc icons
