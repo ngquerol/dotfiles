@@ -24,6 +24,7 @@ set hidden                       " Edit multiple unsaved files at the same time
 set confirm                      " Prompt to save unsaved changes when exiting
 set encoding=utf-8               " Set the character encoding used inside Vim
 set nobackup                     " Do not create backup files
+set autoread                     " Automatically re-read a file when modified outside of Vim
 
 " Search Options
 set hlsearch                     " Highlight searches
@@ -201,6 +202,7 @@ let g:NERDTreeWinSize   = 25
 " Powerline {{{
 let g:Powerline_stl_path_style = 'short'
 let g:Powerline_symbols        = 'fancy'
+call Pl#Theme#InsertSegment('ws_marker', 'after', 'lineinfo')
 " }}}
 
 " Syntastic {{{
