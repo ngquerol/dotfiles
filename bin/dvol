@@ -21,11 +21,11 @@ WIDTH="235"
 BAR_WIDTH="165"
 # Horizontal positioning
 SCREEN_W=$(xrandr | grep \* | cut -d'x' -f1)
-GAP_X="10"
+GAP_H="20"
 XPOS=$(($SCREEN_W-$WIDTH-$GAP_H))
 # Vertical positioning
-GAP_Y="5"
-YPOS=$(($HEIGHT+$GAP_V))
+GAP_V="5"
+YPOS=$(($HEIGHT-$GAP_V))
 # Icons
 ICON=~/.config/awesome/icons/vol-hi.xbm
 ICON_VOL=~/.config/awesome/icons/vol-hi.xbm
