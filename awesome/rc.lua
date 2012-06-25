@@ -10,7 +10,7 @@ require("awful.rules")
 require("wibox")
 require("beautiful")
 require("naughty")
-require("vicious")
+local vicious = require("vicious")
 require("cal")
 require("gmail")
 
@@ -85,7 +85,7 @@ myfilesmenu = {
     theme = { width = 125, height = 15 }
 }
 
-mymainmenu = awful.menu({ 
+mymainmenu = awful.menu({
     items = {
         { "Fichiers", myfilesmenu },
         { "", },
@@ -331,7 +331,6 @@ end
 
 -- Mouse bindings {{{
 root.buttons(
-awful.button({ }, 1, function () mymainmenu:hide() end),
 awful.button({ }, 3, function () mymainmenu:toggle() end)
 )
 -- }}}
@@ -475,7 +474,7 @@ root.keys(globalkeys)
 -- }}}
 
 -- Rules {{{
-awful.rules.rules = { 
+awful.rules.rules = {
     { rule = { },
     properties = { border_width = beautiful.border_width,
     border_color = beautiful.border_normal,
@@ -484,11 +483,11 @@ awful.rules.rules = {
     size_hints_honor = false,
     buttons = clientbuttons } },
     { rule = { class = "Firefox" },
-    properties = { tag = tags[1][2] } }, 
+    properties = { tag = tags[1][2] } },
     { rule = { class = "Plugin-container" },
-    properties = { floating = true } },    
+    properties = { floating = true } },
     { rule = { name = "Téléchargements" },
-    properties = { floating = "true" } },
+    properties = { floating = "true" } }
 }
 -- }}}
 
