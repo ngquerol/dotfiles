@@ -3,10 +3,9 @@
 --
 -- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 --
-
 -- {{{ Main
 theme = {}
-theme.confdir       = awful.util.getdir("config")
+theme.confdir       = "~/.config/awesome/"
 theme.wallpaper_cmd = { "" }
 -- }}}
 
@@ -33,7 +32,7 @@ theme.border_focus  = "#66A9BA"
 theme.border_marked = "#91231c"
 -- }}}
 
--- {{{ Taglist and Tasklist
+-- {{{ Taglist
 theme.taglist_bg_focus      = "#191919"
 theme.taglist_fg_urgent     = "#E64444"
 -- }}}
