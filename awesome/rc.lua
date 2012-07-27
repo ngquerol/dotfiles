@@ -25,7 +25,7 @@ beautiful.init("/home/nico/.config/awesome/theme.lua")
 os.setlocale(os.getenv("LANG"))
 
 home       = os.getenv("HOME")
-browser    = os.getenv("BROWSER") or "firefox"
+browser    = os.getenv("BROWSER") or "chromium"
 editor     = os.getenv("EDITOR") or "vim"
 terminal   = "urxvtc"
 editor_cmd = terminal .. " -e " .. editor
