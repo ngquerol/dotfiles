@@ -487,12 +487,10 @@ awful.rules.rules = {
     keys = clientkeys,
     size_hints_honor = false,
     buttons = clientbuttons } },
-    { rule = { class = "Firefox" },
+    { rule = { class = "Chromium" },
     properties = { tag = tags[1][2] } },
-    { rule = { class = "Plugin-container" },
-    properties = { floating = true } },
-    { rule = { name = "Téléchargements" },
-    properties = { floating = "true" } }
+    { rule = { class = "Exe" },
+    properties = { floating = true } }
 }
 -- }}}
 
