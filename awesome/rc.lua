@@ -4,13 +4,18 @@
 -- Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 --
 
-require("awful")
-require("awful.autofocus")
-require("awful.rules")
-require("wibox")
-require("beautiful")
-require("naughty")
+-- Standard awesome library
+local awful = require("awful")
+awful.rules = require("awful.rules")
+-- Widget and layout library
+local wibox = require("wibox")
+-- Theme handling library
+local beautiful = require("beautiful")
+-- Notification library
+local naughty = require("naughty")
+-- Widget library
 local vicious = require("vicious")
+-- Custom libraries
 require("cal")
 require("gmail")
 
@@ -91,7 +96,7 @@ mymainmenu = awful.menu({
         { "", },
         {"Terminal", terminal },
         { "", },
-        { "Firefox", "firefox" },
+        { "Chromium", "chromium" },
         { "GIMP", "gimp" },
         { "GVIM", "gvim" },
         { "Ncmpcpp", terminal .. " -e ncmpcpp" },
@@ -286,7 +291,7 @@ for s = 1, screen.count() do
 
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
-    mywibox[s] = awful.wibox({ position = "top", height = "18", screen = s })
+    mywibox[s] = awful.wibox({ position = "bottom", height = "18", screen = s })
 
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(lside)
