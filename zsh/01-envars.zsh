@@ -2,7 +2,7 @@
 
 export EDITOR="vim"
 export LANG=fr_FR.UTF-8
-export BROWSER=firefox
+export BROWSER=chromium
 export PAGER="less -M"
 export SHELL=/bin/zsh
 
