@@ -2,7 +2,7 @@
 
 export EDITOR="vim"
 export LANG=fr_FR.UTF-8
-export BROWSER=chromium
+export BROWSER=firefox
 export PAGER="less -M"
 export SHELL=/bin/zsh
 
@@ -15,7 +15,7 @@ export SAVEHIST=1000
 if [ $DISPLAY ]; then
     # Check if xterm supports 256 colors, or just fall back to
     # plain xterm otherwise (should be compatible enough).
-    if [ -f /usr/share/terminfo/x/xterm*256color ]; then
+    if [ -f /usr/share/terminfo/x/xterm+256color ]; then
         export TERM="xterm-256color"
     else
         export TERM="xterm"
