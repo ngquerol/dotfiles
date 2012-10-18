@@ -13,12 +13,20 @@ export SAVEHIST=1000
 
 # Check if we are in X or in a tty, and load colors accordingly
 if [ $DISPLAY ]; then
-    # Check if xterm supports 256 colors, or just fall back to
-    # plain xterm otherwise (should be compatible enough).
-    if [ -f /usr/share/terminfo/x/xterm+256color ]; then
-        export TERM="xterm-256color"
+    # Check if urxvt/xterm supports 256 colors, or just fall back to
+    # plain urxvt/xterm otherwise (should be compatible enough).
+    if command -v urxvt >/dev/null 2>&1; then
+        if [ -f /usr/share/terminfo/r/rxvt-unicode-256color ]; then
+            export TERM="rxvt-unicode-256color"
+        else
+            export TERM="rxvt-unicode"
+        fi
     else
-        export TERM="xterm"
+        if [ -f /usr/share/terminfo/x/xterm+256color ]; then
+            export TERM="xterm-256color"
+        else
+            export TERM="xterm"
+        fi
     fi
 else
     # More pleasant colors for the linux console, yay!
