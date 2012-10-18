@@ -5,8 +5,8 @@
 --
 -- {{{ Main
 theme = {}
-theme.confdir       = "~/.config/awesome/"
-theme.wallpaper_cmd = { "" }
+theme.confdir   = "~/.config/awesome/"
+theme.wallpaper = "/home/nico/Dropbox/wallpapers/stripes.png"
 -- }}}
 
 -- {{{ Styles
@@ -15,7 +15,7 @@ theme.font          = "Terminusmodx 10"
 
 -- {{{ Colors
 theme.bg_normal     = "#191919"
-theme.bg_focus      = "#ffffff"
+theme.bg_focus      = "#444444"
 theme.bg_urgent     = "#191919"
 theme.bg_minimize   = "#191919"
 theme.bg_systray    = theme.bg_normal

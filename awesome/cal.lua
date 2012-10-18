@@ -12,7 +12,7 @@
 --   + preserve alignment with foreign locales that use a trailing dot for
 --   weekdays
 --   + minor cosmetic adjustments
--- 
+--
 --
 -- 1. require it in your rc.lua
 --  require("cal")
@@ -100,7 +100,7 @@ function register(mywidget, custom_current_day_format)
     end
     tooltip:add_to_object(mywidget)
 
-    mywidget:add_signal("mouse::enter",tooltip.update)
+    --mywidget:add_signal("mouse::enter",tooltip.update)
 
     mywidget:buttons(awful.util.table.join(
     awful.button({ }, 1, function()
