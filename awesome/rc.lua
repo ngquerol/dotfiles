@@ -500,6 +500,8 @@ awful.rules.rules = {
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2] } },
     { rule = { class = "Download" },
+      properties = { floating = true } },
+    { rule = { name = "plugin-container" },
       properties = { floating = true } }
 }
 -- }}}
