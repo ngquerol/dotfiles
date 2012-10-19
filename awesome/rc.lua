@@ -61,13 +61,9 @@ end
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {
-    names = { "α", "β", "γ" },
-    layout = { layouts[1], layouts[2], layouts[1] },
-}
-
+tags = {}
 for s = 1, screen.count() do
-    tags[s] = awful.tag(tags.names, s, tags.layout)
+    tags[s] = awful.tag({ "α", "β", "γ" }, s, { layouts[1], layouts[2], layouts[1] })
 end
 -- }}}
 
