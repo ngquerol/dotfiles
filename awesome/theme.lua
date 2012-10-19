@@ -11,7 +11,8 @@ theme.wallpaper = "/home/nico/Dropbox/wallpapers/stripes.png"
 
 -- {{{ Styles
 
-theme.font          = "Terminusmodx 10"
+theme.font          = "Consolas 10"
+theme.icon_theme    = "Faenza"
 
 -- {{{ Colors
 theme.bg_normal     = "#191919"
@@ -73,6 +74,7 @@ theme.widget_cpu    = theme.confdir .. "/icons/widgets/cpu.png"
 theme.widget_mem    = theme.confdir .. "/icons/widgets/mem.png"
 theme.widget_bat    = theme.confdir .. "/icons/widgets/ac.png"
 theme.widget_mail   = theme.confdir .. "/icons/widgets/mail.png"
+theme.widget_mpd    = theme.confdir .. "/icons/widgets/mpd.png"
 theme.widget_date   = theme.confdir .. "/icons/widgets/clock.png"
 theme.widget_spacer = theme.confdir .. "/icons/widgets/spacer.png"
 theme.widget_left   = theme.confdir .. "/icons/widgets/left.png"
@@ -91,6 +93,5 @@ theme.layout_spiral     = theme.confdir .. "/icons/layouts/spiral.png"
 theme.layout_dwindle    = theme.confdir .. "/icons/layouts/dwindle.png"
 -- }}}
 
--- }}}
 
 return theme
