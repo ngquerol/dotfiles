@@ -62,17 +62,12 @@ end
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {
-    names = { "main", "web", "dev" },
+    names = { "α", "β", "γ" },
     layout = { layouts[1], layouts[2], layouts[1] },
-    icons = { home .. "/.config/awesome/icons/taglist/main.png", home .. "/.config/awesome/icons/taglist/web.png", home .. "/.config/awesome/icons/taglist/dev.png" }
 }
 
 for s = 1, screen.count() do
     tags[s] = awful.tag(tags.names, s, tags.layout)
-
-    for i, t in pairs(tags[s]) do
-        awful.tag.seticon(tags.icons[i], t)
-    end
 end
 -- }}}
 
@@ -236,8 +231,10 @@ function (widget, args)
         return "(en pause)"
     elseif args["{state}"] == "Stop" then
         return "(arrêté)"
+    elseif args["{state}"] == "Play" then
+        return "<b>" .. args["{Title}"]..'</b> - '.. args["{Artist}"]
     else
-        return "<b>" .. args["{Title}"]..'</b>, par <b>'.. args["{Artist}"] .. "</b>"
+        return "nil!"
     end
 end, 7)
 mpdicon:buttons(awful.util.table.join(
@@ -523,7 +520,7 @@ awful.rules.rules = {
 
     { rule = { class = "Firefox" },
     properties = { tag = tags[1][2] } },
-    { rule = { class = "Download" },
+    { rule = { name = "Téléchargements" },
     properties = { floating = true } },
     { rule = { name = "plugin-container" },
     properties = { floating = true } }

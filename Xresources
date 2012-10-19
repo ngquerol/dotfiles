@@ -10,17 +10,15 @@
 !-- Xft --!
 Xft.autohint:           0
 Xft.lcdfilter:          lcddefault
-Xft.hintstyle:          hintfull
+Xft.hintstyle:          hintslight
 Xft.hinting:            1
 Xft.antialias:          1
 Xft.rgba:               rgb
 
 !-- URxvt --!
-URxvt.font:             -*-terminusmodx-medium-*-*-*-12-*-*-*-*-*-iso10646-1, \
-                        -*-fixed-medium-*-*-*-12-*-*-*-*-*-iso10646-1
+URxvt.font:             -*-fixed-medium-*-*-*-13-*-*-*-*-*-iso10646-1
 
-URxvt.boldFont:          -*-terminusmodx-bold-*-*-*-12-*-*-*-*-*-iso10646-1, \
-                        -*-fixed-bold-*-*-*-12-*-*-*-*-*-iso10646-1
+URxvt.boldFont:         -*-fixed-bold-*-*-*-13-*-*-*-*-*-iso10646-1
 
 URxvt.buffered:           true
 URxvt.cursorUnderline:    false

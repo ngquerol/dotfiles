@@ -6,7 +6,7 @@
 -- {{{ Main
 theme = {}
 theme.confdir   = "~/.config/awesome/"
-theme.wallpaper = "/home/nico/Dropbox/wallpapers/stripes.png"
+theme.wallpaper = "~/Dropbox/wallpapers/stripes.png"
 -- }}}
 
 -- {{{ Styles
@@ -35,6 +35,7 @@ theme.border_marked = "#91231c"
 
 -- {{{ Taglist
 theme.taglist_bg_focus      = "#191919"
+theme.taglist_fg_focus      = "#66AABB"
 theme.taglist_fg_urgent     = "#E64444"
 -- }}}
 
@@ -65,7 +66,6 @@ theme.taglist_squares_unsel = theme.confdir .. "/icons/taglist/tagunsel.png"
 -- }}}
 
 -- {{{ Misc icons
-theme.awesome_icon          = theme.confdir .. "/icons/arch.png"
 theme.menu_submenu_icon     = theme.confdir .. "/icons/submenu.png"
 -- }}}
 

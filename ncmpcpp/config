@@ -5,15 +5,15 @@
 #
 
 
-# MPD 
+# MPD
 mpd_host            = ""
 mpd_port            = ""
 mpd_music_dir       = ""
 mpd_crossfade_time  = "5"
 
 # Playlist
-song_list_format       = "$5%n$9$1▕ $1$4%a$9$1 - $1$3%t$1 $R$2[%b]$9"
-now_playing_prefix     = "$b$1"
+song_list_format       = "$1$4%a$9$1 - $1$3%t$1 $R$2[%b]$9"
+now_playing_prefix     = "$b$2 ♫ "
 now_playing_suffix     = "$/b"
 playlist_display_mode  = "classic"
 autocenter_mode        = "yes"
