@@ -19,5 +19,5 @@ alias grep='grep --color=auto'
 # LESS
 alias less='less -m'
 
-# VIM
-alias v='vim'
+# EMACS
+alias e='emacsclient -t'

@@ -21,7 +21,7 @@ os.setlocale(os.getenv("LANG"))
 
 home = os.getenv("HOME")
 browser = os.getenv("BROWSER") or "firefox"
-editor = os.getenv("EDITOR") or "vim"
+editor = os.getenv("EDITOR") or "emacsclient -t"
 terminal = "urxvt"
 editor_cmd = terminal .. " -e " .. editor
 fm = "thunar"
