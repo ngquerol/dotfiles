@@ -32,10 +32,7 @@ setopt \
 
 # Source seperate config files
 for r in $HOME/.zsh/*.zsh; do
-  if [[ $DEBUG > 0 ]]; then
-    echo "zsh: sourcing $r"
-  fi
-  source $r
+    source $r
 done
 
 eval `dircolors -b`

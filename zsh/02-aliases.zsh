@@ -16,7 +16,7 @@ alias mkdir='mkdir -p'
 # GREP
 alias grep='grep --color=auto'
 
-# LESS
+# LESS
 alias less='less -m'
 
 # EMACS
