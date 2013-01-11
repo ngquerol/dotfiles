@@ -17,12 +17,10 @@ local menubar = require("menubar")
 -- {{{ Variable definitions
 
 -- This is used later as the default terminal and editor to run.
-os.setlocale(os.getenv("LANG"))
-
 home = os.getenv("HOME")
 browser = os.getenv("BROWSER") or "firefox"
 editor = os.getenv("EDITOR") or "emacsclient -t"
-terminal = "urxvt"
+terminal = "urxvtc"
 editor_cmd = terminal .. " -e " .. editor
 fm = "thunar"
 
@@ -63,7 +61,7 @@ end
 -- Define a tag table which hold all screen tags.
 tags = {}
 for s = 1, screen.count() do
-    tags[s] = awful.tag({ "α", "β", "γ" }, s, { layouts[1], layouts[2], layouts[1] })
+    tags[s] = awful.tag({ "1", "2", "3" }, s, { layouts[1], layouts[2], layouts[1] })
 end
 -- }}}
 
@@ -302,7 +300,7 @@ for s = 1, screen.count() do
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "bottom", height = "18", screen = s })
+    mywibox[s] = awful.wibox({ position = "top", height = "18", screen = s })
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
