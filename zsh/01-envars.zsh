@@ -16,7 +16,9 @@ export SAVEHIST=1000
 if [ $DISPLAY ]; then
     #  Check if xterm supports 256 colors, or just fall back to
     # plain xterm otherwise (should be compatible enough).
-    if [ -f /usr/share/terminfo/x/xterm+256color ]; then
+    if [ -f /usr/share/terminfo/r/rxvt-unicode-256color ]; then
+    	export TERM="rxvt-unicode-256color"
+    elif [ -f /usr/share/terminfo/x/xterm+256color ]; then
 	export TERM="xterm-256color"
     else
 	export TERM="xterm"
