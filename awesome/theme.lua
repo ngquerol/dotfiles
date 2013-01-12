@@ -45,10 +45,10 @@ theme.titlebar_bg_normal   = "#3F3F3F"
 -- }}}
 
 -- {{{ Tooltips
-theme.tooltip_bg_color        = "#191919"
-theme.tooltip_fg_color        = "#AAAAAA"
-theme.tooltip_border_color    = "#404040"
-theme.tooltip_fg_color_urgent = "#000000"
+theme.tooltip_bg_color        = theme.bg_normal
+theme.tooltip_fg_color        = theme.fg_normal
+theme.tooltip_border_color    = theme.border_focus
+theme.tooltip_fg_color_urgent = "#E84F4F"
 theme.tooltip_border_width    = "1"
 -- }}}
 
