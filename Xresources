@@ -16,9 +16,9 @@ Xft.antialias:          1
 Xft.rgba:               rgb
 
 !-- URxvt --!
-URxvt.font:             -*-fixed-medium-*-*-*-13-*-*-*-*-*-iso10646-1
+URxvt.font:             -*-terminusmodx-medium-*-*-*-12-*-*-*-*-*-*-*
 
-URxvt.boldFont:         -*-fixed-bold-*-*-*-13-*-*-*-*-*-iso10646-1
+URxvt.boldFont:         -*-terminusmodx-bold-*-*-*-12-*-*-*-*-*-*-*
 
 URxvt.buffered:           true
 URxvt.cursorUnderline:    false
