@@ -11,7 +11,7 @@ case $TERM in
         bindkey "\e[2~"  quoted-insert        # Ins
         bindkey "\e[3~"  delete-char          # Del
         bindkey "\eOc"   emacs-forward-word   # Ctrl-Right
-        bindkey "\eOd"   emacs-backward-word  # Ctrl-Left
+        bindkey "\eOd"   emacs-backward-word  # Ctrl-Left
         bindkey "\e\e[C" forward-word         # Alt-Right
         bindkey "\e\e[D" backward-word        # Alt-Left
         ;;
