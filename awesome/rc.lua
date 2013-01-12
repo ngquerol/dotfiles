@@ -24,6 +24,9 @@ terminal = "urxvtc"
 editor_cmd = terminal .. " -e " .. editor
 fm = "thunar"
 
+-- Language (dates for instance)
+os.setlocale(os.getenv("LANG"))
+
 -- Themes define colours, icons, and wallpapers
 beautiful.init( home .. "/.config/awesome/theme.lua")
 
