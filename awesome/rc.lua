@@ -14,7 +14,7 @@ local vicious = require("vicious")
 -- Menu library
 local menubar = require("menubar")
 
--- {{{ Variable definitions
+--- Variable definitions
 
 -- This is used later as the default terminal and editor to run.
 home = os.getenv("HOME")
