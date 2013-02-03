@@ -14,16 +14,9 @@ export SAVEHIST=1000
 
 # Check if we are in X or in a tty, and load colors accordingly
 if [ $DISPLAY ]; then
-    #  Check if :
-    # - rxvt is installed. If yes, that means we want to use it, and also
-    # check if it supports 256 colors.
-    # - otherwise check if xterm (default on most distros) supports 256 colors;
+    # Check if xterm (default terminal on most distros) supports 256 colors;
     # if not just fall back to plain xterm.
-    if [ command -v urxvt >/dev/null 2>&1 ]; then
-	if [ -f /usr/share/terminfo/r/rxvt-unicode-256color ]; then
-    	    export TERM="rxvt-unicode-256color"
-	fi
-    elif [ -f /usr/share/terminfo/x/xterm+256color ]; then
+    if [ -f /usr/share/terminfo/x/xterm[+,-]256color ]; then
 	export TERM="xterm-256color"
     else
 	export TERM="xterm"
