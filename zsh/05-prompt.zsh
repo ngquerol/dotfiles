@@ -1,4 +1,4 @@
 setprompt() {
-    PROMPT="%B%F{green}%n@%m %F{blue}%~%f %F{yellow}>%f%b "
+    PROMPT="%B%F{green}λ %F{blue}%~%f%b "
     RPROMPT='${vcs_info_msg_0_}'
 }

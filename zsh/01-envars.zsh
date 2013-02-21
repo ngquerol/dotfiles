@@ -16,7 +16,7 @@ export SAVEHIST=1000
 if [ $DISPLAY ]; then
     # Check if xterm (default terminal on most distros) supports 256 colors;
     # if not just fall back to plain xterm.
-    if [ -f /usr/share/terminfo/x/xterm[+,-]256color ]; then
+    if [ -f /usr/share/terminfo/x/xterm+256color ]; then
 	export TERM="xterm-256color"
     else
 	export TERM="xterm"

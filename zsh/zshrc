@@ -22,13 +22,12 @@ setopt \
     nobeep \
     nocheckjobs \
     nohup \
-    listpacked \
     listtypes \
     extendedglob \
     completeinword \
     alwaystoend \
     correct \
-    autocd \
+    autocd
 
 # Source seperate config files
 for r in $HOME/.zsh/*.zsh; do
@@ -36,7 +35,3 @@ for r in $HOME/.zsh/*.zsh; do
 done
 
 eval `dircolors -b`
-
-# Disable this bloody XOFF
-stty ixany
-stty ixoff -ixon
