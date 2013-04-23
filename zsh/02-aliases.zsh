@@ -21,3 +21,6 @@ alias less='less -m'
 
 # EMACS
 alias e='emacsclient -t'
+
+# MISC
+alias sz='source ~/.zshrc'
