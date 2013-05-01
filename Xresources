@@ -16,9 +16,9 @@ Xft.antialias:          1
 Xft.rgba:               rgb
 
 !-- URxvt --!
-URxvt.font:             -*-terminusmodx-medium-*-*-*-12-*-*-*-*-*-*-*
+URxvt.font:             xft:DejaVu Sans Mono:pixelsize=13
 
-URxvt.boldFont:         -*-terminusmodx-bold-*-*-*-12-*-*-*-*-*-*-*
+URxvt.boldFont:         xft:DejaVu Sans Mono:pixelsize=13:weight=bold
 
 URxvt.buffered:           true
 URxvt.cursorUnderline:    false

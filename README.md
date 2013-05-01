@@ -7,5 +7,4 @@ This is where I keep my dotfiles for backup purposes. Currently it contains dotf
 * Ncmpcpp
 * URxvt
 * Various terminal color schemes
-* Weechat
 * Zsh

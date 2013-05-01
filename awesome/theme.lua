@@ -6,13 +6,13 @@
 -- {{{ Main
 theme = {}
 theme.confdir   = "~/.config/awesome/"
-theme.wallpaper = "~/Dropbox/wallpapers/dlanham-Kodama.jpg"
+theme.wallpaper = "~/Dropbox/wallpapers/kodama.jpg"
 -- }}}
 
 -- {{{ Styles
 
-theme.font          = "Terminusmodx 9"
-theme.icon_theme    = "Faenza"
+theme.font          = "DejaVu Sans Mono 10"
+theme.icon_theme    = "Gnome"
 
 -- {{{ Colors
 theme.bg_normal         = "#3F3F3F"
