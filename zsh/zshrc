@@ -5,11 +5,11 @@
 #
 
 # load stuff
-autoload -U colors && colors
-autoload -U compinit && compinit
-autoload -U bashcompinit && bashcompinit
-autoload -U select-word-style && select-word-style bash
-autoload -U vcs_info && vcs_info
+autoload -Uz colors && colors
+autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
+autoload -Uz select-word-style && select-word-style bash
+autoload -Uz vcs_info && vcs_info
 
 zmodload zsh/complist
 zmodload zsh/terminfo
@@ -34,4 +34,5 @@ for r in $HOME/.zsh/*.zsh; do
     source $r
 done
 
+# Enable filetype-dependent colors
 eval `dircolors -b`

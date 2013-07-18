@@ -19,8 +19,8 @@ alias grep='grep --color=auto'
 # LESS
 alias less='less -m'
 
-# EMACS
-alias e='emacsclient -t'
+# VIM
+alias v='vim'
 
 # MISC
 alias sz='source ~/.zshrc'

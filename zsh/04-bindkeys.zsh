@@ -1,20 +1,8 @@
-# Emacs-style kybindings (doh!)
+# Emacs-style kybindings
 bindkey -e
 
 # Different keybindings for different terminals...
 case $TERM in
-    rxvt*)
-        bindkey "\e[7~"  beginning-of-line     # Home
-        bindkey "\e[8~"  end-of-line           # End
-        bindkey "\e[5~"  beginning-of-history  # PageUp
-        bindkey "\e[6~"  end-of-history        # PageDown
-        bindkey "\e[2~"  quoted-insert         # Ins
-        bindkey "\e[3~"  delete-char           # Del
-        bindkey "\eOc"   emacs-forward-word    # Ctrl-Right
-        bindkey "\eOd"   emacs-backward-word   # Ctrl-Left
-        bindkey "\e\e[C" forward-word          # Alt-Right
-        bindkey "\e\e[D" backward-word         # Alt-Left
-        ;;
     xterm*)
         bindkey "\eOH"   beginning-of-line     # Home
         bindkey "\eOF"   end-of-line           # End

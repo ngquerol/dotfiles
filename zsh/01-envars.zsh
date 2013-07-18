@@ -1,6 +1,6 @@
 ## Environment variables parsed by zsh
 
-export EDITOR="nano"
+export EDITOR="vim"
 export LANG=fr_FR.UTF-8
 export BROWSER=firefox
 export PAGER="less -M"
