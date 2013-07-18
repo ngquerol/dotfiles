@@ -39,7 +39,7 @@ zstyle ':completion:*:processes-names'       command 'ps -awxho command'
 
 # Sudo completion
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
-    /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+    /usr/sbin /usr/bin /sbin /bin
 
 # Git info in prompt
 zstyle ':vcs_info:*' check-for-changes true

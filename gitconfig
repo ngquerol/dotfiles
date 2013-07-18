@@ -4,7 +4,7 @@
 [credential]
 	helper = cache
 [color]
-	ui = auto
-	diff = auto
-	status = auto
-	branch = auto
+	ui = true
+	diff = true
+	status = true
+	branch = true

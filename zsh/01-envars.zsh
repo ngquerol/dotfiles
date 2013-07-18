@@ -1,11 +1,12 @@
 ## Environment variables parsed by zsh
 
-export EDITOR="emacsclient -t"
-export ALTERNATE_EDITOR=""
+export EDITOR="nano"
 export LANG=fr_FR.UTF-8
 export BROWSER=firefox
 export PAGER="less -M"
 export SHELL=/bin/zsh
+export LIBVA_DRIVER_NAME=vdpau
+export VDPAU_DRIVER=r600
 
 # History
 export HISTFILE=$HOME/.zsh_history
@@ -17,9 +18,9 @@ if [ $DISPLAY ]; then
     # Check if xterm (default terminal on most distros) supports 256 colors;
     # if not just fall back to plain xterm.
     if [ -f /usr/share/terminfo/x/xterm+256color ]; then
-	export TERM="xterm-256color"
+	    export TERM="xterm-256color"
     else
-	export TERM="xterm"
+	    export TERM="xterm"
     fi
 else
     # More pleasant colors for the linux console, yay!
