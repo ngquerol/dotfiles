@@ -46,6 +46,7 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' stagedstr '● '
 zstyle ':vcs_info:*' unstagedstr '● '
+zstyle ':vcs_info:*' get-revision true
 zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:git:*' actionformats '± %b | %F{4}%a%F{3}%c%F{1}%u%f'
-zstyle ':vcs_info:git:*' formats '± %b %F{3}%c%F{1}%u%f'
+zstyle ':vcs_info:git:*' actionformats '± %b | %F{4}%a%F{3}%c%F{1}%u%f' '%F{8}%.10i%f'
+zstyle ':vcs_info:git:*' formats '± %b %F{3}%c%F{1}%u%f' '%F{8}%.10i%f'
