@@ -1,4 +1,4 @@
-## Title & git stuffs
+## Title & git stuff
 precmd() {
 
     case $TERM in
