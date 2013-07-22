@@ -32,3 +32,11 @@ man() {
 	    LESS_TERMCAP_us=$(printf "\e[0;32m") \
 	    man "$@"
 }
+
+# Show in prompt (red ball) if there is untracked files in a git repo
++vi-git-untracked(){
+    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+        git status --porcelain | grep '??' &> /dev/null ; then
+        hook_com[unstaged]+='%F{1}●%f '
+    fi
+}
