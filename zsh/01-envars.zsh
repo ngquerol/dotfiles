@@ -1,7 +1,6 @@
 ## Environment variables parsed by zsh
 
-export EDITOR="emacsclient -t"
-export ALTERNATE_EDITOR=""
+export EDITOR="vim"
 export LANG=fr_FR.UTF-8
 export BROWSER=firefox
 export PAGER="less -M"
@@ -14,14 +13,13 @@ export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=1000
 export SAVEHIST=1000
 
-# Check if we are in X or in a tty, and load colors accordingly
+# Check if we are in X or in a tty
 if [ $DISPLAY ]; then
-    # Check if xterm (default terminal on most distros) supports 256 colors;
-    # if not just fall back to plain xterm.
-    if [ -f /usr/share/terminfo/x/xterm+256color ]; then
-	    export TERM="xterm-256color"
+    # Check if we are using tmux
+    if [ -n "$TMUX" ]; then
+        export TERM=screen-256color
     else
-	    export TERM="xterm"
+        export TERM=xterm-256color
     fi
 else
     # More pleasant colors for the linux console, yay!
