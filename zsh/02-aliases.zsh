@@ -24,3 +24,4 @@ alias e='emacsclient -t'
 
 # MISC
 alias sz='source ~/.zshrc'
+alias v='vim'
