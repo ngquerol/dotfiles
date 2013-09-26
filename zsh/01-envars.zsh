@@ -5,8 +5,6 @@ export LANG=fr_FR.UTF-8
 export BROWSER=firefox
 export PAGER="less -M"
 export SHELL=/bin/zsh
-export LIBVA_DRIVER_NAME=vdpau
-export VDPAU_DRIVER=r600
 
 # History
 export HISTFILE=$HOME/.zsh_history
