@@ -1,5 +1,6 @@
 set nocompatible
 
+" NeoBundle
 if has('vim_starting')
     set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
 endif
@@ -24,16 +25,14 @@ NeoBundle 'Shougo/vimproc', {
             \     'unix' : 'make -f make_unix.mak',
             \    },
             \ }
-NeoBundle 'xolox/vim-notes', { 'depends' :
-            \ [ 'xolox/vim-misc' ]
-            \ }
 
 filetype plugin indent on
 
 NeoBundleCheck
 
-syntax on
+syntax enable
 
+" Options
 set laststatus=2
 set noshowmode
 set backspace=indent,eol,start
@@ -49,7 +48,6 @@ set encoding=utf8
 set termencoding=utf-8
 set nobackup
 set noswapfile
-set t_Co=256
 set scrolloff=3
 set expandtab
 set tabstop=4
@@ -64,21 +62,19 @@ set wildmenu
 set wildignorecase
 set wildmode=longest,full
 set cursorline
-set clipboard=unnamedplus " share clipboard with Xorg
+set clipboard=unnamed
 set wrapscan
 set autochdir
 set linebreak
-set shortmess+=I
 set conceallevel=2
 set concealcursor=nc
 
 let g:netrw_liststyle=3
 let g:netrw_banner=0
 
-let mapleader=","
 
 " Sane colors for Conceal
-autocmd ColorScheme * hi Conceal guibg=NONE gui=bold ctermbg=NONE cterm=bold
+autocmd ColorScheme * hi Conceal guibg=#303030 gui=bold ctermbg=235 cterm=bold
 colorscheme Tomorrow-Night
 
 " Haaardcoooore
@@ -95,11 +91,16 @@ inoremap jj <ESC>
 noremap <silent><leader>ev :tabedit $MYVIMRC<CR>
 noremap <silent><leader>p :set paste!<CR>
 
+" Leader
+let mapleader=","
+
+" Return to last edited place in file
 autocmd BufReadPost *
             \ if line("'\"") > 0 && line("'\"") <= line("$") |
             \   exe "normal! g`\"" |
             \ endif
 
+" Plugins
 let g:airline_powerline_fonts = 1
 let g:bufferline_solo_highlight = 1
 let g:airline#extensions#tabline#enabled = 1

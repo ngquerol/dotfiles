@@ -1,10 +1,10 @@
 [user]
-	name = Nicolas G. Querol
-	email = nicolas.gquerol@gmail.com
+    name = Nicolas G. Querol
+    email = nicolas.gquerol@gmail.com
 [credential]
-	helper = cache
+    helper = cache
 [color]
-	ui = true
-	diff = true
-	status = true
-	branch = true
+    ui = true
+    diff = true
+    status = true
+    branch = true
