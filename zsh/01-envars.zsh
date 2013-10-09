@@ -12,7 +12,7 @@ export HISTSIZE=1000
 export SAVEHIST=1000
 
 # Check if there is support for 256 colors
-if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+if [ -e /usr/share/terminfo/x/xterm?256color ]; then
     export TERM=xterm-256color
 else
     export TERM=xterm
