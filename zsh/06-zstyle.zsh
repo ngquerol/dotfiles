@@ -44,19 +44,9 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 
 # SCM info in prompt
 zstyle ':vcs_info:*' check-for-changes true
-<<<<<<< HEAD
-zstyle ':vcs_info:*' formats '%F{blue}± %b%f%m%c%u' '%F{8}%.7i%f'
-zstyle ':vcs_info:*' actionformats '%F{blue}± %b%f%m%F{4}[%a]%f %c%u' '%F{8}%.7i%f'
+zstyle ':vcs_info:*' formats '%F{blue}± %b%f %c%u' '%F{8}%.7i%f'
+zstyle ':vcs_info:*' actionformats '%F{blue}± %b%f %F{7}[%a]%f %c%u' '%F{8}%.7i%f'
 zstyle ':vcs_info:*' stagedstr '%F{2}●%f '
 zstyle ':vcs_info:*' unstagedstr '%F{3}●%f '
 zstyle ':vcs_info:*' get-revision true
-zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-aheadbehind
-=======
-zstyle ':vcs_info:*' stagedstr '● '
-zstyle ':vcs_info:*' unstagedstr '● '
-zstyle ':vcs_info:*' get-revision true
-zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:git:*' actionformats '± %b | %F{4}%a%F{3}%c%F{1}%u%f' '%F{8}%.10i%f'
-zstyle ':vcs_info:git:*' formats '± %b %F{2}%c%F{3}%u%f' '%F{8}%.7i%f'
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
->>>>>>> parent of 857ce50... Update git info in zsh prompt

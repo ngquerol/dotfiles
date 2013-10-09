@@ -18,5 +18,3 @@ else
     export TERM=xterm
 fi
 
-# Add some folders to the path
-export PATH=$PATH:~/.bin/
