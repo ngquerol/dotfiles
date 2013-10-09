@@ -1,6 +1,5 @@
 ## Title & git stuff
 precmd() {
-
     case $TERM in
         xterm*)
             print -Pn "\e]0;%n@%m : %~\a" ;;
@@ -12,7 +11,6 @@ precmd() {
 }
 
 preexec() {
-
     case $TERM in
         xterm*)
             print -Pn "\e]0;$1\a" ;;
@@ -21,7 +19,6 @@ preexec() {
 
 ## Coloring man pages
 man() {
-
     env \
         LESS_TERMCAP_mb=$(printf "\e[1;34m") \
         LESS_TERMCAP_md=$(printf "\e[1;32m") \
@@ -35,10 +32,8 @@ man() {
 
 # Show in prompt (red ball) if there is untracked files in a git repo
 +vi-git-untracked() {
-
-if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]]; then
-    if [[ $(git status --porcelain | grep '??' &> /dev/null) == 'true' ]]; then
-        hook_com[unstaged]+='%F{1}●%f '
+    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+        git status --porcelain | grep '??' &> /dev/null; then
+        hook_com[unstaged]+='%F{red}●%f '
     fi
-fi
 }
