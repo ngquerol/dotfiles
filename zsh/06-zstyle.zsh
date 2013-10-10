@@ -43,6 +43,7 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
     /usr/sbin /usr/bin /sbin /bin
 
 # SCM info in prompt
+zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' formats '%F{blue}± %b%f %c%u' '%F{8}%.7i%f'
 zstyle ':vcs_info:*' actionformats '%F{blue}± %b%f %F{7}[%a]%f %c%u' '%F{8}%.7i%f'
