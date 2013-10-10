@@ -17,6 +17,8 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'chriskempson/vim-tomorrow-theme'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'jiangmiao/auto-pairs'
+NeoBundle 'junegunn/vim-easy-align'
+NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'pangloss/vim-javascript'
@@ -76,7 +78,6 @@ set concealcursor=nc
 let g:netrw_liststyle=3
 let g:netrw_banner=0
 
-
 " Sane colors for Conceal
 autocmd ColorScheme * hi Conceal guibg=#303030 gui=bold ctermbg=235 cterm=bold
 colorscheme Tomorrow-Night
@@ -91,12 +92,14 @@ imap <Down> <nop>
 imap <Left> <nop>
 imap <Right> <nop>
 
-" Leader
+" Leader key
 let mapleader=","
 
 inoremap jj <ESC>
-noremap <silent><leader>ev :tabedit $MYVIMRC<CR>
-noremap <silent><leader>p :set paste!<CR>
+noremap <silent><Leader>ev :tabedit $MYVIMRC<CR>
+noremap <silent><Leader>p :set paste!<CR>
+
+vnoremap <silent><Enter> :EasyAlign<Enter>
 
 " Return to last edited place in file
 autocmd BufReadPost *
@@ -108,7 +111,7 @@ autocmd BufReadPost *
 let g:airline_powerline_fonts = 0
 let g:airline_right_sep = ''
 let g:airline_left_sep = ''
-let g:bufferline_solo_highlight = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:javascript_conceal=1
+let g:airline#extensions#tabline#buffer_min_count = 2
+let g:javascript_conceal = 1
