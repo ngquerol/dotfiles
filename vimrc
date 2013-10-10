@@ -87,12 +87,12 @@ imap <Down> <nop>
 imap <Left> <nop>
 imap <Right> <nop>
 
+" Leader
+let mapleader=","
+
 inoremap jj <ESC>
 noremap <silent><leader>ev :tabedit $MYVIMRC<CR>
 noremap <silent><leader>p :set paste!<CR>
-
-" Leader
-let mapleader=","
 
 " Return to last edited place in file
 autocmd BufReadPost *
