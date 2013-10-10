@@ -1,4 +1,8 @@
-set guifont=Inconsolata\ for\ Powerline\ 12
+if has('win32') || has('win64')
+	set guifont=Consolas:h10
+else
+	set guifont=Inconsolata\ 12
+endif
 
 set guioptions-=r
 set guioptions-=L

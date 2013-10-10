@@ -2,10 +2,14 @@ set nocompatible
 
 " NeoBundle
 if has('vim_starting')
-    set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
+    if has('win32') || has('win64')
+        set runtimepath+=$VIM/vimfiles/bundle/neobundle.vim/
+        call neobundle#rc(expand('$VIM/vimfiles/bundle/'))
+    else
+        set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
+        call neobundle#rc(expand('~/.vim/bundle/'))
+    endif
 endif
-
-call neobundle#rc(expand('~/.vim/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -101,7 +105,7 @@ autocmd BufReadPost *
             \ endif
 
 " Plugins
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 let g:bufferline_solo_highlight = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
