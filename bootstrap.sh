@@ -6,14 +6,14 @@ SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 echo -e "\nSymlinking dotfiles...\n"
-[ -f $HOME/.zsh ] || ln -s $SCRIPTPATH/zsh ~/.zsh
-[ -f $HOME/.zshrc ] || ln -s $SCRIPTPATH/zsh/zshrc ~/.zshrc
-[ -f $HOME/.vim  ] || ln -s $SCRIPTPATH/vim ~/.vim
-[ -f $HOME/.vimrc  ] || ln -s $SCRIPTPATH/vimrc ~/.vimrc
-[ -f $HOME/.gvimrc ] || ln -s $SCRIPTPATH/gvimrc ~/.gvimrc
-[ -f $HOME/.gitconfig ] || ln -s $SCRIPTPATH/gitconfig ~/.gitconfig
+[ -f $HOME/.zsh ] || ln -sv $SCRIPTPATH/zsh ~/.zsh
+[ -f $HOME/.zshrc ] || ln -sv $SCRIPTPATH/zsh/zshrc ~/.zshrc
+[ -f $HOME/.vim  ] || ln -sv $SCRIPTPATH/vim ~/.vim
+[ -f $HOME/.vimrc  ] || ln -sv $SCRIPTPATH/vimrc ~/.vimrc
+[ -f $HOME/.gvimrc ] || ln -sv $SCRIPTPATH/gvimrc ~/.gvimrc
+[ -f $HOME/.gitconfig ] || ln -sv $SCRIPTPATH/gitconfig ~/.gitconfig
 
-echo -e "Bootstrapping NeoBundle...\n"
+echo -e "\nBootstrapping NeoBundle...\n"
 which git > /dev/null
 if [ $? -eq 0 ]; then
     git clone git://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim
