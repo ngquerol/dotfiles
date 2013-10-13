@@ -17,6 +17,8 @@ echo -e "Bootstrapping NeoBundle...\n"
 which git > /dev/null
 if [ $? -eq 0 ]; then
     git clone git://github.com/Shougo/neobundle.vim.git ~/.vim/bundle/neobundle.vim
+else
+    echo -e "Git wasn't found, aborting."
 fi
 
 echo -e "\nAll set. Restart terminal or source $HOME/.zshrc.\n"
