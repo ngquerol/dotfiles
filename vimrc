@@ -74,6 +74,8 @@ set autochdir
 set linebreak
 set conceallevel=2
 set concealcursor=nc
+set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam
+set suffixes+=.old
 
 let g:netrw_liststyle=3
 let g:netrw_banner=0
