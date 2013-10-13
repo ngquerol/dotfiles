@@ -117,3 +117,9 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#buffer_min_count = 2
 let g:javascript_conceal = 1
+let g:ctrlp_cmd = "CtrlPMixed"
+let g:ctrlp_map = "<leader>j"
+if executable("ag")
+    set grepprg=ag\ -i\ -t\ -S\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s -l -i -t -S --nocolor -g ""'
+endif
