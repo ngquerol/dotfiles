@@ -12,10 +12,9 @@ export HISTSIZE=1000
 export SAVEHIST=1000
 
 # Check if we are using tmux and/or if there is support for 256 colors
-# Needed because -e only works with one argument
-setopt nullglob
 if [ -z "$TMUX" ]; then
-    if [ -e /usr/share/terminfo/x/xterm?256color ]; then
+    if [ -e /usr/share/terminfo/x/xterm-256color ] ||
+        [ -e /usr/share/terminfo/x/xterm+256color ]; then
         export TERM=xterm-256color
     else
         export TERM=xterm
