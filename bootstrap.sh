@@ -10,7 +10,6 @@ echo -e "\nSymlinking dotfiles...\n"
 [ -f $HOME/.zshrc ] || ln -sv $SCRIPTPATH/zsh/zshrc $HOME/.zshrc
 [ -f $HOME/.vim  ] || ln -sv $SCRIPTPATH/vim $HOME/.vim
 [ -f $HOME/.vimrc  ] || ln -sv $SCRIPTPATH/vimrc $HOME/.vimrc
-[ -f $HOME/.gvimrc ] || ln -sv $SCRIPTPATH/gvimrc $HOME/.gvimrc
 [ -f $HOME/.gitconfig ] || ln -sv $SCRIPTPATH/gitconfig $HOME/.gitconfig
 
 echo -e "\nBootstrapping NeoBundle...\n"
