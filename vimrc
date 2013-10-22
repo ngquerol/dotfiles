@@ -1,23 +1,17 @@
-set nocompatible
-
 " NeoBundle
 if has('vim_starting')
-    if has('win32') || has('win64')
-        set runtimepath+=$VIM/vimfiles/bundle/neobundle.vim/
-        call neobundle#rc(expand('$VIM/vimfiles/bundle/'))
-    else
-        set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
-        call neobundle#rc(expand('~/.vim/bundle/'))
-    endif
+    set nocompatible
+    set runtimepath+=$HOME/.vim/bundle/neobundle.vim
 endif
+
+call neobundle#rc(expand('~/.vim/bundle/'))
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-NeoBundle 'bling/vim-airline'
 NeoBundle 'chriskempson/vim-tomorrow-theme'
+NeoBundle 'gregsexton/MatchTag'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'jiangmiao/auto-pairs'
-NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'othree/html5.vim'
@@ -26,11 +20,6 @@ NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'tpope/vim-surround'
-NeoBundle 'Shougo/vimproc', {
-            \ 'build' : {
-            \     'unix' : 'make -f make_unix.mak',
-            \    },
-            \ }
 
 filetype plugin indent on
 
@@ -39,14 +28,13 @@ NeoBundleCheck
 syntax enable
 
 " Options
-set laststatus=2
-set noshowmode
-set backspace=indent,eol,start
+set backspace=2
 set hidden
 set number
 set gdefault
 set incsearch
 set showmatch
+set showcmd
 set mouse=a
 set ignorecase
 set smartcase
@@ -64,13 +52,13 @@ set noerrorbells
 set splitright
 set splitbelow
 set ttyfast
+set lazyredraw
 set wildmenu
 set wildignorecase
 set wildmode=longest,full
-set cursorline
-set clipboard=unnamed
+set clipboard^=unnamed
+set showbreak=↪\ 
 set wrapscan
-set autochdir
 set linebreak
 set conceallevel=2
 set concealcursor=nc
@@ -80,9 +68,24 @@ set suffixes+=.old
 let g:netrw_liststyle=3
 let g:netrw_banner=0
 
-" Sane colors for Conceal
-autocmd ColorScheme * hi Conceal guibg=#303030 gui=bold ctermbg=235 cterm=bold
 colorscheme Tomorrow-Night
+
+" GUI
+if has('gui_running')
+    set guifont=Dejavu\ Sans\ Mono\ 10.5
+
+    set guioptions-=r
+    set guioptions-=L
+    set guioptions-=T
+    set guioptions-=m
+    set guioptions+=c
+    set guioptions-=e
+
+    set lines=45 columns=90
+    set guicursor+=a:blinkon0
+
+    colorscheme Tomorrow-Night-Eighties
+endif
 
 " Haaardcoooore
 noremap <Up> <nop>
@@ -95,13 +98,12 @@ imap <Left> <nop>
 imap <Right> <nop>
 
 " Leader key
-let mapleader=","
+let mapleader="\<Space>"
 
 inoremap jj <ESC>
 noremap <silent><Leader>ev :tabedit $MYVIMRC<CR>
 noremap <silent><Leader>p :set paste!<CR>
-
-vnoremap <silent><Enter> :EasyAlign<Enter>
+noremap <silent><Leader>l :ls<CR>
 
 " Return to last edited place in file
 autocmd BufReadPost *
@@ -110,16 +112,12 @@ autocmd BufReadPost *
             \ endif
 
 " Plugins
-let g:airline_powerline_fonts = 0
-let g:airline_right_sep = ''
-let g:airline_left_sep = ''
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#buffer_min_count = 2
+hi Conceal guibg=#303030 gui=bold ctermbg=235 cterm=bold
 let g:javascript_conceal = 1
-let g:ctrlp_cmd = "CtrlPMixed"
-let g:ctrlp_map = "<leader>j"
+
+let g:ctrlp_map = "<Leader>o"
+let g:ctrlp_lazy_update = 1
 if executable("ag")
-    set grepprg=ag\ -i\ -t\ -S\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s -l -i -t -S --nocolor -g ""'
+    set grepprg=ag\ --smart-case\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s --files-with-matches --nocolor -g ""'
 endif
