@@ -11,6 +11,7 @@ echo -e "\nSymlinking dotfiles...\n"
 [ -f $HOME/.vim  ] || ln -sv $SCRIPTPATH/vim $HOME/.vim
 [ -f $HOME/.vimrc  ] || ln -sv $SCRIPTPATH/vimrc $HOME/.vimrc
 [ -f $HOME/.gitconfig ] || ln -sv $SCRIPTPATH/gitconfig $HOME/.gitconfig
+[ -f $HOME/.tmux.conf ] || ln -sv $SCRIPTPATH/tmux.conf $HOME/.tmux.conf
 
 echo -e "\nBootstrapping NeoBundle...\n"
 which git > /dev/null
