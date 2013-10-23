@@ -112,6 +112,8 @@ autocmd BufReadPost *
             \ endif
 
 " Plugins
+source $VIMRUNTIME/macros/matchit.vim
+
 hi Conceal guibg=#303030 gui=bold ctermbg=235 cterm=bold
 let g:javascript_conceal = 1
 
