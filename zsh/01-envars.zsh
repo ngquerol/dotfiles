@@ -11,14 +11,10 @@ export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=1000
 export SAVEHIST=1000
 
-# Check if we are using tmux and/or if there is support for 256 colors
-if [ -z "$TMUX" ]; then
-    if [ -e /usr/share/terminfo/x/xterm-256color ] ||
-        [ -e /usr/share/terminfo/x/xterm+256color ]; then
-        export TERM=xterm-256color
-    else
-        export TERM=xterm
-    fi
+# Check if there is support for 256 colors
+if [ -e /usr/share/terminfo/x/xterm-256color ] ||
+    [ -e /usr/share/terminfo/x/xterm+256color ]; then
+    export TERM=xterm-256color
 else
-    export TERM=screen-256color
+    export TERM=xterm
 fi

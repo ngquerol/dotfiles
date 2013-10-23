@@ -1,10 +1,9 @@
 ## Title & git stuff
 precmd() {
 
-    case $TERM in
-        xterm*)
-            print -Pn "\e]0;%n@%m : %~\a" ;;
-    esac
+    print -Pn "\e]0;%n@%m : %~\a"
+
+    print -Pn "\e]0;%n@%m : %~\a"
 
     vcs_info
 
@@ -13,10 +12,9 @@ precmd() {
 
 preexec() {
 
-    case $TERM in
-        xterm*)
-            print -Pn "\e]0;$1\a" ;;
-    esac
+    print -Pn "\e]0;$1\a"
+
+    print -Pn "\e]0;$1\a"
 }
 
 ## Coloring man pages
