@@ -9,17 +9,17 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'chriskempson/vim-tomorrow-theme'
-NeoBundle 'gregsexton/MatchTag'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'jiangmiao/auto-pairs'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'tpope/vim-commentary'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'Valloric/MatchTagAlways'
 
 filetype plugin indent on
 
@@ -70,14 +70,11 @@ set clipboard^=unnamedplus
 set showbreak=↪\ 
 set linebreak
 
-set conceallevel=2
-set concealcursor=nc
-
 colorscheme Tomorrow-Night
 
 " GUI
 if has('gui_running')
-    set guifont=Inconsolata\ 13
+    set guifont=Inconsolata\ 12
 
     set guioptions-=r
     set guioptions-=L
@@ -88,8 +85,6 @@ if has('gui_running')
 
     set lines=45 columns=90
     set guicursor+=a:blinkon0
-
-    colorscheme Tomorrow-Night-Eighties
 endif
 
 " Leader key
@@ -113,13 +108,9 @@ autocmd BufReadPost *
 " Plugins
 runtime macros/matchit.vim
 
-hi Conceal guibg=#303030 gui=bold ctermbg=235 cterm=bold
-let g:javascript_conceal = 1
-
 nnoremap <silent><Leader>r :CtrlPMRU<CR>
 nnoremap <silent><Leader>o :CtrlP<CR>
-let g:ctrlp_lazy_update = 1
-let g:ctrlp_by_filename = 1
+let g:ctrlp_use_caching = 0
 if executable("ag")
     set grepprg=ag\ --smart-case\ --nogroup\ --nocolor
     let g:ctrlp_user_command = 'ag %s --files-with-matches --nocolor -g ""'
