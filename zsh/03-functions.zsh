@@ -33,9 +33,8 @@ man() {
 
 # Show if there is untracked files in a git repo
 +vi-git-untracked() {
-
-if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
-    git status --porcelain | grep '??' &> /dev/null; then
-    hook_com[unstaged]+='%F{1}●%f '
-fi
+    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+        git status --porcelain | grep '??' &> /dev/null; then
+        hook_com[unstaged]+='%F{1}●%f '
+    fi
 }
