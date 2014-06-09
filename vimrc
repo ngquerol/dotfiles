@@ -1,44 +1,40 @@
-" NeoBundle
-if has('vim_starting')
-    set nocompatible
-    set runtimepath+=$HOME/.vim/bundle/neobundle.vim
-endif
+filetype off
 
-call neobundle#rc(expand('~/.vim/bundle/'))
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-NeoBundleFetch 'Shougo/neobundle.vim'
+Plugin 'gmarik/Vundle.vim'
 
-NeoBundle 'chriskempson/vim-tomorrow-theme'
-NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'jiangmiao/auto-pairs'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'othree/html5.vim'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'tpope/vim-commentary'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-markdown'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'Valloric/MatchTagAlways'
+Plugin 'SirVer/ultisnips'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'honza/vim-snippets'
+Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'ChrisKempson/Vim-Tomorrow-Theme'
+Plugin 'kien/ctrlp.vim'
+Plugin 'mattn/emmet-vim'
+Plugin 'othree/html5.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+
+call vundle#end()
 
 filetype plugin indent on
-
-NeoBundleCheck
-
-syntax enable
+syntax on
 
 " Options
 set backspace=indent,eol,start
 set hidden
 set incsearch
 set wrapscan
-set number
 set showmatch
 set showcmd
 set mouse=a
 set nobackup
 set noswapfile
-set scrolloff=3
+set scrolloff=5
 set noerrorbells
 
 set autoindent
@@ -59,9 +55,6 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,*/.git/**/*,*/.hg/**/*,*/.svn/**/*
 set wildignorecase
 set wildmode=longest,full
 
-let g:netrw_liststyle=3
-let g:netrw_banner=0
-
 set splitright
 set splitbelow
 set ttyfast
@@ -69,23 +62,11 @@ set lazyredraw
 set clipboard^=unnamedplus
 set showbreak=↪\ 
 set linebreak
+set laststatus=2
+set statusline=%<[%n]\ %F\ %m%r%y\ %{exists('g:loaded_fugitive')?fugitive#statusline():''}\ %=%-10.(%l,%c%V%)\ %P
 
-colorscheme Tomorrow-Night
-
-" GUI
-if has('gui_running')
-    set guifont=Inconsolata\ 12
-
-    set guioptions-=r
-    set guioptions-=L
-    set guioptions-=T
-    set guioptions-=m
-    set guioptions+=c
-    set guioptions-=e
-
-    set lines=45 columns=90
-    set guicursor+=a:blinkon0
-endif
+set t_Co=256
+colorscheme Tomorrow-Night-Eighties
 
 " Leader key
 let mapleader="\<Space>"
@@ -93,11 +74,7 @@ let mapleader="\<Space>"
 " Keybindings
 inoremap jj <ESC>
 noremap <silent><Leader>ev :tabedit $MYVIMRC<CR>
-noremap <silent><Leader>p :set paste!<CR>
-nnoremap gp :bp<CR>
-nnoremap gn :bn<CR>
-nnoremap gl :ls<CR>
-nnoremap gb :ls<CR>:b
+noremap <silent><Leader>n :set nu!<CR>
 
 " Go back to last edited place when opening a file
 autocmd BufReadPost *
@@ -108,10 +85,22 @@ autocmd BufReadPost *
 " Plugins
 runtime macros/matchit.vim
 
-nnoremap <silent><Leader>r :CtrlPMRU<CR>
+let g:buffergator_split_size=5
+let g:buffergator_viewport_split_policy="B"
+let g:buffergator_sort_regime="mru"
+let g:buffergator_suppress_keymaps=1
+let g:buffergator_autoexpand_on_split=0
+nnoremap <silent><Leader>f :BuffergatorToggle<CR>
+
+noremap <silent><Leader>r :CtrlPMRU<CR>
 nnoremap <silent><Leader>o :CtrlP<CR>
-let g:ctrlp_use_caching = 0
+let g:ctrlp_use_caching=0
+let g:ctrlp_working_path_mode='a'
 if executable("ag")
     set grepprg=ag\ --smart-case\ --nogroup\ --nocolor
     let g:ctrlp_user_command = 'ag %s --files-with-matches --nocolor -g ""'
 endif
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
