@@ -12,12 +12,13 @@ echo -e "\nSymlinking dotfiles...\n"
 [ -f $HOME/.vimrc  ] || ln -sv $SCRIPTPATH/vimrc $HOME/.vimrc
 [ -f $HOME/.gitconfig ] || ln -sv $SCRIPTPATH/gitconfig $HOME/.gitconfig
 
-echo -e "\nBootstrapping NeoBundle...\n"
+echo -e "\nInstalling Vim bundles...\n"
 which git > /dev/null
 if [ $? -eq 0 ]; then
-    git clone git://github.com/Shougo/neobundle.vim.git $HOME/.vim/bundle/neobundle.vim
+    git clone git://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
+    vim -c PluginInstall -c quitall
 else
-    echo -e "Git wasn't found, aborting."
+    echo -e "Could not find git. Aborting !"
 fi
 
 echo -e "\nAll set. Restart terminal or source $HOME/.zshrc.\n"
