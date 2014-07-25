@@ -13,8 +13,8 @@ echo -e "\nSymlinking dotfiles...\n"
 [ -f $HOME/.gitconfig ] || ln -sv $SCRIPTPATH/gitconfig $HOME/.gitconfig
 
 echo -e "\nInstalling Vim bundles...\n"
-which git > /dev/null
-if [ $? -eq 0 ]; then
+
+if which git > /dev/null 2>&1; then
     git clone git://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
     vim -c PluginInstall -c quitall
 else
