@@ -2,8 +2,7 @@
 
 export EDITOR="vim"
 export LANG=fr_FR.UTF-8
-export BROWSER=firefox
-export PAGER="less -M"
+export BROWSER=chromium
 export SHELL=/bin/zsh
 
 # History
