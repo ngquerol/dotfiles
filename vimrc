@@ -5,16 +5,15 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 
-Plugin 'SirVer/ultisnips'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neosnippet-snippets'
+Plugin 'Shougo/neosnippet.vim'
+Plugin 'bling/vim-airline'
+Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'hail2u/vim-css3-syntax'
-Plugin 'honza/vim-snippets'
-Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'jiangmiao/auto-pairs'
-Plugin 'ChrisKempson/Vim-Tomorrow-Theme'
 Plugin 'kien/ctrlp.vim'
-Plugin 'mattn/emmet-vim'
 Plugin 'othree/html5.vim'
-Plugin 'pangloss/vim-javascript'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
@@ -31,6 +30,7 @@ set incsearch
 set wrapscan
 set showmatch
 set showcmd
+set noshowmode
 set mouse=a
 set nobackup
 set noswapfile
@@ -60,13 +60,12 @@ set splitbelow
 set ttyfast
 set lazyredraw
 set clipboard^=unnamedplus
-set showbreak=↪\ 
+let &showbreak='↪ '
 set linebreak
 set laststatus=2
-set statusline=%<[%n]\ %F\ %m%r%y\ %{exists('g:loaded_fugitive')?fugitive#statusline():''}\ %=%-10.(%l,%c%V%)\ %P
 
 set t_Co=256
-colorscheme Tomorrow-Night-Eighties
+colorscheme Tomorrow-Night
 
 " Leader key
 let mapleader="\<Space>"
@@ -85,22 +84,30 @@ autocmd BufReadPost *
 " Plugins
 runtime macros/matchit.vim
 
-let g:buffergator_split_size=5
-let g:buffergator_viewport_split_policy="B"
-let g:buffergator_sort_regime="mru"
-let g:buffergator_suppress_keymaps=1
-let g:buffergator_autoexpand_on_split=0
-nnoremap <silent><Leader>f :BuffergatorToggle<CR>
-
 noremap <silent><Leader>r :CtrlPMRU<CR>
 nnoremap <silent><Leader>o :CtrlP<CR>
 let g:ctrlp_use_caching=0
-let g:ctrlp_working_path_mode='a'
+let g:ctrlp_open_new_file='r'
+let g:ctrlp_open_multiple_files='2vjr'
 if executable("ag")
     set grepprg=ag\ --smart-case\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s --files-with-matches --nocolor -g ""'
+    let g:ctrlp_user_command='ag %s --files-with-matches --nocolor -g ""'
 endif
 
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:neocomplete#enable_at_startup=1
+let g:neocomplete#enable_smart_case=1
+let g:neocomplete#max_list=20
+
+set conceallevel=2 concealcursor=i
+
+" <CR>: close popup and save indent.
+inoremap <silent><CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    " For no inserting <CR> key.
+    return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ? "\<C-n>" : "\<TAB>")
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+imap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
+smap <expr><S-TAB> pumvisible() ? "\<C-p>" : ""
