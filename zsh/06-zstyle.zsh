@@ -45,9 +45,10 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 # SCM info in prompt
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' formats '%F{blue}± %b%f %c%u'
-zstyle ':vcs_info:*' actionformats '%F{blue}± %b%f %F{7}[%a]%f %c%u'
-zstyle ':vcs_info:*' stagedstr '%F{2}●%f '
-zstyle ':vcs_info:*' unstagedstr '%F{3}●%f '
 zstyle ':vcs_info:*' get-revision true
-zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
+zstyle ':vcs_info:*' stagedstr '%F{2}*%f '
+zstyle ':vcs_info:*' unstagedstr '%F{3}*%f '
+zstyle ':vcs_info:git*' formats '%F{blue}± %b%f %F{black}%7.7i%f %c%u'
+zstyle ':vcs_info:git*' actionformats '%F{blue}± %b%f %F{7}[%a]%f %F{black}%7.7i%f %c%u'
+zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-aheadbehind
+
