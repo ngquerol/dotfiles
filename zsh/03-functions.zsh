@@ -45,10 +45,10 @@ man() {
     local -a gitstatus
 
     behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
-    (( $behind )) && gitstatus+=( "-%F{red}${behind}%f" )
+    (( $behind )) && gitstatus+=( "-%F{red}${behind}%f " )
 
     ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
-    (( $ahead )) && gitstatus+=( "+%F{green}${ahead}%f" )
+    (( $ahead )) && gitstatus+=( "+%F{green}${ahead}%f " )
 
     hook_com[misc]+=${gitstatus}
 
