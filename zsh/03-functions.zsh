@@ -39,20 +39,16 @@ man() {
     fi
 }
 
-# Show how commits the local branch is ahead or behind the remote branch
+# Show how many commits the local branch is ahead or behind the remote branch
 +vi-git-aheadbehind() {
     local ahead behind
     local -a gitstatus
 
     behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
-    (( $behind  )) && gitstatus+=( " -%F{red}${behind}%f"  )
+    (( $behind )) && gitstatus+=( "-%F{red}${behind}%f" )
 
     ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
-    (( $ahead  )) && gitstatus+=( " +%F{blue}${ahead}%f"  )
+    (( $ahead )) && gitstatus+=( "+%F{green}${ahead}%f" )
 
-    hook_com[misc]+=${(j::)gitstatus}
-
-    if [[ -n ${hook_com[misc]}  ]]; then
-        hook_com[misc]=" %F{cyan}∷%f${hook_com[misc]}"
-    fi
+    hook_com[misc]+=${gitstatus}
 }
