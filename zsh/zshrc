@@ -33,6 +33,3 @@ setopt \
 for r in $HOME/.zsh/*.zsh; do
     source $r
 done
-
-# Enable filetype-dependent colors
-eval `dircolors -b`

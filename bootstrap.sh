@@ -1,9 +1,7 @@
 #!/bin/sh
 
-# Absolute path to this script
-SCRIPT=$(readlink -f "$0")
 # Absolute path this script is in
-SCRIPTPATH=$(dirname "$SCRIPT")
+SCRIPTPATH=$(cd "$(dirname "$0")"; pwd)
 
 echo -e "\nSymlinking dotfiles...\n"
 [ -f $HOME/.zsh ] || ln -sv $SCRIPTPATH/zsh $HOME/.zsh
