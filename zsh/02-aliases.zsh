@@ -19,8 +19,8 @@ alias grep='grep --color=auto'
 # LESS
 alias less='less -m'
 
-# VIM
-alias v='vim'
+# EDITOR
+alias e=$EDITOR
 
 # MISC
-alias sz='source ~/.zshrc'
+alias reload='source ~/.zshrc'

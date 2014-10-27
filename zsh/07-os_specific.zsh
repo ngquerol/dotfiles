@@ -7,3 +7,8 @@ fi
 if [ -f /etc/arch-release ]; then
     alias pacman='sudo pacman'
 fi
+
+if [ -f /etc/fedora-release ]; then
+    alias dnf='sudo dnf'
+    alias yum='sudo yum'
+fi

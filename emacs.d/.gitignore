@@ -1,0 +1,6 @@
+elpa/*
+temp/*
+!temp/.gitkeep
+eshell/*
+url/*
+local.el
