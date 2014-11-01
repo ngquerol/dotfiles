@@ -5,7 +5,7 @@
 (global-set-key (kbd "C-c <down>") 'windmove-down)
 
 ;; Popwin
-(package-require 'popwin)
+(require-package 'popwin)
 (require 'popwin)
 (popwin-mode t)
 (push '("*eshell*" :height 10 :position bottom :stick t) popwin:special-display-config)

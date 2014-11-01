@@ -66,16 +66,16 @@ comment at the end of the line."
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 
 ;; Browse-kill-ring
-(package-require 'browse-kill-ring)
+(require-package 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
 
 ;; Expand-region
-(package-require 'expand-region)
+(require-package 'expand-region)
 (global-set-key (kbd "C-c e") 'er/expand-region)
 
 ;; Company
-(package-require 'company)
-(package-require 'company-c-headers)
+(require-package 'company)
+(require-package 'company-c-headers)
 (setq company-minimum-prefix-length 2
       company-abort-manual-when-too-short t
       company-selection-wrap-around t)

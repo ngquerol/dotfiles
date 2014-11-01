@@ -10,7 +10,7 @@
   (package-refresh-contents))
 
 ;; Install package 'name'
-(defun package-require (name)
+(defun require-package (name)
   (unless (package-installed-p name)
     (package-install name)))
 

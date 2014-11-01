@@ -1,9 +1,9 @@
-(package-require 'ido-ubiquitous)
-(package-require 'flx)
-(package-require 'flx-ido)
+(require-package 'ido-ubiquitous)
+(require-package 'flx)
+(require-package 'flx-ido)
 
 (require 'ido)
-(package-require 'ido-vertical-mode)
+(require-package 'ido-vertical-mode)
 (setq ido-everywhere t
       ido-case-fold t
       ido-enable-flex-matching t

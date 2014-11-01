@@ -1,4 +1,4 @@
-(package-require 'smex)
+(require-package 'smex)
 
 (smex-initialize)
 (setq smex-save-file (concat junk-files-directory "smex-items"))

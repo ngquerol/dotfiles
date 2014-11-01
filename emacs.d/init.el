@@ -1,4 +1,5 @@
 ;;; init.el - Emacs startup file
+;;; TODO: load some settings after some package/mode has been loaded
 
 ;; Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 

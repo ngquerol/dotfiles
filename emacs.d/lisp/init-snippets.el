@@ -1,4 +1,4 @@
-(package-require 'yasnippet)
+(require-package 'yasnippet)
 
 (yas-global-mode t)
 
