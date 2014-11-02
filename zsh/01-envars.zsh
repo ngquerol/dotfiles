@@ -11,6 +11,11 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 # Pretty colors
-if command -v sudo 1>/dev/null 2>&1; then
+if [[ $TERM == xterm* ] && [ -e /usr/share/terminfo/x/xterm-256color ]; then
+   export TERM=xterm-256color;
+fi
+
+
+if command -v dircolors 1>/dev/null 2>&1; then
     eval `dircolors -b`
 fi
