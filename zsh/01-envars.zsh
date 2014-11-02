@@ -11,7 +11,7 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 # Pretty colors
-if [[ $TERM == xterm* ] && [ -e /usr/share/terminfo/x/xterm-256color ]; then
+if [[ $TERM == xterm* ]] && [ -e /usr/share/terminfo/x/xterm-256color ]; then
    export TERM=xterm-256color;
 fi
 
