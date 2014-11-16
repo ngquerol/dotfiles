@@ -24,8 +24,7 @@
 (require 'init-dired)
 (require 'init-eshell)
 (require 'init-git)
-(require 'init-ido)
-(require 'init-smex)
+(require 'init-helm)
 (require 'init-snippets)
 
 ;; Load custom settings, if they do exist
