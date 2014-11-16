@@ -65,10 +65,6 @@ comment at the end of the line."
 (global-set-key (kbd "<home>") 'smart-beginning-of-line)
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 
-;; Browse-kill-ring
-(require-package 'browse-kill-ring)
-(browse-kill-ring-default-keybindings)
-
 ;; Expand-region
 (require-package 'expand-region)
 (global-set-key (kbd "C-c e") 'er/expand-region)
@@ -78,7 +74,8 @@ comment at the end of the line."
 (require-package 'company-c-headers)
 (setq company-minimum-prefix-length 2
       company-abort-manual-when-too-short t
-      company-selection-wrap-around t)
+      company-selection-wrap-around t
+      company-idle-delay 0.25)
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'c-mode-common-hook
           '(lambda ()
