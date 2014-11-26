@@ -82,12 +82,7 @@ comment at the end of the line."
              (add-to-list 'company-backends 'company-c-headers)
              (delete 'company-semantic company-backends)))
 
-;; Grep
-(setq grep-command "grep -nHR -e ")
-(global-set-key (kbd "C-x g") 'grep)
-
 ;; Various keybindings
 (global-set-key (kbd "C-c a") 'align-regexp)
-(global-set-key (kbd "C-c b") 'electric-buffer-list)
 
 (provide 'init-editing)
