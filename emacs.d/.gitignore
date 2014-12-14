@@ -2,5 +2,6 @@ elpa/*
 temp/*
 !temp/.gitkeep
 eshell/*
+!eshell/alias
 url/*
 local.el
