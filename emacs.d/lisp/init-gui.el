@@ -7,7 +7,10 @@
       use-dialog-box nil
       inhibit-startup-screen t
       inhibit-startup-echo-area-message t)
+
+;; Show sometimes useful info
 (setq-default indicate-buffer-boundaries t)
+(column-number-mode t)
 
 ;; Smooth scrolling
 (setq scroll-conservatively 10000
