@@ -25,7 +25,6 @@
 (require 'init-eshell)
 (require 'init-git)
 (require 'init-helm)
-(require 'init-snippets)
 
 ;; Load custom settings, if they do exist
 (let ((local-file (concat user-emacs-directory "local.el")))
