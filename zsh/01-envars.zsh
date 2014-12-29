@@ -13,10 +13,11 @@ export SAVEHIST=10000
 
 # Pretty colors
 if [[ $TERM == xterm* ]] && [ -e /usr/share/terminfo/x/xterm-256color ]; then
-   export TERM=xterm-256color;
+    export TERM=xterm-256color
 fi
-
 
 if command -v dircolors 1>/dev/null 2>&1; then
     eval `dircolors -b`
 fi
+
+export PATH=$PATH:$HOME/.bin
