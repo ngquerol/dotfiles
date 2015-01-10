@@ -267,21 +267,22 @@ comment at the end of the line."
 
 ;;; Backups
 
+;; To keep things clean
+(setq user-temp-files-directory (concat user-emacs-directory "temp/"))
+
 ;; Keep backup and auto save files out of the way
 (setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
-
-;; To keep things clean
-(setq temp-files-directory (concat user-emacs-directory "temp/"))
+      `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t))
+      auto-save-list-file-prefix temporary-file-directory)
 
 ;; Recent files & history
 (use-package recentf
   :defer t
   :idle (recentf-mode)
   :config
-  (setq recentf-save-file (concat temp-files-directory "recentf")
+  (setq recentf-save-file (concat user-temp-files-directory "recentf")
         recentf-max-menu-items 15
         recentf-max-saved-items 200
         recentf-exclude (append recentf-exclude
@@ -292,12 +293,12 @@ comment at the end of the line."
 
 (use-package saveplace
   :config
-  (setq save-place-file (concat temp-files-directory "saved-places")))
+  (setq save-place-file (concat user-temp-files-directory "saved-places")))
 
 (use-package savehist
   :init (savehist-mode t)
   :config
-  (setq savehist-file (concat temp-files-directory "history")
+  (setq savehist-file (concat user-temp-files-directory "history")
         savehist-save-minibuffer-history t))
 
 ;;; External packages
