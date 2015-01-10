@@ -5,3 +5,4 @@ eshell/*
 !eshell/alias
 url/*
 local.el
+.mc-lists.el
