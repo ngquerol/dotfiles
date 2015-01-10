@@ -1,3 +1,4 @@
-alias d dired $1
+alias ll ls -lh $*
+alias rm rm -r $*
 alias e find-file-other-window $1
-alias ll ls -lh
+alias d dired $1
