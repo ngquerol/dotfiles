@@ -269,8 +269,8 @@ comment at the end of the line."
 
 ;; Keep backup and auto save files out of the way
 (setq backup-directory-alist
-      `((".*" . ,(locate-user-emacs-file ".backup")))
-      auto-save-file-name-transforms
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
 ;; To keep things clean
