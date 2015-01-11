@@ -20,5 +20,5 @@ if command -v dircolors 1>/dev/null 2>&1; then
     eval `dircolors -b`
 fi
 
-export GOPATH=$HOME/Code/Go
+export GOPATH=$HOME/Code/Go/Packages
 export PATH=$PATH:$HOME/.bin:$GOPATH/bin
