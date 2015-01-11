@@ -189,7 +189,9 @@ comment at the end of the line."
   :config
   (progn
     (require 'dired-x)
-    (setq-default dired-omit-files-p t
+    (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+    (setq-default dired-hide-details-hide-symlink-targets nil
+                  dired-omit-mode t
                   dired-omit-files (concat dired-omit-files "\\|^\\..+$")
                   dired-auto-revert-buffer t
                   dired-listing-switches "-alh")))
