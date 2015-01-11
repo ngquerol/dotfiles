@@ -394,8 +394,7 @@ comment at the end of the line."
   :ensure t
   :bind (("C-," . mc/mark-next-symbol-like-this)
          ("C-*" . mc/mark-more-like-this-extended)
-         ("C-;" . mc/mark-next-like-this)
-         ("C-c e" . mc/edit-lines)))
+         ("C-;" . mc/mark-next-like-this)))
 
 (use-package tex
   :ensure auctex
