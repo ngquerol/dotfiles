@@ -380,7 +380,8 @@ comment at the end of the line."
 
 (use-package helm-swoop
   :ensure t
-  :bind (("C-c o" . helm-swoop)))
+  :bind (("C-c o" . helm-swoop)
+         ("C-c O" . helm-multi-swoop)))
 
 (use-package helm-flycheck
   :ensure t
