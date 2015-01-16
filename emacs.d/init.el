@@ -366,6 +366,7 @@ comment at the end of the line."
     (setq helm-buffers-fuzzy-matching           t
           helm-M-x-fuzzy-match                  t
           helm-imenu-fuzzy-match                t
+          helm-buffers-fuzzy-matching           t
           helm-quick-update                     t
           helm-ff-auto-update-initial-value     nil
           helm-split-window-in-side-p           t
@@ -381,7 +382,7 @@ comment at the end of the line."
 (use-package helm-swoop
   :ensure t
   :bind (("C-c o" . helm-swoop)
-         ("C-c O" . helm-multi-swoop)))
+         ("C-c O" . helm-multi-swoop-all)))
 
 (use-package helm-flycheck
   :ensure t
