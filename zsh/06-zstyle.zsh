@@ -9,7 +9,7 @@ zstyle ':completion:*' squeeze-slashes true
 
 # Use cache
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh_cache
+zstyle ':completion:*' cache-path $HOME/.zsh/temp/zsh_cache
 
 # Allow mistakes
 zstyle ':completion:*' completer _complete _match _approximate

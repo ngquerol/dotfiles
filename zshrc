@@ -6,7 +6,7 @@
 
 # load stuff
 autoload -Uz colors && colors
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -d $HOME/.zsh/temp/zcompdump
 autoload -Uz bashcompinit && bashcompinit
 autoload -Uz select-word-style && select-word-style bash
 autoload -Uz vcs_info && vcs_info
