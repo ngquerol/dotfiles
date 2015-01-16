@@ -1,20 +1,7 @@
-## Title & git stuff
+##Prompt & git stuff
 precmd() {
-
-    print -Pn "\e]0;%n@%m : %~\a"
-
-    print -Pn "\e]0;%n@%m : %~\a"
-
     vcs_info
-
     setprompt
-}
-
-preexec() {
-
-    print -Pn "\e]0;$1\a"
-
-    print -Pn "\e]0;$1\a"
 }
 
 ## Coloring man pages
