@@ -295,7 +295,10 @@ comment at the end of the line."
 
 (use-package saveplace
   :config
-  (setq save-place-file (concat user-temp-files-directory "saved-places")))
+  (progn (setq save-place-file
+               (concat user-temp-files-directory "saved-places")
+               save-place-forget-unreadable-files t)
+         (setq-default save-place t)))
 
 (use-package savehist
   :init (savehist-mode t)
