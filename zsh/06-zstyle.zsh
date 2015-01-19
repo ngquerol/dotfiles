@@ -27,9 +27,10 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 
 # PID completion
 zstyle ':completion:*:processes' command ps -A -o pid,user,command
+zstyle ':completion:*:processes-names' command 'ps c -u ${USER} -o command | uniq'
 zstyle ':completion:*:(killall|pkill|kill):*' menu yes select
 zstyle ':completion:*:(killall|pkill|kill):*' force-list always
-zstyle ':completion:*:*:kill:*:processes'    list-colors "=(#b) #([0-9]#)*=0=01;31"
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=0=01;31"
 
 # Sudo completion
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
