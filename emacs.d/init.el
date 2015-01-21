@@ -287,6 +287,7 @@ comment at the end of the line."
   (setq recentf-save-file (concat user-temp-files-directory "recentf")
         recentf-max-menu-items 15
         recentf-max-saved-items 200
+        recentf-auto-cleanup 60
         recentf-exclude (append recentf-exclude
                                 '("/\\.git/.*\\'"
                                   "/elpa/.*\\'"
