@@ -37,14 +37,15 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
        /usr/sbin /usr/bin /sbin /bin
 
 # SCM info in prompt
-zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' enable git svn
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' get-revision true
-zstyle ':vcs_info:*' stagedstr '%F{2}*%f '
-zstyle ':vcs_info:*' unstagedstr '%F{3}*%f '
+zstyle ':vcs_info:*' stagedstr '%F{green}*%f '
+zstyle ':vcs_info:*' unstagedstr '%F{yellow}*%f '
 zstyle ':vcs_info:git*' formats '%F{cyan}± %b%f %F{black}%7.7i%f %m%c%u'
-zstyle ':vcs_info:git*' actionformats '%F{cyan}± %b%f %F{7}[%a]%f %F{black}%7.7i%f %m%c%u'
+zstyle ':vcs_info:git*' actionformats '%F{cyan}± %b%f %F{blue}[%a]%f %F{black}%7.7i%f %m%c%u'
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-aheadbehind
+zstyle ':vcs_info:svn*' formats '%F{cyan}%s %r%f %F{black}r%i%f %m%c%u'
 
 # Colors
 zmodload zsh/complist
