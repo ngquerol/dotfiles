@@ -405,6 +405,11 @@ comment at the end of the line."
   :bind (("C-c g" . magit-status))
   :diminish magit-auto-revert-mode)
 
+(use-package magit-filenotify
+  :ensure t
+  :config (add-hook 'magit-status-mode-hook #'magit-filenotify-mode)
+  :diminish magit-filenotify-mode)
+
 (use-package multiple-cursors
   :ensure t
   :bind (("C-," . mc/mark-next-symbol-like-this)
