@@ -256,6 +256,13 @@ comment at the end of the line."
                        (bind-key "C-l" #'eshell/clear eshell-mode-map)
                        (bind-key "C-r" #'helm-eshell-history eshell-mode-map)))))
 
+;;; Ediff
+(use-package ediff-wind
+  :defer t
+  :config
+  (setq ediff-window-setup-function #'ediff-setup-windows-plain
+        ediff-split-window-function #'split-window-horizontally))
+
 ;;; Misc
 
 ;; Always follow symlinks to file in VCS repos
