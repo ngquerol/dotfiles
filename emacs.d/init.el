@@ -180,6 +180,16 @@ comment at the end of the line."
 (global-set-key (kbd "<home>") 'smart-beginning-of-line)
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 
+(defun forward-or-backward-sexp (&optional arg)
+  "Go to the matching parenthesis character if one is adjacent to point."
+  (interactive "^p")
+  (cond ((looking-at "\\s(") (forward-sexp arg))
+        ((looking-back "\\s)" 1) (backward-sexp arg))
+        ;; Now, try to succeed from inside of a bracket
+        ((looking-at "\\s)") (forward-char) (backward-sexp arg))
+        ((looking-back "\\s(" 1) (backward-char) (forward-sexp arg))))
+(global-set-key (kbd "M-<end>") #'forward-or-backward-sexp)
+
 ;; Align according to regexp
 (global-set-key (kbd "C-c a") 'align-regexp)
 
