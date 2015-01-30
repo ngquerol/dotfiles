@@ -92,7 +92,7 @@
               c-default-style "k&r")
 
 (add-hook 'c-mode-common-hook
-          (progn
+          (lambda ()
             ;; Indent case statements in C modes
             (c-set-offset 'case-label '+)
             ;; Indent from the same level as opening braces
