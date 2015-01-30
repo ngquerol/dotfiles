@@ -351,7 +351,9 @@ comment at the end of the line."
 
 (use-package expand-region
   :ensure t
-  :bind (("C-c e" . er/expand-region)))
+  :config
+  (setq expand-region-contract-fast-key "X")
+  :bind (("C-x x" . er/expand-region)))
 
 (use-package flycheck
   :ensure t
