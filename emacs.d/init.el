@@ -56,7 +56,7 @@
 (fset 'yes-or-no-p #'y-or-n-p)
 
 ;; Show sometimes useful info
-(setq-default indicate-buffer-boundaries t)
+(setq-default indicate-buffer-boundaries 'right)
 (column-number-mode t)
 
 ;; Smooth scrolling
