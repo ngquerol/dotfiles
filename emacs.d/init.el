@@ -369,7 +369,7 @@ comment at the end of the line."
 (use-package helm
   :ensure t
   :bind
-  (("C-x C-b" . helm-buffers-list)
+  (("C-x b" . helm-buffers-list)
    ("C-x C-f" . helm-find-files)
    ("C-x C-r" . helm-recentf)
    ("C-c i"   . helm-imenu)
