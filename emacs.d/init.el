@@ -435,6 +435,31 @@ comment at the end of the line."
         TeX-view-program-selection '((output-pdf "PDF Viewer"))
         TeX-view-program-list '(("PDF Viewer" "evince %o"))))
 
+(use-package web-mode
+  :ensure t
+  :mode
+  (("\\.html?\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.css\\'" . web-mode))
+  :config
+  (progn
+    (setq web-mode-markup-indent-offset 2
+          web-mode-css-indent-offset 2
+          web-mode-code-indent-offset 4
+          web-mode-enable-auto-expanding t
+          web-mode-enable-auto-pairing t
+          web-mode-enable-current-element-highlight t)
+    (bind-key "M-<up>" #'web-mode-element-previous web-mode-map)
+    (bind-key "M-<down>" #'web-mode-element-next web-mode-map)
+    (bind-key "M-S-<up>" #'web-mode-element-parent web-mode-map)
+    (bind-key "M-<end>" #'web-mode-navigate web-mode-map)
+    (bind-key "C-c c" #'web-mode-comment-or-uncomment web-mode-map)
+    (bind-key "C-c k" #'web-mode-element-kill web-mode-map)
+    (bind-key "C-c v" #'web-mode-element-vanish web-mode-map)
+    (bind-key "C-c w" #'web-mode-element-wrap web-mode-map)
+    (bind-key "C-c r" #'web-mode-element-rename web-mode-map)
+    (bind-key "C-x x" #'web-mode-mark-and-expand web-mode-map)))
+
 (use-package yasnippet
   :ensure t
   :config
