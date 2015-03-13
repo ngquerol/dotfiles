@@ -92,7 +92,7 @@
               c-default-style "k&r")
 
 (add-hook 'c-mode-common-hook
-          (lambda ()
+          #'(lambda ()
             ;; Indent case statements in C modes
             (c-set-offset 'case-label '+)
             ;; Indent from the same level as opening braces
@@ -382,6 +382,7 @@ comment at the end of the line."
   :config
   (progn
     (use-package helm-config)
+    (global-unset-key (kbd "C-x c"))
     (setq helm-buffers-fuzzy-matching           t
           helm-M-x-fuzzy-match                  t
           helm-imenu-fuzzy-match                t
