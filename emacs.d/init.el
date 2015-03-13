@@ -496,6 +496,12 @@ comment at the end of the line."
     (bind-key "C-c r" #'web-mode-element-rename web-mode-map)
     (bind-key "C-x x" #'web-mode-mark-and-expand web-mode-map)))
 
+(use-package whole-line-or-region
+  :ensure t
+  :diminish whole-line-or-region-mode
+  :config
+  (whole-line-or-region-mode t))
+
 (use-package yasnippet
   :ensure t
   :config
