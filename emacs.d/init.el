@@ -107,6 +107,11 @@
 
 (global-set-key (kbd "C-c D")  'delete-file-and-buffer)
 
+;; Easily switch between source and headers files in c-modes
+(add-hook 'c-mode-common-hook
+          (lambda()
+            (local-set-key (kbd "C-c ,") 'ff-find-other-file)))
+
 ;;; Editing
 
 (setq-default auto-save-default nil
