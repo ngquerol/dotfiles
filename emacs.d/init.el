@@ -15,7 +15,10 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(require 'use-package)
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
 
 ;;; Locales
 
@@ -230,7 +233,7 @@ comment at the end of the line."
 
 ;;; Dired
 (use-package dired
-  :defer t
+  :defer
   :config
   (progn
     (require 'dired-x)
@@ -299,7 +302,7 @@ comment at the end of the line."
 
 ;;; Ediff
 (use-package ediff-wind
-  :defer t
+  :defer
   :config
   (setq ediff-window-setup-function #'ediff-setup-windows-plain
         ediff-split-window-function #'split-window-horizontally))
@@ -308,7 +311,7 @@ comment at the end of the line."
 
 ;; Always follow symlinks to file in VCS repos
 (use-package vc-hooks
-  :defer t
+  :defer
   (setq vc-follow-symlinks t))
 
 ;; Shell scripts
@@ -329,8 +332,7 @@ comment at the end of the line."
 
 ;; Recent files & history
 (use-package recentf
-  :defer t
-  :idle (recentf-mode)
+  :defer
   :config
   (setq recentf-save-file (concat user-temp-files-directory "recentf")
         recentf-max-menu-items 15
@@ -358,7 +360,7 @@ comment at the end of the line."
 ;;; External packages
 (use-package company
   :ensure t
-  :defer t
+  :defer
   :init (global-company-mode)
   :config
   (progn (setq company-abort-manual-when-too-short t
@@ -372,7 +374,7 @@ comment at the end of the line."
 
 (use-package company-c-headers
   :ensure t
-  :defer t
+  :defer
   :init
   (with-eval-after-load 'company
     (add-to-list 'company-backends 'company-c-headers)))
@@ -462,7 +464,7 @@ comment at the end of the line."
 
 (use-package tex
   :ensure auctex
-  :defer t
+  :defer
   :config
   (setq TeX-parse-self t
         TeX-auto-save t
