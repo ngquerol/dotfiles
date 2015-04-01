@@ -1,7 +1,12 @@
-##Prompt & git stuff
+## Get VCS info, set the prompt and the terminal's title
 precmd() {
     vcs_info
     setprompt
+    print -Pn "\e]0;%n@%m: %~\a"
+}
+
+preexec () {
+    print -Pn "\e]0;$1\a"
 }
 
 ## Coloring man pages
