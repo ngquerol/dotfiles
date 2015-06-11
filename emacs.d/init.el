@@ -94,7 +94,7 @@
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 
-(global-set-key (kbd "C-c R") #'rename-file-and-buffer)
+(global-set-key (kbd "C-c r") #'rename-file-and-buffer)
 
 (defun delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
@@ -450,11 +450,6 @@ comment at the end of the line."
   :config (setq magit-restore-window-configuration t)
   :bind (("C-c g" . magit-status))
   :diminish magit-auto-revert-mode)
-
-(use-package magit-filenotify
-  :ensure t
-  :config (add-hook 'magit-status-mode-hook #'magit-filenotify-mode)
-  :diminish magit-filenotify-mode)
 
 (use-package multiple-cursors
   :ensure t
