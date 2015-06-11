@@ -6,8 +6,8 @@ alias rmf='rm -rf'
 alias cp='cp -ri'
 
 # LS
-alias ls='ls -Xp --color=auto'
-alias ll='ls -Xplh --color=auto'
+alias ls='ls -FG'
+alias ll='ls -lhFG'
 
 # MKDIR
 alias mk='mkdir -p'

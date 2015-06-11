@@ -26,7 +26,7 @@ man() {
 # Show if there are untracked files in a git repo
 +vi-git-untracked() {
     if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
-        git status --porcelain | grep '??' &> /dev/null; then
+           git status --porcelain | grep '??' &> /dev/null; then
         hook_com[unstaged]+='%F{1}*%f '
     fi
 }
@@ -36,10 +36,10 @@ man() {
     local ahead behind
     local -a gitstatus
 
-    behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
+    behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | grep -ch "^")
     (( $behind )) && gitstatus+=( "-%F{red}${behind}%f " )
 
-    ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
+    ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | grep -ch "^")
     (( $ahead )) && gitstatus+=( "+%F{green}${ahead}%f " )
 
     hook_com[misc]+=${gitstatus}

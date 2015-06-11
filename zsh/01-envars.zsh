@@ -1,9 +1,9 @@
 ## Environment variables parsed by zsh
 
-export EDITOR="emacsclient -t "
+export EDITOR="/usr/local/bin/emacsclient -t"
 export ALTERNATE_EDITOR=""
 export LANG=fr_FR.UTF-8
-export BROWSER=chromium
+export BROWSER=open
 export SHELL=/bin/zsh
 
 # History
@@ -20,5 +20,4 @@ if command -v dircolors 1>/dev/null 2>&1; then
     eval `dircolors -b`
 fi
 
-export GOPATH=$HOME/Code/Go/Packages
-export PATH=$PATH:$HOME/.bin:$GOPATH/bin
+export PATH=$PATH:$HOME/.bin

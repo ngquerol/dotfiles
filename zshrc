@@ -4,6 +4,9 @@
 # Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 #
 
+# source zsh completions
+fpath=(/usr/local/share/zsh-completions $fpath)
+
 # load stuff
 autoload -Uz colors && colors
 autoload -Uz compinit && compinit -d $HOME/.zsh/temp/zcompdump
