@@ -32,11 +32,9 @@ echo "Backing up \"$backup_src_dir\" to \"$backup_dest_file\"..."
 cd "$backup_src_dir"
 
 if [ -f "$exclude_file" ]; then
-    tar --exclude-from "$exclude_file" --exclude-vcs --exclude-backups \
-        -caf "$backup_dest_file" * 1>/dev/null 2>&1
+    tar --exclude-from "$exclude_file" -cf "$backup_dest_file" * 1>/dev/null 2>&1
 else
-    tar --exclude-vcs --exclude-backups -caf "$backup_dest_file" * \
-        1>/dev/null 2>&1
+    tar -cf "$backup_dest_file" * 1>/dev/null 2>&1
 fi
 
 tar=$?
