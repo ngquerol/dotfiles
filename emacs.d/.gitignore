@@ -6,3 +6,4 @@ eshell/*
 url/*
 local.el
 .mc-lists.el
+tramp
