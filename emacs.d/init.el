@@ -189,9 +189,6 @@ Position the cursor at it's beginning, according to the current mode."
 (global-set-key (kbd "M-<down>") 'smart-open-line)
 (global-set-key (kbd "M-<up>") 'smart-open-line-above)
 
-;; Delete the whole line
-(global-set-key (kbd "C-c d") 'kill-whole-line)
-
 ;; Comment what I really mean
 (defun comment-dwim-line (&optional arg)
   "Replacement for the comment-dwim command.
