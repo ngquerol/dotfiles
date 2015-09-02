@@ -471,8 +471,8 @@ comment at the end of the line."
         TeX-auto-save t
         TeX-clean-confirm nil
         TeX-PDF-mode t
-        TeX-view-program-selection '((output-pdf "PDF Viewer"))
-        TeX-view-program-list '(("PDF Viewer" "evince %o"))))
+        TeX-view-program-selection '((output-pdf "Preview"))
+        TeX-view-program-list '(("Preview" "open -a Preview.app %o"))))
 
 (use-package web-mode
   :ensure t
