@@ -20,4 +20,4 @@ if command -v dircolors 1>/dev/null 2>&1; then
     eval `dircolors -b`
 fi
 
-export PATH=$PATH:$HOME/.bin
+export PATH=$HOME/.bin:/usr/local/sbin:$PATH
