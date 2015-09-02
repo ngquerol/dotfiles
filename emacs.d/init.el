@@ -94,19 +94,20 @@
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 
-(global-set-key (kbd "C-c r") #'rename-file-and-buffer)
+(global-set-key (kbd "C-c R") #'rename-file-and-buffer)
 
 (defun delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
-    (when filename
-      (if (vc-backend filename)
-          (vc-delete-file filename)
-        (progn
-          (delete-file filename)
-          (message "Deleted file %s" filename)
-          (kill-buffer))))))
+        (when filename
+          (if (y-or-n-p (format "Really delete %s ?" filename))
+              (if (vc-backend filename)
+                  (vc-delete-file filename)
+                (progn
+                  (delete-file filename)
+                  (message "Deleted file %s" filename)
+                  (kill-buffer)))))))
 
 (global-set-key (kbd "C-c D")  'delete-file-and-buffer)
 
@@ -116,7 +117,6 @@
             (local-set-key (kbd "C-c ,") 'ff-find-other-file)))
 
 ;;; Editing
-
 (setq-default auto-save-default nil
               make-backup-files nil
               case-fold-search t
@@ -131,10 +131,10 @@
 
 (add-hook 'c-mode-common-hook
           #'(lambda ()
-            ;; Indent case statements in C modes
-            (c-set-offset 'case-label '+)
-            ;; Indent from the same level as opening braces
-            (c-set-offset 'substatement-open 0)))
+              ;; Indent case statements in C modes
+              (c-set-offset 'case-label '+)
+              ;; Indent from the same level as opening braces
+              (c-set-offset 'substatement-open 0)))
 
 ;; Delete selected text
 (delete-selection-mode)
