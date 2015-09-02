@@ -242,7 +242,6 @@ comment at the end of the line."
                   dired-listing-switches "-alh")))
 
 ;;; Eshell
-
 (defun eshell/clear ()
   "Clear the eshell buffer"
   (interactive)
@@ -355,6 +354,16 @@ comment at the end of the line."
         savehist-save-minibuffer-history t))
 
 ;;; External packages
+(use-package anzu
+  :ensure t
+  :diminish (anzu-mode)
+  :bind (("M-R" . anzu-query-replace-at-cursor)
+         ("M-r" . anzu-query-replace))
+  :config (progn
+            (global-anzu-mode t)
+            (setq anzu-deactivate-region t
+                  anzu-replace-to-string-separator " => ")))
+
 (use-package company
   :ensure t
   :defer
