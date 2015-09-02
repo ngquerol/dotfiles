@@ -429,12 +429,11 @@ comment at the end of the line."
     (setq helm-buffers-fuzzy-matching           t
           helm-M-x-fuzzy-match                  t
           helm-imenu-fuzzy-match                t
-          helm-buffers-fuzzy-matching           t
           helm-quick-update                     t
-          helm-ff-auto-update-initial-value     nil
           helm-split-window-in-side-p           t
           helm-move-to-line-cycle-in-source     t
           helm-scroll-amount                    8
+          helm-ff-auto-update-initial-value     nil
           helm-ff-search-library-in-sexp        t
           helm-ff-file-name-history-use-recentf t
           helm-ff-skip-boring-files             t)
@@ -454,8 +453,7 @@ comment at the end of the line."
 (use-package magit
   :ensure t
   :config (setq magit-restore-window-configuration t)
-  :bind (("C-c g" . magit-status))
-  :diminish magit-auto-revert-mode)
+  :bind (("C-c g" . magit-status)))
 
 (use-package multiple-cursors
   :ensure t
@@ -513,10 +511,5 @@ comment at the end of the line."
          (yas-reload-all)
          (add-hook 'prog-mode-hook 'yas-minor-mode))
   :diminish yas-minor-mode)
-
-;; Local Variables:
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; init.el ends here
