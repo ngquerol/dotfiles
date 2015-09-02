@@ -1,17 +1,5 @@
-## Get VCS info, set the prompt and the terminal's title
-precmd() {
-    vcs_info
-    setprompt
-    print -Pn "\e]0;%n@%m: %~\a"
-}
-
-preexec () {
-    print -Pn "\e]0;$1\a"
-}
-
-## Coloring man pages
+# Coloring man pages
 man() {
-
     env \
         LESS_TERMCAP_mb=$(printf "\e[1;34m") \
         LESS_TERMCAP_md=$(printf "\e[1;32m") \
@@ -21,6 +9,26 @@ man() {
         LESS_TERMCAP_ue=$(printf "\e[0m") \
         LESS_TERMCAP_us=$(printf "\e[0;32m") \
         man "$@"
+}
+
+# Display man pages formatted as postscript
+pman() {
+    if [[ ($# -eq 1) && (! -z $1) ]]; then
+        man -t $1 | open -f -a /Applications/Preview.app
+    else
+        print "Usage: pman <man page>"
+    fi
+}
+
+# Get VCS info, set the prompt and the terminal's title
+precmd() {
+    vcs_info
+    setprompt
+    print -Pn "\e]0;%n@%m: %~\a"
+}
+
+preexec () {
+    print -Pn "\e]0;$1\a"
 }
 
 # Show if there are untracked files in a git repo
