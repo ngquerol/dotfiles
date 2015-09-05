@@ -1,8 +1,8 @@
 # Different keybindings for different terminals...
 case $TERM in
     xterm*)
-        bindkey "\e[H"   beginning-of-line     # Home
-        bindkey "\e[F"   end-of-line           # End
+        bindkey "\e[H"    beginning-of-line    # Home
+        bindkey "\e[F"    end-of-line          # End
         bindkey "\e[5~"   beginning-of-history # PageUp
         bindkey "\e[6~"   end-of-history       # PageDown
         bindkey "\e[2~"   quoted-insert        # Ins
@@ -11,6 +11,8 @@ case $TERM in
         bindkey "\e[1;5D" emacs-backward-word  # Ctrl-Left
         bindkey "\e[1;3C" forward-word         # Alt-Right
         bindkey "\e[1;3D" backward-word        # Alt-Left
+	    bindkey "\C-w"    kill-region          # Ctrl-w
+	    bindkey "\C-d"    kill-region          # Ctrl-d
         ;;
     linux*)
         bindkey "\e[1~" beginning-of-line      # Home
