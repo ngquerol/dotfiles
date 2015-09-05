@@ -403,7 +403,8 @@ comment at the end of the line."
   :config
   (progn
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
-    (add-hook 'prog-mode-hook #'flycheck-mode)))
+    (add-hook 'prog-mode-hook #'flycheck-mode)
+    (add-hook 'LaTeX-mode-hook #'flycheck-mode)))
 
 (use-package go-mode
   :ensure t
@@ -469,6 +470,7 @@ comment at the end of the line."
   :ensure auctex
   :defer
   :config
+  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (setq TeX-parse-self t
         TeX-auto-save t
         TeX-clean-confirm nil
