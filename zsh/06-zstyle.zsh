@@ -27,7 +27,7 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 
 # PID completion
 zstyle ':completion:*:processes' command ps -A -o pid,user,command
-zstyle ':completion:*:processes-names' command 'ps c -u ${USER} -o command | uniq'
+zstyle ':completion:*:processes-names' command 'ps c -U ${USER} -o command'
 zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=0=01;31"
 
 # Sudo completion
