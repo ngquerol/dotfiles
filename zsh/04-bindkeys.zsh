@@ -12,7 +12,6 @@ case $TERM in
         bindkey "\e[1;3C" forward-word         # Alt-Right
         bindkey "\e[1;3D" backward-word        # Alt-Left
 	    bindkey "\C-w"    kill-region          # Ctrl-w
-	    bindkey "\C-d"    kill-region          # Ctrl-d
         ;;
     linux*)
         bindkey "\e[1~" beginning-of-line      # Home
