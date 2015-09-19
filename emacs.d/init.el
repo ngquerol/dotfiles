@@ -156,6 +156,9 @@
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
+;; Sentences are delimited by a single space
+(setq sentence-end-double-space nil)
+
 ;; Automagically indent when inserting a newline
 (global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
 
@@ -186,8 +189,19 @@ Position the cursor at it's beginning, according to the current mode."
   (forward-line -1)
   (indent-according-to-mode))
 
-(global-set-key (kbd "M-<down>") 'smart-open-line)
-(global-set-key (kbd "M-<up>") 'smart-open-line-above)
+(global-set-key (kbd "M-o") 'smart-open-line)
+(global-set-key (kbd "M-O") 'smart-open-line-above)
+
+;; Smart beginning of line
+(defun smart-beginning-of-line ()
+  "Move point to first non-whitespace character or beginning-of-line."
+  (interactive "^")
+  (let ((oldpos (point)))
+    (back-to-indentation)
+    (and (= oldpos (point))
+         (beginning-of-line))))
+(global-set-key (kbd "<home>") 'smart-beginning-of-line)
+(global-set-key (kbd "C-a") 'smart-beginning-of-line)
 
 ;; Comment what I really mean
 (defun comment-dwim-line (&optional arg)
@@ -203,27 +217,6 @@ comment at the end of the line."
        (line-beginning-position) (line-end-position))
     (comment-dwim arg)))
 (global-set-key (kbd "C-c c") 'comment-dwim-line)
-
-;; Smart beginning of line
-(defun smart-beginning-of-line ()
-  "Move point to first non-whitespace character or beginning-of-line."
-  (interactive "^")
-  (let ((oldpos (point)))
-    (back-to-indentation)
-    (and (= oldpos (point))
-         (beginning-of-line))))
-(global-set-key (kbd "<home>") 'smart-beginning-of-line)
-(global-set-key (kbd "C-a") 'smart-beginning-of-line)
-
-(defun forward-or-backward-sexp (&optional arg)
-  "Go to the matching parenthesis character if one is adjacent to point."
-  (interactive "^p")
-  (cond ((looking-at "\\s(") (forward-sexp arg))
-        ((looking-back "\\s)" 1) (backward-sexp arg))
-        ;; Now, try to succeed from inside of a bracket
-        ((looking-at "\\s)") (forward-char) (backward-sexp arg))
-        ((looking-back "\\s(" 1) (backward-char) (forward-sexp arg))))
-(global-set-key (kbd "M-<end>") #'forward-or-backward-sexp)
 
 ;; Align according to regexp
 (global-set-key (kbd "C-c a") 'align-regexp)
@@ -431,6 +424,7 @@ comment at the end of the line."
           helm-M-x-fuzzy-match                  t
           helm-imenu-fuzzy-match                t
           helm-quick-update                     t
+          helm-display-header-line              nil
           helm-split-window-in-side-p           t
           helm-move-to-line-cycle-in-source     t
           helm-scroll-amount                    8
@@ -438,7 +432,7 @@ comment at the end of the line."
           helm-ff-search-library-in-sexp        t
           helm-ff-file-name-history-use-recentf t
           helm-boring-buffer-regexp-list
-          '("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*tramp" "\\*Minibuf" "\\*epc")
+          '("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*tramp" "\\*Minibuf" "\\*epc" "\\*Completions" "\\*clang-output" "\\*clang-error")
           helm-boring-file-regexp-list
           '("\\.#" "\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "~$" "\\.so$" "\\.a$" "\\.elc$" "\\.pyc$" "\\.pyo$")
           helm-ff-skip-boring-files             t)
