@@ -1,7 +1,6 @@
 ## Environment variables parsed by zsh
 
-export EDITOR="/usr/local/bin/emacsclient -t"
-export ALTERNATE_EDITOR=""
+export EDITOR="emacs -q"
 export LANG=fr_FR.UTF-8
 export BROWSER=open
 export SHELL=/bin/zsh
