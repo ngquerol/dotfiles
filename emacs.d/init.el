@@ -351,12 +351,12 @@ comment at the end of the line."
 (use-package anzu
   :ensure t
   :diminish (anzu-mode)
-  :bind (("M-R" . anzu-query-replace-at-cursor)
-         ("M-r" . anzu-query-replace))
   :config (progn
             (global-anzu-mode t)
             (setq anzu-deactivate-region t
-                  anzu-replace-to-string-separator " => ")))
+                  anzu-replace-to-string-separator " => ")
+            (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+            (global-set-key [remap query-replace] 'anzu-query-replace)))
 
 (use-package company
   :ensure t
