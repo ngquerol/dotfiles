@@ -422,7 +422,7 @@ comment at the end of the line."
           helm-ff-search-library-in-sexp        t
           helm-ff-file-name-history-use-recentf t
           helm-boring-buffer-regexp-list
-          '("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*tramp" "\\*Minibuf" "\\*epc" "\\*Completions" "\\*clang-output" "\\*clang-error")
+          '("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*tramp" "\\*Minibuf" "\\*epc" "\\*Completions" "\\*clang-output" "\\*clang-error" "\\*magit-")
           helm-boring-file-regexp-list
           '("\\.#" "\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "~$" "\\.so$" "\\.a$" "\\.elc$" "\\.pyc$" "\\.pyo$")
           helm-ff-skip-boring-files             t)
