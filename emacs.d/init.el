@@ -379,13 +379,6 @@ comment at the end of the line."
   (with-eval-after-load 'company
     (add-to-list 'company-backends 'company-c-headers)))
 
-(use-package company-go
-  :ensure t
-  :commands go-mode
-  :init
-  (with-eval-after-load 'company
-    (add-to-list 'company-backends 'company-go)))
-
 (use-package expand-region
   :ensure t
   :config
@@ -399,10 +392,6 @@ comment at the end of the line."
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
     (add-hook 'prog-mode-hook #'flycheck-mode)
     (add-hook 'LaTeX-mode-hook #'flycheck-mode)))
-
-(use-package go-mode
-  :ensure t
-  :commands go-mode)
 
 (use-package helm
   :ensure t
@@ -440,11 +429,6 @@ comment at the end of the line."
     (bind-key "<tab>" #'helm-execute-persistent-action helm-map)
     (bind-key "C-i" #'helm-execute-persistent-action helm-map)
     (bind-key "C-z" #'helm-select-action helm-map)))
-
-(use-package helm-swoop
-  :ensure t
-  :bind (("C-c o" . helm-swoop)
-         ("C-c O" . helm-multi-swoop-all)))
 
 (use-package helm-flycheck
   :ensure t
@@ -509,8 +493,7 @@ comment at the end of the line."
   :config
   (progn (setq-default yas-prompt-functions
                        (delete 'yas-x-prompt yas-prompt-functions))
-         (yas-reload-all)
-         (add-hook 'prog-mode-hook 'yas-minor-mode))
+         (yas-global-mode))
   :diminish yas-minor-mode)
 
 ;;; init.el ends here
