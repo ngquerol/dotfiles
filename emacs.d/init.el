@@ -100,14 +100,14 @@
   "Kill the current buffer and deletes the file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
-        (when filename
-          (if (y-or-n-p (format "Really delete %s ?" filename))
-              (if (vc-backend filename)
-                  (vc-delete-file filename)
-                (progn
-                  (delete-file filename)
-                  (message "Deleted file %s" filename)
-                  (kill-buffer)))))))
+    (when filename
+      (if (y-or-n-p (format "Really delete %s ?" filename))
+          (if (vc-backend filename)
+              (vc-delete-file filename)
+            (progn
+              (delete-file filename)
+              (message "Deleted file %s" filename)
+              (kill-buffer)))))))
 
 (global-set-key (kbd "C-c D")  'delete-file-and-buffer)
 
@@ -253,23 +253,24 @@ comment at the end of the line."
     (delete-char 1)))
 
 (defun eshell-here ()
-  "Opens a new eshell in the directory associated with the current buffer's file.
-  Reuses a previously opened eshell if applicable."
+  "Opens a new eshell in the directory associated with the current buffer's
+  file. Reuses a previously opened eshell if applicable."
   (interactive)
-  (let* ((height (/ (window-total-height) 3))
+  (let* ((height (/ (window-total-height) 4))
          (current-dir default-directory)
          (eshell-buffer "*eshell*"))
-    (when (= (length (window-list)) 1)
-      (split-window-vertically (- height)))
     (unless (string= (buffer-name) eshell-buffer)
+      (when (= (length (window-list)) 1)
+        (split-window-vertically (- height)))
       (other-window 1)
-      (switch-to-buffer eshell-buffer))
-    (eshell)
+      (if (get-buffer eshell-buffer)
+          (switch-to-buffer eshell-buffer)
+        (eshell)))
     (unless (string= current-dir default-directory)
       (eshell/cd current-dir)
       (eshell-send-input)
       (eshell/clear)
-      (message "%s" (concat "eshell: Changed directory to " current-dir)))))
+      (message "eshell: Changed directory to %s" current-dir))))
 
 (use-package eshell
   :bind (("C-c s" . eshell-here))
