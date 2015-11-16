@@ -126,6 +126,8 @@
               sentence-end-double-space nil
               require-final-newline t)
 
+(global-prettify-symbols-mode t)
+
 ;; Indentation
 (setq-default indent-tabs-mode nil
               tab-width 4
