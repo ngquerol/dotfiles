@@ -43,8 +43,7 @@
 ;;; Interface
 
 ;; Turn off mouse interface
-(dolist (mode '(menu-bar-mode
-                tool-bar-mode
+(dolist (mode '(tool-bar-mode
                 scroll-bar-mode
                 blink-cursor-mode))
   (when (fboundp mode) (funcall mode -1)))
