@@ -54,6 +54,10 @@
       inhibit-startup-screen t
       inhibit-startup-echo-area-message t)
 
+;; Display buffer name in frame title
+(setq frame-title-format
+      (list "%b — " (user-login-name) " @ Emacs " emacs-version))
+
 ;; Ask for "y or n" instead of "yes or no"
 (fset 'yes-or-no-p #'y-or-n-p)
 
