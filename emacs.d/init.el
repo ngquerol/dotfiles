@@ -217,7 +217,6 @@ comment at the end of the line."
 
 ;;; Dired
 (use-package dired
-  :defer
   :config
   (progn
     (require 'dired-x)
@@ -279,14 +278,14 @@ comment at the end of the line."
          (add-hook 'eshell-mode-hook
                    #'(lambda ()
                        (add-to-list 'eshell-output-filter-functions
-                                    'eshell-truncate-buffer 'eshell-handle-ansi-color)
+                                    'eshell-truncate-buffer
+                                    'eshell-handle-ansi-color)
                        (bind-key "C-d" #'eshell/exit-or-delete eshell-mode-map)
                        (bind-key "C-l" #'eshell/clear eshell-mode-map)
                        (bind-key "C-r" #'helm-eshell-history eshell-mode-map)))))
 
 ;;; Ediff
 (use-package ediff-wind
-  :defer
   :config
   (setq ediff-window-setup-function #'ediff-setup-windows-plain
         ediff-split-window-function #'split-window-horizontally))
@@ -305,7 +304,7 @@ comment at the end of the line."
 ;;; Backups
 
 ;; To keep things clean
-(setq user-temp-files-directory (concat user-emacs-directory "temp/"))
+(defvar user-temp-files-directory (concat user-emacs-directory "temp/"))
 
 ;; Keep backup and auto save files out of the way
 (setq backup-directory-alist
@@ -316,7 +315,6 @@ comment at the end of the line."
 
 ;; Recent files & history
 (use-package recentf
-  :defer
   :config
   (setq recentf-save-file (concat user-temp-files-directory "recentf")
         recentf-max-menu-items 15
@@ -360,7 +358,6 @@ comment at the end of the line."
 
 (use-package company
   :ensure t
-  :defer
   :init (global-company-mode)
   :config
   (progn (setq company-abort-manual-when-too-short t
@@ -374,15 +371,12 @@ comment at the end of the line."
 
 (use-package company-c-headers
   :ensure t
-  :defer
-  :init
-  (with-eval-after-load 'company
-    (add-to-list 'company-backends 'company-c-headers)))
+  :init (with-eval-after-load 'company
+          (add-to-list 'company-backends 'company-c-headers)))
 
 (use-package expand-region
   :ensure t
-  :config
-  (setq expand-region-contract-fast-key "X")
+  :config (setq expand-region-contract-fast-key "X")
   :bind (("C-x x" . er/expand-region)))
 
 (use-package flycheck
@@ -395,37 +389,42 @@ comment at the end of the line."
 
 (use-package helm
   :ensure t
-  :bind
-  (("C-x b" . helm-buffers-list)
-   ("C-x C-f" . helm-find-files)
-   ("C-x C-r" . helm-recentf)
-   ("C-c i"   . helm-imenu)
-   ("C-c h"   . helm-command-prefix)
-   ("M-x"     . helm-M-x)
-   ("M-y"     . helm-show-kill-ring))
+  :bind (("C-x b" . helm-buffers-list)
+         ("C-x C-f" . helm-find-files)
+         ("C-x C-r" . helm-recentf)
+         ("C-c i" . helm-imenu)
+         ("C-c h" . helm-command-prefix)
+         ("M-x" . helm-M-x)
+         ("M-y" . helm-show-kill-ring))
   :diminish helm-mode
-  :init
-  (helm-mode t)
+  :init (progn (helm-mode t)
+               (helm-autoresize-mode t))
   :config
   (progn
     (use-package helm-config)
     (global-unset-key (kbd "C-x c"))
-    (setq helm-buffers-fuzzy-matching           t
-          helm-M-x-fuzzy-match                  t
-          helm-imenu-fuzzy-match                t
-          helm-quick-update                     t
-          helm-display-header-line              nil
-          helm-split-window-in-side-p           t
-          helm-move-to-line-cycle-in-source     t
-          helm-scroll-amount                    8
-          helm-ff-auto-update-initial-value     nil
-          helm-ff-search-library-in-sexp        t
+    (setq helm-buffers-fuzzy-matching t
+          helm-M-x-fuzzy-match t
+          helm-recentf-fuzzy-match t
+          helm-imenu-fuzzy-match t
+          helm-quick-update t
+          helm-display-header-line nil
+          helm-split-window-in-side-p t
+          helm-move-to-line-cycle-in-source t
+          helm-scroll-amount 8
+          helm-ff-auto-update-initial-value nil
+          helm-ff-search-library-in-sexp t
           helm-ff-file-name-history-use-recentf t
-          helm-boring-buffer-regexp-list
-          '("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*tramp" "\\*Minibuf" "\\*epc" "\\*Completions" "\\*clang-output" "\\*clang-error" "\\*magit-")
-          helm-boring-file-regexp-list
-          '("\\.#" "\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "~$" "\\.so$" "\\.a$" "\\.elc$" "\\.pyc$" "\\.pyo$")
-          helm-ff-skip-boring-files             t)
+          helm-ff-skip-boring-files t
+          helm-boring-buffer-regexp-list (append helm-boring-buffer-regexp-list
+                                                 '("\\*tramp"
+                                                   "\\*epc"
+                                                   "\\*Completions"
+                                                   "\\*clang-output"
+                                                   "\\*clang-error"
+                                                   "\\*magit-"))
+          helm-boring-file-regexp-list (append helm-boring-file-regexp-list
+                                               '("\\.DS_Store$")))
     (bind-key "<tab>" #'helm-execute-persistent-action helm-map)
     (bind-key "C-i" #'helm-execute-persistent-action helm-map)
     (bind-key "C-z" #'helm-select-action helm-map)))
@@ -471,10 +470,9 @@ comment at the end of the line."
 
 (use-package web-mode
   :ensure t
-  :mode
-  (("\\.html?\\'" . web-mode)
-   ("\\.php\\'" . web-mode)
-   ("\\.css\\'" . web-mode))
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.php\\'" . web-mode)
+         ("\\.css\\'" . web-mode))
   :config
   (progn
     (setq web-mode-markup-indent-offset 2
@@ -497,15 +495,13 @@ comment at the end of the line."
 (use-package whole-line-or-region
   :ensure t
   :diminish whole-line-or-region-mode
-  :config
-  (whole-line-or-region-mode t))
+  :config (whole-line-or-region-mode t))
 
 (use-package yasnippet
   :ensure t
-  :config
-  (progn (setq-default yas-prompt-functions
-                       (delete 'yas-x-prompt yas-prompt-functions))
-         (yas-global-mode))
+  :config (progn (setq-default yas-prompt-functions
+                               (delete 'yas-x-prompt yas-prompt-functions))
+                 (yas-global-mode t))
   :diminish yas-minor-mode)
 
 ;;; init.el ends here
