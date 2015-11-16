@@ -69,10 +69,6 @@
 (setq scroll-conservatively 10000
       scroll-margin 5)
 
-;; Show matching parentheses
-(show-paren-mode t)
-(setq show-paren-delay 0)
-
 ;; Show commands as they are typed
 (setq echo-keystrokes 0.01)
 
@@ -143,13 +139,6 @@
 
 ;; Delete selected text
 (delete-selection-mode)
-
-;; Electric all the things
-(use-package electric
-  :init (electric-layout-mode))
-
-(use-package elec-pair
-  :init (electric-pair-mode))
 
 ;; Reload buffers automagically if the corresponding file has been changed
 (global-auto-revert-mode)
@@ -450,9 +439,21 @@ comment at the end of the line."
          ("C-*" . mc/mark-more-like-this-extended)
          ("C-;" . mc/mark-next-like-this)))
 
+(use-package rainbow-delimiters
+  :ensure t
+  :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode-enable))
+
+(use-package smartparens-config
+  :ensure smartparens
+  :diminish smartparens-mode
+  :config
+  (progn (show-smartparens-global-mode t)
+         (sp-local-pair 'c-mode "{" nil :post-handlers '(("||\n[i]" "RET")))
+         (sp-local-pair 'c-mode "{" nil :post-handlers '(("* ||\n[i]" "RET")))
+         (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)))
+
 (use-package tex
   :ensure auctex
-  :defer
   :config
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (setq TeX-parse-self t
