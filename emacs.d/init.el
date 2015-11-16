@@ -342,6 +342,12 @@ comment at the end of the line."
         savehist-save-minibuffer-history t))
 
 ;;; External packages
+(use-package aggressive-indent
+  :ensure t
+  :diminish aggressive-indent-mode
+  :config
+  (add-hook 'prog-mode-hook 'aggressive-indent-mode))
+
 (use-package anzu
   :ensure t
   :diminish (anzu-mode)
