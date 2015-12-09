@@ -21,24 +21,14 @@
 (require 'bind-key)
 
 ;;; Locales
-
-(prefer-coding-system        'utf-8)
-(set-default-coding-systems  'utf-8)
-(set-terminal-coding-system  'utf-8)
-(set-keyboard-coding-system  'utf-8)
-(set-selection-coding-system 'utf-8)
-(set-language-environment "UTF-8")
+(set-language-environment 'utf-8)
+(prefer-coding-system 'utf-8)
 
 ;; Fix the PATH variable
 (use-package exec-path-from-shell
   :ensure t
   :init
   (exec-path-from-shell-initialize))
-
-;; Load custom settings, if they do exist
-(let ((local-file (concat user-emacs-directory "local.el")))
-  (if (file-readable-p local-file)
-      (load-file local-file)))
 
 ;;; Interface
 
@@ -227,6 +217,10 @@ comment at the end of the line."
                   dired-auto-revert-buffer t
                   dired-listing-switches "-alh")))
 
+(use-package dired+
+  :ensure t
+  :init (toggle-diredp-find-file-reuse-dir t))
+
 ;;; Eshell
 (defun eshell/clear ()
   "Clear the eshell buffer"
@@ -268,13 +262,13 @@ comment at the end of the line."
 (use-package eshell
   :bind (("C-c s" . eshell-here))
   :config
-  (progn (setq eshell-hist-ignoredups             t
-               eshell-history-size                1024
-               eshell-save-history-on-exit        t
-               eshell-banner-message              ""
-               eshell-buffer-maximum-lines        2500
-               eshell-scroll-to-bottom-on-output  t
-               eshell-scroll-show-maximum-output  t)
+  (progn (setq-default eshell-hist-ignoredups             t
+                       eshell-history-size                1024
+                       eshell-save-history-on-exit        t
+                       eshell-banner-message              ""
+                       eshell-buffer-maximum-lines        2500
+                       eshell-scroll-to-bottom-on-output  t
+                       eshell-scroll-show-maximum-output  t)
          (add-hook 'eshell-mode-hook
                    #'(lambda ()
                        (add-to-list 'eshell-output-filter-functions
@@ -320,59 +314,65 @@ comment at the end of the line."
         recentf-max-menu-items 15
         recentf-max-saved-items 200
         recentf-auto-cleanup 60
-        recentf-exclude (append recentf-exclude
-                                '("/\\.git/.*\\'"
-                                  "/elpa/.*\\'"
-                                  "/tmp/.*\\'"
-                                  "/var/tmp/.*\\'"))))
+        recentf-exclude (append recentf-exclude '("/\\.git/.*\\'"
+                                                  "/elpa/.*\\'"
+                                                  "/tmp/.*\\'"
+                                                  "/var/tmp/.*\\'"))))
 
 (use-package saveplace
-  :config
-  (progn (setq save-place-file
-               (concat user-temp-files-directory "saved-places")
-               save-place-forget-unreadable-files t)
-         (setq-default save-place t)))
+  :config (setq-default save-place-file (concat user-temp-files-directory
+                                                "saved-places")
+                        save-place-forget-unreadable-files t
+                        save-place t))
 
 (use-package savehist
-  :init (savehist-mode t)
-  :config
-  (setq savehist-file (concat user-temp-files-directory "history")
-        savehist-save-minibuffer-history t))
+  :config (setq savehist-file (concat user-temp-files-directory "history")
+                savehist-save-minibuffer-history t
+                savehist-autosave-interval 60)
+  :init (savehist-mode t))
 
 ;;; External packages
 (use-package aggressive-indent
   :ensure t
-  :diminish aggressive-indent-mode
-  :config
-  (add-hook 'prog-mode-hook 'aggressive-indent-mode))
+  :config (add-hook 'prog-mode-hook #'aggressive-indent-mode)
+  :diminish aggressive-indent-mode)
 
 (use-package anzu
   :ensure t
-  :diminish (anzu-mode)
   :config (progn
-            (global-anzu-mode t)
             (setq anzu-deactivate-region t
                   anzu-replace-to-string-separator " => ")
-            (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
-            (global-set-key [remap query-replace] 'anzu-query-replace)))
+            (bind-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+            (bind-key [remap query-replace] 'anzu-query-replace))
+  :init (global-anzu-mode t)
+  :diminish (anzu-mode))
 
 (use-package company
   :ensure t
-  :init (global-company-mode)
   :config
-  (progn (setq company-abort-manual-when-too-short t
+  (progn (setq company-minimum-prefix-length 2
                company-selection-wrap-around t
-               company-idle-delay 0.25
+               company-tooltip-flip-when-above t
                company-tooltip-align-annotations t)
          (bind-key [remap completion-at-point] #'company-complete company-mode-map)
          (bind-key "C-n" #'company-select-next company-active-map)
-         (bind-key "C-p" #'company-select-previous company-active-map))
+         (bind-key "C-p" #'company-select-previous company-active-map)
+         (add-hook 'prog-mode-hook #'company-mode))
   :diminish company-mode)
 
 (use-package company-c-headers
   :ensure t
-  :init (with-eval-after-load 'company
-          (add-to-list 'company-backends 'company-c-headers)))
+  :config
+  (add-hook 'c-mode-hook #'(lambda ()
+                             (add-to-list 'company-backends
+                                          'company-c-headers))))
+
+(use-package company-web
+  :ensure t
+  :config
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (add-to-list 'company-backends
+                                            'company-web-html))))
 
 (use-package expand-region
   :ensure t
@@ -389,45 +389,37 @@ comment at the end of the line."
 
 (use-package helm
   :ensure t
-  :bind (("C-x b" . helm-buffers-list)
+  :bind (("C-x C-b" . helm-mini)
          ("C-x C-f" . helm-find-files)
          ("C-x C-r" . helm-recentf)
          ("C-c i" . helm-imenu)
-         ("C-c h" . helm-command-prefix)
          ("M-x" . helm-M-x)
          ("M-y" . helm-show-kill-ring))
-  :diminish helm-mode
-  :init (progn (helm-mode t)
-               (helm-autoresize-mode t))
   :config
   (progn
-    (use-package helm-config)
-    (global-unset-key (kbd "C-x c"))
-    (setq helm-buffers-fuzzy-matching t
-          helm-M-x-fuzzy-match t
-          helm-recentf-fuzzy-match t
-          helm-imenu-fuzzy-match t
-          helm-quick-update t
-          helm-display-header-line nil
-          helm-split-window-in-side-p t
-          helm-move-to-line-cycle-in-source t
-          helm-scroll-amount 8
-          helm-ff-auto-update-initial-value nil
-          helm-ff-search-library-in-sexp t
-          helm-ff-file-name-history-use-recentf t
-          helm-ff-skip-boring-files t
-          helm-boring-buffer-regexp-list (append helm-boring-buffer-regexp-list
-                                                 '("\\*tramp"
-                                                   "\\*epc"
-                                                   "\\*Completions"
-                                                   "\\*clang-output"
-                                                   "\\*clang-error"
-                                                   "\\*magit-"))
-          helm-boring-file-regexp-list (append helm-boring-file-regexp-list
-                                               '("\\.DS_Store$")))
-    (bind-key "<tab>" #'helm-execute-persistent-action helm-map)
-    (bind-key "C-i" #'helm-execute-persistent-action helm-map)
-    (bind-key "C-z" #'helm-select-action helm-map)))
+    (setq-default helm-buffers-fuzzy-matching t
+                  helm-M-x-fuzzy-match t
+                  helm-recentf-fuzzy-match t
+                  helm-imenu-fuzzy-match t
+                  helm-quick-update t
+                  helm-display-header-line nil
+                  helm-split-window-in-side-p t
+                  helm-move-to-line-cycle-in-source t
+                  helm-ff-file-name-history-use-recentf t
+                  helm-ff-skip-boring-files t
+                  helm-boring-buffer-regexp-list (append helm-boring-buffer-regexp-list
+                                                         '("\\*helm"
+                                                           "\\*tramp"
+                                                           "\\*epc"
+                                                           "\\*Completions"
+                                                           "\\*clang-output"
+                                                           "\\*clang-error"
+                                                           "\\*magit-"))
+                  helm-boring-file-regexp-list (append helm-boring-file-regexp-list
+                                                       '("\\.DS_Store$")))
+    (bind-key "<tab>" #'helm-execute-persistent-action helm-map))
+  :init (helm-mode t)
+  :diminish helm-mode)
 
 (use-package helm-flycheck
   :ensure t
@@ -435,7 +427,7 @@ comment at the end of the line."
 
 (use-package magit
   :ensure t
-  :config (setq magit-restore-window-configuration t)
+  :config (setq-default magit-restore-window-configuration t)
   :bind (("C-c g" . magit-status)))
 
 (use-package multiple-cursors
@@ -452,27 +444,25 @@ comment at the end of the line."
   :ensure smartparens
   :diminish smartparens-mode
   :config
-  (progn (show-smartparens-global-mode t)
-         (sp-local-pair 'c-mode "{" nil :post-handlers '(("||\n[i]" "RET")))
-         (sp-local-pair 'c-mode "{" nil :post-handlers '(("* ||\n[i]" "RET")))
-         (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)))
+  (progn (sp-local-pair 'cc-mode "{" nil :post-handlers '(("||\n[i]" "RET")))
+         (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode))
+  :init (show-smartparens-global-mode t))
 
 (use-package tex
   :ensure auctex
+  :mode ("\\.tex\\'" . TeX-mode)
   :config
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (setq TeX-parse-self t
         TeX-auto-save t
         TeX-clean-confirm nil
-        TeX-PDF-mode t
         TeX-view-program-selection '((output-pdf "Preview"))
         TeX-view-program-list '(("Preview" "open -a Preview.app %o"))))
 
 (use-package web-mode
   :ensure t
   :mode (("\\.html?\\'" . web-mode)
-         ("\\.php\\'" . web-mode)
-         ("\\.css\\'" . web-mode))
+         ("\\.php\\'" . web-mode))
   :config
   (progn
     (setq web-mode-markup-indent-offset 2
@@ -499,9 +489,14 @@ comment at the end of the line."
 
 (use-package yasnippet
   :ensure t
-  :config (progn (setq-default yas-prompt-functions
-                               (delete 'yas-x-prompt yas-prompt-functions))
-                 (yas-global-mode t))
+  :config (setq-default yas-prompt-functions
+                        (delete 'yas-x-prompt yas-prompt-functions))
+  :init (yas-global-mode t)
   :diminish yas-minor-mode)
+
+;; Load custom settings, if they do exist
+(let ((local-file (concat user-emacs-directory "local.el")))
+  (if (file-readable-p local-file)
+      (load-file local-file)))
 
 ;;; init.el ends here
