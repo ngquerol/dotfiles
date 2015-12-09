@@ -303,8 +303,8 @@ comment at the end of the line."
 
 ;;; Backups
 
-;; To keep things clean
-(defvar user-temp-files-directory (concat user-emacs-directory "temp/"))
+(defvar user-temp-files-directory (concat user-emacs-directory ".cache/")
+  "Directory where temporary (but persistent accross sessions) files reside.")
 
 ;; Keep backup and auto save files out of the way
 (setq backup-directory-alist

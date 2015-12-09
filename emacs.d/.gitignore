@@ -1,6 +1,6 @@
 elpa/*
-temp/*
-!temp/.gitkeep
+.cache/*
+!.cache/.gitkeep
 eshell/*
 !eshell/alias
 url/*
