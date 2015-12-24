@@ -9,9 +9,9 @@ case $TERM in
         bindkey "\e[3~"   delete-char          # Del
         bindkey "\e[1;5C" emacs-forward-word   # Ctrl-Right
         bindkey "\e[1;5D" emacs-backward-word  # Ctrl-Left
-        bindkey "\e[1;3C" forward-word         # Alt-Right
-        bindkey "\e[1;3D" backward-word        # Alt-Left
-	    bindkey "\C-w"    kill-region          # Ctrl-w
+        bindkey "\e[1;9C" forward-word         # Alt-Right
+        bindkey "\e[1;9D" backward-word        # Alt-Left
+        bindkey "\C-w"    kill-region          # Ctrl-w
         ;;
     linux*)
         bindkey "\e[1~" beginning-of-line      # Home
