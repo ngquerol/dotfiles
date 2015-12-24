@@ -9,7 +9,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 
 # load stuff
 autoload -Uz colors && colors
-autoload -Uz compinit && compinit -d $HOME/.zsh/temp/zcompdump
+autoload -Uz compinit && compinit -d $HOME/.zsh/.cache/zcompdump
 autoload -Uz bashcompinit && bashcompinit
 autoload -Uz select-word-style && select-word-style bash
 autoload -Uz vcs_info && vcs_info
@@ -21,6 +21,7 @@ setopt \
     hist_ignore_all_dups \
     hist_ignore_space \
     hist_reduce_blanks \
+    share_history \
     prompt_subst \
     nobeep \
     nocheckjobs \

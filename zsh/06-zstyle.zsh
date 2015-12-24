@@ -1,6 +1,6 @@
 # Use cache
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path $HOME/.zsh/temp/zsh_cache
+zstyle ':completion:*' cache-path $HOME/.zsh/.cache/zcache
 
 # Remove trailing slashes
 zstyle ':completion:*' squeeze-slashes true

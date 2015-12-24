@@ -24,3 +24,4 @@ alias e=$EDITOR
 
 # MISC
 alias reload='source ~/.zshrc'
+alias bup='brew update && brew upgrade --all && brew-cask-upgrade.sh'

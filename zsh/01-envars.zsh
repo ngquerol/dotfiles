@@ -6,7 +6,7 @@ export BROWSER=open
 export SHELL=/bin/zsh
 
 # History
-export HISTFILE=$HOME/.zsh/temp/zsh_history
+export HISTFILE=$HOME/.zsh/.cache/zhistory
 export HISTSIZE=10000
 export SAVEHIST=10000
 
