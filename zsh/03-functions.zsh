@@ -24,11 +24,11 @@ pman() {
 precmd() {
     vcs_info
     setprompt
-    print -Pn "\e]2; %n@%m: %~ \a"
+    print -Pn "\e]2;%n@%m: %~\a"
 }
 
 preexec() {
-    print -Pn "\e]2; %n@%m: $1 \a"
+    print -Pn "\e]2;%n@%m: $1\a"
 }
 
 # Show if there are untracked files in a git repo

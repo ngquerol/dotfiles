@@ -1,2 +1,5 @@
-/zsh/temp
+/bin/*
+!/bin/backup.sh
+!/bin/flac2alac.sh
+/zsh/.cache/*
 .DS_Store
