@@ -3,11 +3,9 @@
 ;; Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 
 ;;; Package.el
-
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-
 (package-initialize)
 
 ;; Bootstrap `use-package'
@@ -23,12 +21,6 @@
 ;;; Locales
 (set-language-environment 'utf-8)
 (prefer-coding-system 'utf-8)
-
-;; Fix the PATH variable
-(use-package exec-path-from-shell
-  :ensure t
-  :init
-  (exec-path-from-shell-initialize))
 
 ;;; Interface
 
@@ -62,6 +54,15 @@
 ;; Show commands as they are typed
 (setq echo-keystrokes 0.01)
 
+;; OS-specific settings
+(if (eq system-type 'darwin)
+    (progn (use-package exec-path-from-shell
+             :ensure t
+             :init (exec-path-from-shell-initialize))
+           (setq ns-alternate-modifier 'super
+                 ns-command-modifier 'meta
+                 ns-right-alternate-modifier 'none)))
+
 ;; Switch windows with windmove
 (use-package windmove
   :bind (("C-c <left>" . windmove-left)
@@ -70,7 +71,7 @@
          ("C-c <down>" . windmove-down)))
 
 ;; Manipulate buffers and corresponding files
-(defun rename-file-and-buffer ()
+(defun ngq/rename-file-and-buffer ()
   "Rename the current buffer and file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
@@ -83,9 +84,9 @@
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t)))))))
 
-(global-set-key (kbd "C-c R") #'rename-file-and-buffer)
+(global-set-key (kbd "C-c R") #'ngq/rename-file-and-buffer)
 
-(defun delete-file-and-buffer ()
+(defun ngq/delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
   (interactive)
   (let ((filename (buffer-file-name)))
@@ -98,12 +99,7 @@
               (message "Deleted file %s" filename)
               (kill-buffer)))))))
 
-(global-set-key (kbd "C-c D")  'delete-file-and-buffer)
-
-;; Easily switch between source and headers files in c-modes
-(add-hook 'c-mode-common-hook
-          (lambda()
-            (local-set-key (kbd "C-c ,") 'ff-find-other-file)))
+(global-set-key (kbd "C-c D") #'ngq/delete-file-and-buffer)
 
 ;;; Editing
 (setq-default auto-save-default nil
@@ -116,22 +112,13 @@
 
 ;; Indentation
 (setq-default indent-tabs-mode nil
-              tab-width 4
-              c-basic-offset 4
-              c-default-style "k&r")
-
-(add-hook 'c-mode-common-hook
-          #'(lambda ()
-              ;; Indent case statements in C modes
-              (c-set-offset 'case-label '+)
-              ;; Indent from the same level as opening braces
-              (c-set-offset 'substatement-open 0)))
+              tab-width 4)
 
 ;; Delete selected text
-(delete-selection-mode)
+(delete-selection-mode t)
 
 ;; Reload buffers automagically if the corresponding file has been changed
-(global-auto-revert-mode)
+(global-auto-revert-mode t)
 
 ;; Remove superfluous whitespace upon save
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
@@ -144,27 +131,27 @@
 (setq sentence-end-double-space nil)
 
 ;; Automagically indent when inserting a newline
-(global-set-key (kbd "RET") 'reindent-then-newline-and-indent)
+(global-set-key (kbd "RET") #'reindent-then-newline-and-indent)
 
 ;; Faster repeat
-(global-set-key (kbd "C-z") 'repeat)
+(global-set-key (kbd "C-z") #'repeat)
 
 ;; Join line
-(defun my-join-line ()
+(defun ngq/my-join-line ()
   (interactive)
   (join-line -1))
 
-(global-set-key (kbd "M-j") 'my-join-line)
+(global-set-key (kbd "M-j") #'ngq/my-join-line)
 
 ;; Smart open line
-(defun smart-open-line ()
+(defun ngq/smart-open-line ()
   "Insert an empty line after the current line.
 Position the cursor at its beginning, according to the current mode."
   (interactive)
   (move-end-of-line nil)
   (newline-and-indent))
 
-(defun smart-open-line-above ()
+(defun ngq/smart-open-line-above ()
   "Insert an empty line above the current line.
 Position the cursor at it's beginning, according to the current mode."
   (interactive)
@@ -173,22 +160,22 @@ Position the cursor at it's beginning, according to the current mode."
   (forward-line -1)
   (indent-according-to-mode))
 
-(global-set-key (kbd "M-o") 'smart-open-line)
-(global-set-key (kbd "M-O") 'smart-open-line-above)
+(global-set-key (kbd "M-o") #'ngq/smart-open-line)
+(global-set-key (kbd "M-O") #'ngq/smart-open-line-above)
 
 ;; Smart beginning of line
-(defun smart-beginning-of-line ()
+(defun ngq/smart-beginning-of-line ()
   "Move point to first non-whitespace character or beginning-of-line."
   (interactive "^")
   (let ((oldpos (point)))
     (back-to-indentation)
     (and (= oldpos (point))
          (beginning-of-line))))
-(global-set-key (kbd "<home>") 'smart-beginning-of-line)
-(global-set-key (kbd "C-a") 'smart-beginning-of-line)
+(global-set-key (kbd "<home>") #'ngq/smart-beginning-of-line)
+(global-set-key (kbd "C-a") #'ngq/smart-beginning-of-line)
 
 ;; Comment what I really mean
-(defun comment-dwim-line (&optional arg)
+(defun ngq/comment-dwim-line (&optional arg)
   "Replacement for the comment-dwim command.
 If no region is selected and current line is not blank and we
 are not at the end of the line, then comment current line.
@@ -200,83 +187,90 @@ comment at the end of the line."
       (comment-or-uncomment-region
        (line-beginning-position) (line-end-position))
     (comment-dwim arg)))
-(global-set-key (kbd "C-c c") 'comment-dwim-line)
+(global-set-key (kbd "C-c c") #'ngq/comment-dwim-line)
 
 ;; Align according to regexp
-(global-set-key (kbd "C-c a") 'align-regexp)
+(global-set-key (kbd "C-c a") #'align-regexp)
 
 ;;; Dired
 (use-package dired
+  :init (add-hook 'dired-mode-hook #'dired-hide-details-mode)
   :config
-  (progn
-    (require 'dired-x)
-    (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-    (setq-default dired-hide-details-hide-symlink-targets nil
-                  dired-omit-mode t
-                  dired-omit-files (concat dired-omit-files "\\|^\\..+$")
-                  dired-auto-revert-buffer t
-                  dired-listing-switches "-alh")))
+  (require 'dired-x)
+  (setq-default dired-hide-details-hide-symlink-targets nil
+                dired-omit-mode t
+                dired-omit-files (concat dired-omit-files "\\|^\\..+$")
+                dired-auto-revert-buffer t
+                dired-listing-switches "-alh"))
+
+(use-package wdired
+  :init
+  (bind-key "C-c C-e" #'wdired-change-to-wdired-mode dired-mode-map)
+  :config
+  (setq wdired-use-dired-vertical-movement 'sometimes
+        wdired-confirm-overwrite t
+        wdired-use-interactive-rename t))
 
 (use-package dired+
+  :after dired
   :ensure t
-  :init (toggle-diredp-find-file-reuse-dir t))
+  :config (toggle-diredp-find-file-reuse-dir t))
 
 ;;; Eshell
-(defun eshell/clear ()
-  "Clear the eshell buffer"
-  (interactive)
-  (let ((eshell-buffer-maximum-lines 0))
-    (eshell-truncate-buffer)))
-
-(defun eshell/exit-or-delete ()
-  "Mimic shell behaviour: delete char under point or, if there is
-  no input, exit eshell"
-  (interactive)
-  (eshell-skip-prompt)
-  (if (= (point) (point-at-eol))
-      (progn
-        (eshell-life-is-too-much)
-        (delete-window))
-    (delete-char 1)))
-
-(defun eshell-here ()
-  "Opens a new eshell in the directory associated with the current buffer's
-  file. Reuses a previously opened eshell if applicable."
-  (interactive)
-  (let* ((height (/ (window-total-height) 4))
-         (current-dir default-directory)
-         (eshell-buffer "*eshell*"))
-    (unless (string= (buffer-name) eshell-buffer)
-      (when (= (length (window-list)) 1)
-        (split-window-vertically (- height)))
-      (other-window 1)
-      (if (get-buffer eshell-buffer)
-          (switch-to-buffer eshell-buffer)
-        (eshell)))
-    (unless (string= current-dir default-directory)
-      (eshell/cd current-dir)
-      (eshell-send-input)
-      (eshell/clear)
-      (message "eshell: Changed directory to %s" current-dir))))
-
 (use-package eshell
-  :bind (("C-c s" . eshell-here))
+  :bind (("C-c s" . ngq/eshell-here))
+  :init
+  (defun ngq/eshell-clear ()
+    "Clear the eshell buffer"
+    (interactive)
+    (let ((eshell-buffer-maximum-lines 0))
+      (eshell-truncate-buffer)))
+
+  (defun ngq/eshell-exit-or-delete ()
+    "Mimic shell behaviour: delete char under point or, if there is
+  no input, exit eshell"
+    (interactive)
+    (eshell-skip-prompt)
+    (if (= (point) (point-at-eol))
+        (progn
+          (eshell-life-is-too-much)
+          (delete-window))
+      (delete-char 1)))
+
+  (defun ngq/eshell-here ()
+    "Opens a new eshell in the directory associated with the current buffer's
+  file. Reuses a previously opened eshell if applicable."
+    (interactive)
+    (let* ((height (/ (window-total-height) 4))
+           (current-dir default-directory)
+           (eshell-buffer "*eshell*"))
+      (unless (string= (buffer-name) eshell-buffer)
+        (when (= (length (window-list)) 1)
+          (split-window-vertically (- height)))
+        (other-window 1)
+        (if (get-buffer eshell-buffer)
+            (switch-to-buffer eshell-buffer)
+          (eshell)))
+      (unless (string= current-dir default-directory)
+        (eshell/cd current-dir)
+        (eshell-send-input)
+        (eshell/clear)
+        (message "eshell: Changed directory to %s" current-dir))))
+
+  (add-hook 'eshell-mode-hook
+            #'(lambda () (progn (add-to-list 'eshell-output-filter-functions
+                                        'eshell-truncate-buffer
+                                        'eshell-handle-ansi-color)
+                           (bind-key "C-d" #'ngq/eshell-exit-or-delete eshell-mode-map)
+                           (bind-key "C-l" #'ngq/eshell-clear eshell-mode-map))))
   :config
-  (progn (setq-default eshell-hist-ignoredups             t
-                       eshell-history-size                1024
-                       eshell-save-history-on-exit        t
-                       eshell-banner-message              ""
-                       eshell-buffer-maximum-lines        2500
-                       eshell-scroll-to-bottom-on-output  t
-                       eshell-scroll-show-maximum-output  t)
-         (add-hook 'eshell-mode-hook
-                   #'(lambda ()
-                       (add-to-list 'eshell-output-filter-functions
-                                    'eshell-truncate-buffer
-                                    'eshell-handle-ansi-color)
-                       (bind-key "C-d" #'eshell/exit-or-delete eshell-mode-map)
-                       (bind-key "C-l" #'eshell/clear eshell-mode-map)
-                       (bind-key "C-r" #'helm-eshell-history eshell-mode-map)))))
+  (setq-default eshell-hist-ignoredups             t
+                eshell-history-size                1024
+                eshell-save-history-on-exit        t
+                eshell-banner-message              ""
+                eshell-buffer-maximum-lines        2500
+                eshell-scroll-to-bottom-on-output  t
+                eshell-scroll-show-maximum-output  t))
 
 ;;; Ediff
 (use-package ediff-wind
@@ -310,7 +304,7 @@ comment at the end of the line."
 ;; Recent files & history
 (use-package recentf
   :config
-  (setq recentf-save-file (concat user-temp-files-directory "recentf")
+  (setq recentf-save-file (concat user-temp-files-directory "recentf-list")
         recentf-max-menu-items 15
         recentf-max-saved-items 200
         recentf-auto-cleanup 60
@@ -326,48 +320,74 @@ comment at the end of the line."
                         save-place t))
 
 (use-package savehist
-  :config (setq savehist-file (concat user-temp-files-directory "history")
+  :init (add-hook 'after-init-hook #'savehist-mode)
+  :config (setq savehist-file (concat user-temp-files-directory
+                                      "minibuffer-history")
                 savehist-save-minibuffer-history t
-                savehist-autosave-interval 60)
-  :init (savehist-mode t))
+                savehist-autosave-interval 60))
+
+;; C modes common settings
+(defun ngq/c-mode-setup ()
+  (setq-default c-basic-offset 4
+                c-default-style "linux")
+  (define-key 'c-mode-map "C-c ," #'ff-find-other-file)
+  (c-set-offset 'case-label '+)
+  (c-set-offset 'substatement-open 0))
+
+(add-hook 'c-mode-common-hook #'ngq/c-mode-setup)
 
 ;;; External packages
 (use-package aggressive-indent
   :ensure t
-  :config (add-hook 'prog-mode-hook #'aggressive-indent-mode)
+  :init (add-hook 'prog-mode-hook #'aggressive-indent-mode)
   :diminish aggressive-indent-mode)
 
 (use-package anzu
   :ensure t
-  :config (progn
-            (setq anzu-deactivate-region t
-                  anzu-replace-to-string-separator " => ")
-            (bind-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
-            (bind-key [remap query-replace] 'anzu-query-replace))
-  :init (global-anzu-mode t)
+  :bind (([remap query-replace-regexp] . anzu-query-replace-regexp)
+         ([remap query-replace] . anzu-query-replace))
+  :init (add-hook 'after-init-hook #'global-anzu-mode)
+  :config
+  (setq anzu-deactivate-region t
+        anzu-replace-to-string-separator " => ")
   :diminish (anzu-mode))
 
 (use-package company
   :ensure t
+  :init (add-hook 'prog-mode-hook #'company-mode)
   :config
-  (progn (setq company-minimum-prefix-length 2
-               company-selection-wrap-around t
-               company-tooltip-flip-when-above t
-               company-tooltip-align-annotations t)
-         (bind-key [remap completion-at-point] #'company-complete company-mode-map)
-         (bind-key "C-n" #'company-select-next company-active-map)
-         (bind-key "C-p" #'company-select-previous company-active-map)
-         (add-hook 'prog-mode-hook #'company-mode))
+  (defun company-mode/backend-with-yas (backend)
+    (if (and (listp backend) (member 'company-yasnippet backend))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+
+  (setq company-minimum-prefix-length 2
+        company-selection-wrap-around t
+        company-tooltip-flip-when-above t
+        company-tooltip-align-annotations t
+        company-backends '(company-css
+                           company-clang
+                           company-cmake
+                           company-files
+                           company-capf
+                           company-keywords)
+        company-backends (mapcar #'company-mode/backend-with-yas
+                                 company-backends))
+  (bind-key [remap completion-at-point] #'company-complete company-mode-map)
+  (bind-key "C-n" #'company-select-next company-active-map)
+  (bind-key "C-p" #'company-select-previous company-active-map)
   :diminish company-mode)
 
 (use-package company-c-headers
+  :after company
   :ensure t
   :config
-  (add-hook 'c-mode-hook #'(lambda ()
-                             (add-to-list 'company-backends
-                                          'company-c-headers))))
+  (add-hook 'c-mode-hook #'(lambda () (add-to-list 'company-backends
+                                              'company-c-headers))))
 
 (use-package company-web
+  :after company
   :ensure t
   :config
   (add-hook 'web-mode-hook #'(lambda ()
@@ -381,47 +401,60 @@ comment at the end of the line."
 
 (use-package flycheck
   :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'flycheck-mode)
+  (add-hook 'LaTeX-mode-hook #'flycheck-mode)
   :config
-  (progn
-    (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
-    (add-hook 'prog-mode-hook #'flycheck-mode)
-    (add-hook 'LaTeX-mode-hook #'flycheck-mode)))
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 
 (use-package helm
   :ensure t
-  :bind (("C-x C-b" . helm-mini)
-         ("C-x C-f" . helm-find-files)
+  :bind (("C-c i" . helm-imenu)
          ("C-x C-r" . helm-recentf)
-         ("C-c i" . helm-imenu)
-         ("M-x" . helm-M-x)
-         ("M-y" . helm-show-kill-ring))
+         ("M-y" . helm-show-kill-ring)
+         ([remap find-file] . helm-find-files)
+         ([remap list-buffers] . helm-buffers-list)
+         ([remap switch-to-buffer] . helm-mini)
+         ([remap execute-extended-command] . helm-M-x))
+  :init
+  (add-hook 'helm-mode-hook #'helm-autoresize-mode)
+  (helm-mode t)
   :config
-  (progn
-    (setq-default helm-buffers-fuzzy-matching t
-                  helm-M-x-fuzzy-match t
-                  helm-recentf-fuzzy-match t
-                  helm-imenu-fuzzy-match t
-                  helm-quick-update t
-                  helm-display-header-line nil
-                  helm-split-window-in-side-p t
-                  helm-move-to-line-cycle-in-source t
-                  helm-ff-file-name-history-use-recentf t
-                  helm-ff-skip-boring-files t
-                  helm-boring-buffer-regexp-list (append helm-boring-buffer-regexp-list
-                                                         '("\\*helm"
-                                                           "\\*tramp"
-                                                           "\\*epc"
-                                                           "\\*Completions"
-                                                           "\\*clang-output"
-                                                           "\\*clang-error"
-                                                           "\\*magit-"))
-                  helm-boring-file-regexp-list (append helm-boring-file-regexp-list
-                                                       '("\\.DS_Store$")))
-    (bind-key "<tab>" #'helm-execute-persistent-action helm-map))
-  :init (helm-mode t)
+  (setq-default helm-buffers-fuzzy-matching t
+                helm-M-x-fuzzy-match t
+                helm-recentf-fuzzy-match t
+                helm-imenu-fuzzy-match t
+                helm-quick-update t
+                helm-truncate-lines t
+                helm-display-header-line nil
+                helm-move-to-line-cycle-in-source t
+                helm-ff-skip-boring-files t
+                helm-ff-file-name-history-use-recentf t
+                helm-ff-auto-update-initial-value t
+                helm-ff-newfile-prompt-p nil
+                helm-boring-buffer-regexp-list (append helm-boring-buffer-regexp-list
+                                                       '("\\*tramp"
+                                                         "\\*epc"
+                                                         "\\*Completions"
+                                                         "\\*Compile-Log"
+                                                         "\\*clang-output"
+                                                         "\\*clang-error"
+                                                         "\\*magit"
+                                                         "\\*terminal-notifier"))
+                helm-boring-file-regexp-list (append helm-boring-file-regexp-list
+                                                     '("\\.DS_Store$")))
+  (bind-keys :map helm-map
+             ("<tab>" . helm-execute-persistent-action)
+             ("C-z" . helm-select-action))
+  (add-hook 'eshell-mode-hook #'(lambda ()
+                                  (bind-key [remap eshell-pcomplete]
+                                            'helm-esh-pcomplete eshell-mode-map)
+                                  (bind-key "C-r"
+                                            'helm-eshell-history eshell-mode-map)))
   :diminish helm-mode)
 
 (use-package helm-flycheck
+  :after helm
   :ensure t
   :bind (("C-c f" . helm-flycheck)))
 
@@ -438,21 +471,26 @@ comment at the end of the line."
 
 (use-package rainbow-delimiters
   :ensure t
-  :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode-enable))
+  :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode-enable))
 
 (use-package smartparens-config
   :ensure smartparens
-  :diminish smartparens-mode
+  :init
+  (smartparens-global-mode t)
+  (show-smartparens-global-mode t)
+  (dolist (hook '(inferior-emacs-lisp-mode-hook
+                  emacs-lisp-mode-hook
+                  racket-mode-hook))
+    (add-hook hook #'smartparens-strict-mode))
   :config
-  (progn (sp-local-pair 'cc-mode "{" nil :post-handlers '(("||\n[i]" "RET")))
-         (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode))
-  :init (show-smartparens-global-mode t))
+  (sp-local-pair 'cc-mode "{" nil :post-handlers '(("||\n[i]" "RET")))
+  :diminish smartparens-mode)
 
 (use-package tex
   :ensure auctex
-  :mode ("\\.tex\\'" . TeX-mode)
+  :mode ("\\.tex\\'" . LaTeX-mode)
   :config
-  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  (add-hook 'LaTeX-mode-hook #'visual-line-mode)
   (setq TeX-parse-self t
         TeX-auto-save t
         TeX-clean-confirm nil
@@ -464,34 +502,35 @@ comment at the end of the line."
   :mode (("\\.html?\\'" . web-mode)
          ("\\.php\\'" . web-mode))
   :config
-  (progn
-    (setq web-mode-markup-indent-offset 2
-          web-mode-css-indent-offset 2
-          web-mode-code-indent-offset 4
-          web-mode-enable-auto-expanding t
-          web-mode-enable-auto-pairing t
-          web-mode-enable-current-element-highlight t)
-    (bind-key "M-<up>" #'web-mode-element-previous web-mode-map)
-    (bind-key "M-<down>" #'web-mode-element-next web-mode-map)
-    (bind-key "M-S-<up>" #'web-mode-element-parent web-mode-map)
-    (bind-key "M-<end>" #'web-mode-navigate web-mode-map)
-    (bind-key "C-c c" #'web-mode-comment-or-uncomment web-mode-map)
-    (bind-key "C-c k" #'web-mode-element-kill web-mode-map)
-    (bind-key "C-c v" #'web-mode-element-vanish web-mode-map)
-    (bind-key "C-c w" #'web-mode-element-wrap web-mode-map)
-    (bind-key "C-c r" #'web-mode-element-rename web-mode-map)
-    (bind-key "C-x x" #'web-mode-mark-and-expand web-mode-map)))
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 4
+        web-mode-enable-auto-expanding t
+        web-mode-enable-auto-pairing t
+        web-mode-enable-current-element-highlight t)
+  (bind-key "M-<up>" #'web-mode-element-previous web-mode-map)
+  (bind-key "M-<down>" #'web-mode-element-next web-mode-map)
+  (bind-key "M-S-<up>" #'web-mode-element-parent web-mode-map)
+  (bind-key "M-<end>" #'web-mode-navigate web-mode-map)
+  (bind-key "C-c c" #'web-mode-comment-or-uncomment  web-mode-map)
+  (bind-key "C-c k" #'web-mode-element-kill  web-mode-map)
+  (bind-key "C-c v" #'web-mode-element-vanish web-mode-map)
+  (bind-key "C-c w" #'web-mode-element-wrap web-mode-map)
+  (bind-key "C-c r" #'web-mode-element-rename web-mode-map)
+  (bind-key "C-x x" #'web-mode-mark-and-expand web-mode-map))
 
 (use-package whole-line-or-region
   :ensure t
-  :diminish whole-line-or-region-mode
-  :config (whole-line-or-region-mode t))
+  :config (add-hook 'after-init-hook #'whole-line-or-region-mode)
+  :diminish whole-line-or-region-mode)
 
 (use-package yasnippet
   :ensure t
-  :config (setq-default yas-prompt-functions
-                        (delete 'yas-x-prompt yas-prompt-functions))
-  :init (yas-global-mode t)
+  :init (add-hook 'prog-mode-hook #'yas-minor-mode)
+  :config
+  (setq yas-snippet-dirs yas-installed-snippets-dir
+        yas-verbosity 2)
+  (yas-reload-all)
   :diminish yas-minor-mode)
 
 ;; Load custom settings, if they do exist
