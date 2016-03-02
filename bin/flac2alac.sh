@@ -23,9 +23,9 @@ check_prerequisites() {
 process_dir() {
     local targetdir="${1}"
     local outputdir="${2}"
-    local cover_file=$(ls "${targetdir}"@(cover|folder).@(jpeg|jpg) 2>/dev/null)
+    local cover_file="$(ls "${targetdir}"@(cover|folder).@(jpeg|jpg) 2>/dev/null)"
 
-    parallel --bar -q convert_track {} "${cover_file}" "${outputdir}" ::: "${targetdir}"*.flac
+    parallel --bar convert_track {} \'"${cover_file}"\' "${outputdir}" ::: "${targetdir}"*.flac
 
     rm -f "${targetdir}"cover-resized-*.jpg # nasty AtomicParsley
 }
@@ -37,14 +37,14 @@ convert_track() {
     local converted_track="${track%.*}.m4a"
     local embedded_cover="${track%.*}.jpg"
 
-    ffmpeg -hide_banner -nostats -loglevel panic -i "${track}" -y -c:a alac "${converted_track}"
+    ffmpeg -hide_banner -nostats -loglevel panic -i "${track}" -y -c:a alac "${converted_track}" < /dev/null
 
     if [ ! -z "${cover_file}" ]; then
         AtomicParsley "${converted_track}" --artwork "${cover_file}" --overWrite 1>/dev/null
     else
         if ffprobe -hide_banner -loglevel panic -i "${track}" | grep -q "Stream #0:1: Video"; then
             ffmpeg -hide_banner -nostats -loglevel panic -i "${track}" -y -vf \
-                   crop="((in_w/2)*2):((in_h/2)*2)" "${embedded_cover}"
+                   crop="((in_w/2)*2):((in_h/2)*2)" "${embedded_cover}" < /dev/null
             AtomicParsley "${converted_track}" --artwork "${embedded_cover}" --overWrite 1>/dev/null
             rm "{$embedded_cover}"
         fi
