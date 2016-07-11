@@ -64,8 +64,7 @@
              :init (exec-path-from-shell-initialize))
            (setq mac-option-modifier 'alt
                  mac-command-modifier 'meta
-                 mac-right-option-modifier 'none)
-           ))
+                 mac-right-option-modifier 'none)))
 
 ;; Switch windows with windmove
 (use-package windmove
@@ -221,11 +220,12 @@ comment at the end of the line."
 ;;; Eshell
 (use-package eshell
   :bind (("C-c s" . ngq/eshell-here))
-  :init (defun ngq/eshell-clear ()
-          "Clear the eshell buffer"
-          (interactive)
-          (let ((eshell-buffer-maximum-lines 0))
-            (eshell-truncate-buffer)))
+  :init
+  (defun ngq/eshell-clear ()
+    "Clear the eshell buffer"
+    (interactive)
+    (let ((eshell-buffer-maximum-lines 0))
+      (eshell-truncate-buffer)))
 
   (defun ngq/eshell-exit-or-delete ()
     "Mimic shell behaviour: delete char under point or, if there is
@@ -325,14 +325,13 @@ comment at the end of the line."
                 savehist-autosave-interval 60))
 
 ;; C modes common settings
-(defun ngq/c-mode-setup ()
-  (setq-default c-basic-offset 4
-                c-default-style "linux")
-  (define-key 'c-mode-map "C-c ," #'ff-find-other-file)
-  (c-set-offset 'case-label '+)
-  (c-set-offset 'substatement-open 0))
-
-(add-hook 'c-mode-common-hook #'ngq/c-mode-setup)
+(use-package cc-mode
+  :bind (:map c-mode-map
+              ("C-c ," . ff-find-other-file))
+  :config (progn (setq c-default-style "linux"
+                       c-basic-offset 4)
+                 (c-set-offset 'case-label '+)
+                 (c-set-offset 'substatement-open 0)))
 
 ;;; External packages
 (use-package aggressive-indent
@@ -351,7 +350,8 @@ comment at the end of the line."
 
 (use-package company
   :ensure t
-  :init (add-hook 'prog-mode-hook #'company-mode)
+  :init
+  (add-hook 'prog-mode-hook #'company-mode)
   (add-hook 'eshell-mode-hook #'company-mode)
   :bind (:map company-mode-map
               ([remap completion-at-point] . company-complete)
@@ -397,7 +397,8 @@ comment at the end of the line."
 
 (use-package flycheck
   :ensure t
-  :init (add-hook 'prog-mode-hook #'flycheck-mode)
+  :init
+  (add-hook 'prog-mode-hook #'flycheck-mode)
   (add-hook 'LaTeX-mode-hook #'flycheck-mode)
   :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 
@@ -410,13 +411,15 @@ comment at the end of the line."
          ([remap list-buffers] . helm-buffers-list)
          ([remap switch-to-buffer] . helm-mini)
          ([remap execute-extended-command] . helm-M-x)
-         (:map helm-map
-               ("<tab>" . helm-execute-persistent-action)
-               ("C-z" . helm-select-action))
-         (:map eshell-mode-map
-               ([remap eshell-pcomplete] . helm-esh-pcomplete)
-               ("C-r" . helm-eshell-history)))
-  :init (add-hook 'helm-mode-hook #'helm-autoresize-mode)
+         :map helm-map
+         ("<tab>" . helm-execute-persistent-action)
+         ("C-z" . helm-select-action)
+         :map isearch-mode-map
+         ("C-o" . helm-occur-from-isearch))
+  :init
+  (add-hook 'helm-mode-hook #'helm-autoresize-mode)
+  (add-hook 'eshell-mode-hook (lambda ()
+                                (bind-key "C-r" #'helm-eshell-history eshell-mode-map)))
   (helm-mode t)
   :config (setq-default helm-buffers-fuzzy-matching t
                         helm-M-x-fuzzy-match t
