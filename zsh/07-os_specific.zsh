@@ -1,5 +1,7 @@
-# Distro-specific additions (aliases, completion...)
-if [[ $(uname) == "Linux" ]]; then
+# OS/Distro-specific additions (aliases, completion...)
+OS=$(uname)
+
+if [[ $OS = "Linux" ]]; then
     if [ -f /etc/debian_version ]; then
         alias apt-get='sudo apt-get'
     fi
@@ -12,4 +14,9 @@ if [[ $(uname) == "Linux" ]]; then
         alias dnf='sudo dnf'
         alias yum='sudo yum'
     fi
+elif [[ $OS = "Darwin" ]]; then
+    alias bup="brew update && brew upgrade --all && brew cask update"
+    alias bcl="brew cleanup -s && brew prune -s && brew cask cleanup"
 fi
+
+unset OS

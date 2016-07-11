@@ -1,6 +1,7 @@
-# Use cache
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path $HOME/.zsh/.cache/zcache
+# Gotta go FAST
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' cache-path ~/.zsh/.cache/zcache
+zstyle ':completion::complete:*' use-cache on
 
 # Remove trailing slashes
 zstyle ':completion:*' squeeze-slashes true
@@ -41,7 +42,7 @@ zstyle ':vcs_info:*' get-revision true
 zstyle ':vcs_info:*' stagedstr '%F{green}*%f '
 zstyle ':vcs_info:*' unstagedstr '%F{yellow}*%f '
 zstyle ':vcs_info:git*' formats '%F{cyan}± %b%f %F{white}%.7i%f %m%c%u'
-zstyle ':vcs_info:git*' actionformats '%F{cyan}± %b%f %F{blue}[%a]%f %F{white}%(!.%.7i.)%f %m%c%u'
+zstyle ':vcs_info:git*' actionformats '%F{cyan}± %b%f %F{blue}[%a]%f %F{white}%(!.%.7i.)%f %c%u'
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-aheadbehind
 zstyle ':vcs_info:svn*' formats '%F{cyan}%s %r%f %F{white}r%i%f %m%c%u'
 

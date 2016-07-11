@@ -1,6 +1,6 @@
 ## Environment variables parsed by zsh
 
-export EDITOR=nano
+export EDITOR=nvim
 export LANG=fr_FR.UTF-8
 export BROWSER=open
 export SHELL=/bin/zsh
