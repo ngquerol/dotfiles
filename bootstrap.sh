@@ -1,14 +1,21 @@
 #!/usr/bin/env sh
 
 # Absolute path this script is in
-SCRIPTPATH=$(cd "$(dirname "$0")"; pwd)
+script_path=$(cd "$(dirname "${0}")"; pwd)
 
-echo "Symlinking dotfiles..."
+symlink() {
+    local source="${1}"
+    local target="${HOME}/.$(basename ${1})"
 
-[ -d $HOME/.zsh ]       || ln -sv $SCRIPTPATH/zsh       $HOME/.zsh
-[ -f $HOME/.zshrc ]     || ln -sv $SCRIPTPATH/zshrc     $HOME/.zshrc
-[ -d $HOME/.bin ]       || ln -sv $SCRIPTPATH/bin       $HOME/.bin
-[ -f $HOME/.gitconfig ] || ln -sv $SCRIPTPATH/gitconfig $HOME/.gitconfig
-[ -d $HOME/.emacs.d ]   || ln -sv $SCRIPTPATH/emacs.d   $HOME/.emacs.d
+    ln -fsv ${source} ${target}
+}
 
-echo "Done."
+echo "Symlinking files...\n"
+
+symlink ${script_path}/zsh
+symlink ${script_path}/zshrc
+symlink ${script_path}/bin
+symlink ${script_path}/gitconfig
+symlink ${script_path}/emacs.d
+
+echo "\nDone."
