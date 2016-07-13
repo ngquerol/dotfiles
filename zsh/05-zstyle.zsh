@@ -26,6 +26,11 @@ zstyle ':completion:*:cp:*' ignore-line yes
 # Ignore completion functions for commands we don't have
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
+# Man pages completion
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.*' insert-sections   true
+zstyle ':completion:*:man:*' menu yes select
+
 # PID completion
 zstyle ':completion:*:processes' command ps -A -o pid,user,command
 zstyle ':completion:*:processes-names' command 'ps c -U ${USER} -o command'

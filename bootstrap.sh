@@ -4,18 +4,19 @@
 script_path=$(cd "$(dirname "${0}")"; pwd)
 
 symlink() {
-    local source="${1}"
-    local target="${HOME}/.$(basename ${1})"
+    source="${1}"
+    target="${HOME}/.$(basename "${1}")"
 
-    ln -fsv ${source} ${target}
+    ln -fsv "${source}" "${target}"
 }
 
-echo "Symlinking files...\n"
+printf "Symlinking files...\n"
 
-symlink ${script_path}/zsh
-symlink ${script_path}/zshrc
-symlink ${script_path}/bin
-symlink ${script_path}/gitconfig
-symlink ${script_path}/emacs.d
+symlink "${script_path}/zsh"
+symlink "${script_path}/zshrc"
+symlink "${script_path}/zprofile"
+symlink "${script_path}/bin"
+symlink "${script_path}/gitconfig"
+symlink "${script_path}/emacs.d"
 
-echo "\nDone."
+printf "Done.\n"
