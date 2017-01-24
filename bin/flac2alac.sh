@@ -2,6 +2,10 @@
 
 shopt -s extglob
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 # Function definitions
 check_prerequisites() {
     if ! command -v parallel &>/dev/null; then

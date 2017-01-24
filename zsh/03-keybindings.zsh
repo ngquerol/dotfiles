@@ -1,4 +1,7 @@
 # Different keybindings for different terminals...
+
+bindkey -e
+
 case $TERM in
     xterm*)
         bindkey "\e[H"    beginning-of-line    # Home

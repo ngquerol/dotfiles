@@ -1,5 +1,5 @@
 # OS/Distro-specific additions (aliases, completion...)
-OS=$(uname)
+local OS=$(uname)
 
 if [[ $OS = "Linux" ]]; then
     if [ -f /etc/debian_version ]; then
@@ -15,7 +15,7 @@ if [[ $OS = "Linux" ]]; then
         alias yum='sudo yum'
     fi
 elif [[ $OS = "Darwin" ]]; then
-    alias bup="brew update && brew upgrade --all && brew cask update"
+    alias bup="brew update && brew upgrade"
     alias bcl="brew cleanup -s && brew prune -s && brew cask cleanup"
 fi
 

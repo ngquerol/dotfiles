@@ -1,11 +1,9 @@
-#
-# ZSH configuration file
-#
-# Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
-#
+## ZSH interactive shell configuration
 
 # source zsh completions
-fpath=(/usr/local/share/zsh-completions $fpath)
+if [ -d /usr/local/share/zsh-completions ]; then
+    fpath=(/usr/local/share/zsh-completions $fpath)
+fi
 
 # load stuff
 autoload -Uz colors && colors

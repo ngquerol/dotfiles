@@ -23,4 +23,5 @@ alias less='less -m'
 alias e=$EDITOR
 
 # MISC
+alias top='top -o cpu'
 alias reload='source ~/.zshrc'
