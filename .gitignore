@@ -1,5 +1,6 @@
 /bin/*
 !/bin/backup.sh
 !/bin/flac2alac.sh
+/emacs.d/irony
 /zsh/.cache/*
 .DS_Store
