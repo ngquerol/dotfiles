@@ -52,5 +52,4 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-aheadbehind
 zstyle ':vcs_info:svn*' formats '%F{cyan}%s %r%f %F{white}r%i%f %m%c%u'
 
 # Colors
-zmodload zsh/complist
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}

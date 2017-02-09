@@ -3,7 +3,6 @@
 # Utilities
 export LANG=fr_FR.UTF-8
 export BROWSER=open
-
 export EDITOR=vi
 
 # History

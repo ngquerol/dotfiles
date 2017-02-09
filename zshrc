@@ -2,18 +2,24 @@
 
 # source zsh completions
 if [ -d /usr/local/share/zsh-completions ]; then
-    fpath=(/usr/local/share/zsh-completions $fpath)
+    fpath=(/usr/local/share/zsh-completions ${fpath})
 fi
 
 # load stuff
 autoload -Uz colors && colors
-autoload -Uz compinit && compinit -d $HOME/.zsh/.cache/zcompdump
-autoload -Uz bashcompinit && bashcompinit
 autoload -Uz select-word-style && select-word-style bash
 autoload -Uz vcs_info && vcs_info
 
+autoload -Uz bashcompinit && bashcompinit
+autoload -Uz compinit
+
+if [ -f ${HOME}/.zsh/.cache/zcompdump ] && [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ${HOME}/.zsh/.cache/zcompdump) ]; then
+    compinit -d ${HOME}/.zsh/.cache/zcompdump
+else
+    compinit -C -d ${HOME}/.zsh/.cache/zcompdump
+fi
+
 zmodload zsh/complist
-zmodload zsh/terminfo
 
 setopt \
     hist_ignore_all_dups \
@@ -27,11 +33,12 @@ setopt \
     listtypes \
     extendedglob \
     completeinword \
+    completealiases \
     alwaystoend \
     correct \
     autocd
 
 # Source seperate config files
-for r in $HOME/.zsh/*.zsh; do
+for r in ${HOME}/.zsh/*.zsh; do
     source $r
 done

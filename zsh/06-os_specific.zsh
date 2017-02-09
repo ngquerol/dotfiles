@@ -1,9 +1,11 @@
 # OS/Distro-specific additions (aliases, completion...)
-local OS=$(uname)
+OS=$(uname)
 
 if [[ $OS = "Linux" ]]; then
     if [ -f /etc/debian_version ]; then
         alias apt-get='sudo apt-get'
+        alias apt='sudo apt'
+        alias aptitude='sudo aptitude'
     fi
 
     if [ -f /etc/arch-release ]; then
