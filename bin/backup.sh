@@ -17,7 +17,7 @@ backup_dest_file="${backup_dest_dir}/${backup_file_name}.tar.xz"
 exclude_file="${backup_src_dir}/.exclude"
 
 if [ ! -d "${backup_src_dir}" ]; then
-    echo "Directory \"${backup_src_dir}\" does not exists, aborting."
+    echo >&2 "Directory \"${backup_src_dir}\" does not exists, aborting."
     exit 1
 fi
 
@@ -49,7 +49,7 @@ fi
 tar_exit=$?
 
 if [ $tar_exit -ne 0 ]; then
-    echo "Something went wrong."
+    echo >&2 "Something went wrong."
 else
     echo "Done."
 fi
