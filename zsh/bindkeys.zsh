@@ -1,4 +1,4 @@
-# Different keybindings for different terminals...
+autoload -U select-word-style && select-word-style bash
 
 bindkey -e
 

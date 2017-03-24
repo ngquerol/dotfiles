@@ -1,0 +1,18 @@
+setopt autocd
+setopt complete_aliases
+setopt complete_in_word
+setopt correct
+setopt list_types
+setopt no_beep
+setopt no_check_jobs
+setopt no_hup
+setopt prompt_subst
+
+setopt hist_find_no_dups
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt hist_save_no_dups
+setopt histverify
+setopt inc_append_history
+setopt share_history

@@ -1,4 +1,4 @@
-# Coloring man pages
+# colored man pages
 man() {
     env \
         LESS_TERMCAP_mb=$(printf "\e[1;34m") \
@@ -11,35 +11,23 @@ man() {
         man "$@"
 }
 
-# Display man pages formatted as postscript
+# display man pages formatted as postscript
 pman() {
-    if [[ ($# -eq 1) && (! -z $1) ]]; then
-        man -t $1 | open -f -a /Applications/Preview.app
+    if [[ (${#} -eq 1) && (-n ${1}) ]]; then
+        man -t ${1} | open -f -a /Applications/Preview.app
     else
         print "Usage: pman <man page>"
     fi
 }
 
-# Get VCS info, set the prompt and the terminal's title
-precmd() {
-    vcs_info
-    setprompt
-    print -Pn "\e]2;%n@%m: %~\a"
-}
-
-preexec() {
-    print -Pn "\e]2;%n@%m: $1\a"
-}
-
-# Show if there are untracked files in a git repo
+# git prompt functions
 +vi-git-untracked() {
-    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
-           git status --porcelain | grep '??' &> /dev/null; then
-        hook_com[unstaged]+='%F{1}*%f '
+    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]] && \
+           git status --porcelain | grep "??" &> /dev/null; then
+        hook_com[unstaged]+="%F{red}*%f "
     fi
 }
 
-# Show how many commits the local branch is ahead or behind the remote branch
 +vi-git-aheadbehind() {
     local ahead behind
     local -a gitstatus
@@ -54,5 +42,16 @@ preexec() {
 
     if [[ -n ${hook_com[misc]} ]]; then
         hook_com[misc]="${hook_com[misc]}"
+    fi
+}
+
++vi-git-remotebranch() {
+    local remote
+
+    remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
+        --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
+
+    if [[ -n ${remote} && ${remote#*/} != ${hook_com[branch]} ]]; then
+        hook_com[branch]="${hook_com[branch]} [${remote}]"
     fi
 }
