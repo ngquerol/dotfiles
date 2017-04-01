@@ -1,8 +1,10 @@
+[core]
+    excludesfile = ~/.gitignore_global
 [user]
     name = Nicolas G. Querol
     email = nicolas.gquerol@gmail.com
 [credential]
-    helper = cache
+	helper = osxkeychain
 [color]
     ui = true
     diff = true
