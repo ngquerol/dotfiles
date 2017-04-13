@@ -13,14 +13,7 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 # executable path
-if [ -d "${HOME}/.bin" ]; then
-    export PATH="${HOME}/.bin:${PATH}"
-fi
+export PATH="${HOME}/.bin:${PATH}"
 
-if [ -d "/usr/local/sbin" ]; then
-    export PATH="/usr/local/sbin:${PATH}"
-fi
-
-if [ -f "${HOME}/.cargo/env" ]; then
-    source "${HOME}/.cargo/env"
-fi
+# local & specific configuration
+[ -f "${HOME}/.zprofile.local" ] && source "${HOME}/.zprofile.local"
