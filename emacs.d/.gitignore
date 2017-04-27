@@ -8,3 +8,4 @@ local.el
 .mc-lists.el
 tramp
 irony
+custom.el
