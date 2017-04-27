@@ -8,9 +8,9 @@ script_path=$(cd "$(dirname "${0}")" && pwd)
 
 symlink() {
     source="${1}"
-    target="${HOME}/.$(basename "${1}")"
+    target="${HOME}/.$(basename ${1})"
 
-    ln -fsv "${source}" "${target}"
+    ln -Fhsv "${source}" "${target}"
 }
 
 printf "Symlinking files...\n"
