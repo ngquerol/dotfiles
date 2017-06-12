@@ -1,12 +1,30 @@
 [core]
     excludesfile = ~/.gitignore_global
+
 [user]
     name = Nicolas G. Querol
     email = nicolas.gquerol@gmail.com
+
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain
+
 [color]
     ui = true
     diff = true
     status = true
     branch = true
+
+[alias]
+    ci = commit
+    cif = commit --fixup=
+    cis = commit --squash=
+    cia = commit --amend
+    co = checkout
+    df = diff
+    dfs = diff --stat
+    dfw = diff --word-diff
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(blue)(%an)%Creset'
+    pf = push --force-with-lease
+    rb = rebase --autosquash
+    so = show --stat
+    st = status --short --branch
