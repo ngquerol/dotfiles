@@ -22,5 +22,6 @@ symlink "${script_path}/zprofile.local"
 symlink "${script_path}/bin"
 symlink "${script_path}/gitconfig"
 symlink "${script_path}/emacs.d"
+symlink "${script_path}/vimrc"
 
 printf "Done.\n"
