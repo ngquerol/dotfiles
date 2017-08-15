@@ -22,6 +22,8 @@
 (require 'diminish)
 (require 'bind-key)
 
+(setq use-package-verbose t)
+
 ;;; Locales
 (set-language-environment 'utf-8)
 (prefer-coding-system 'utf-8)
@@ -122,7 +124,9 @@
 (delete-selection-mode t)
 
 ;; Reload buffers automagically if the corresponding file has been changed
-(global-auto-revert-mode t)
+(use-package auto-revert
+  :init (global-auto-revert-mode t)
+  :diminish auto-revert-mode)
 
 ;; Remove superfluous whitespace upon save
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
@@ -204,6 +208,7 @@ comment at the end of the line."
                 dired-hide-details-hide-symlink-targets nil
                 dired-auto-revert-buffer t
                 dired-isearch-filenames t
+                dired-use-ls-dired nil
                 dired-listing-switches "-alh"))
 
 (use-package wdired
@@ -248,38 +253,39 @@ comment at the end of the line."
     "Opens a new eshell in the directory associated with the current buffer's
   file. Reuses a previously opened eshell if applicable."
     (interactive)
-    (let* ((height (/ (window-total-height) 4))
-           (current-dir default-directory)
-           (eshell-buffer "*eshell*"))
-      (unless (string= (buffer-name) eshell-buffer)
+    (let ((current-directory (expand-file-name default-directory))
+          (eshell-buffer-height (/ (window-total-height) 4))
+          (eshell-buffer-name "*eshell*"))
+      (unless (string= (buffer-name) eshell-buffer-name)
         (when (= (length (window-list)) 1)
-          (split-window-vertically (- height)))
+          (split-window-vertically (- eshell-buffer-height)))
         (other-window 1)
-        (if (get-buffer eshell-buffer)
-            (switch-to-buffer eshell-buffer)
+        (if (get-buffer eshell-buffer-name)
+            (switch-to-buffer eshell-buffer-name)
           (eshell)))
-      (unless (string= current-dir default-directory)
-        (eshell/cd current-dir)
+      (unless (string= current-directory default-directory)
+        (eshell/cd current-directory)
         (eshell-send-input)
-        (eshell/clear)
-        (message "eshell: Changed directory to %s" current-dir))))
-
-  ;; (add-hook 'eshell-first-time-mode-hook
-  ;;           #'(lambda () (add-to-list 'eshell-output-filter-functions
-  ;;                                     'eshell-postoutput-scroll-to-bottom
-  ;;                                     'eshell-truncate-buffer)))
-  :config
+        (ngq/eshell-clear)
+        (message "eshell: Changed directory to %s" current-directory))))
+  :init
+  (add-hook 'eshell-first-time-mode-hook
+            #'(lambda () (add-to-list 'eshell-output-filter-functions
+                                      'eshell-postoutput-scroll-to-bottom
+                                      'eshell-truncate-buffer)))
   (add-hook 'eshell-mode-hook #'(lambda ()
                                   (bind-key "C-d" #'ngq/eshell-exit-or-delete eshell-mode-map)))
   (add-hook 'eshell-mode-hook #'(lambda ()
                                   (bind-key "C-l" #'ngq/eshell-clear eshell-mode-map)))
-  (setq-default eshell-hist-ignoredups             t
-                eshell-history-size                1024
-                eshell-save-history-on-exit        t
-                eshell-banner-message              ""
-                eshell-buffer-maximum-lines        2500
-                eshell-scroll-to-bottom-on-output  t
-                eshell-scroll-show-maximum-output  t))
+  :config (setq-default eshell-hist-ignoredups             t
+                        eshell-history-size                1024
+                        eshell-save-history-on-exit        t
+                        eshell-banner-message              ""
+                        eshell-prefer-lisp-functions       nil
+                        eshell-buffer-maximum-lines        2500
+                        eshell-scroll-to-bottom-on-input   'all
+                        eshell-scroll-to-bottom-on-output  t
+                        eshell-scroll-show-maximum-output  t))
 
 ;;; Ediff
 (use-package ediff-wind
@@ -295,9 +301,27 @@ comment at the end of the line."
   :defer (setq vc-follow-symlinks t
                find-file-visit-truename t))
 
+;; Kill the current buffer without confirmation
+;; (global-set-key (kbd "C-x k") #'kill-this-buffer)
+;; (global-set-key (kbd "C-x K") #'kill-buffer)
+
 ;; Shell scripts
 (use-package sh-script
   :mode ("\\.zsh\\'" . sh-mode))
+
+;; C modes common settings
+(use-package cc-mode
+  :bind (:map c-mode-map ("C-c ," . ff-find-other-file))
+  :config
+  (setq c-default-style "linux"
+        c-basic-offset 4)
+  (c-set-offset 'case-label '+)
+  (c-set-offset 'substatement-open 0))
+
+;; CSS mode
+(use-package css-mode
+  :mode "\\.css\\'"
+  :config (setq css-indent-offset 2))
 
 ;;; Backups
 
@@ -337,75 +361,9 @@ comment at the end of the line."
                 savehist-save-minibuffer-history t
                 savehist-autosave-interval 60))
 
-;; C modes common settings
-(use-package cc-mode
-  :bind (:map c-mode-map
-              ("C-c ," . ff-find-other-file))
-  :config (progn (setq c-default-style "linux"
-                       c-basic-offset 4)
-                 (c-set-offset 'case-label '+)
-                 (c-set-offset 'substatement-open 0)))
-
 ;;; External packages
-(use-package anzu
-  :ensure t
-  :bind (([remap query-replace-regexp] . anzu-query-replace-regexp)
-         ([remap query-replace] . anzu-query-replace))
-  :init (add-hook 'after-init-hook #'global-anzu-mode)
-  :config (setq anzu-deactivate-region t
-                anzu-replace-to-string-separator " => ")
-  :diminish (anzu-mode))
 
-(use-package company
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook #'company-mode)
-  (add-hook 'eshell-mode-hook #'company-mode)
-  :bind (:map company-mode-map
-              ([remap completion-at-point] . company-complete)
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous))
-  :config
-  (defun company-mode/backend-with-yas (backend)
-    (if (and (listp backend) (member 'company-yasnippet backend))
-        backend
-      (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet))))
-
-  (setq company-minimum-prefix-length 2
-        company-selection-wrap-around t
-        company-tooltip-flip-when-above t
-        company-tooltip-align-annotations t
-        company-backends '(company-css
-                           company-clang
-                           company-cmake
-                           company-files
-                           company-capf
-                           company-keywords)
-        company-backends (mapcar #'company-mode/backend-with-yas
-                                 company-backends))
-  :diminish company-mode)
-
-(use-package company-web
-  :after company
-  :ensure t
-  :init (add-hook 'web-mode-hook #'(lambda ()
-                                     (add-to-list 'company-backends
-                                                  'company-web-html))))
-
-(use-package expand-region
-  :ensure t
-  :bind (("C-x x" . er/expand-region))
-  :config (setq expand-region-contract-fast-key "X"))
-
-(use-package flycheck
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook #'flycheck-mode)
-  (add-hook 'LaTeX-mode-hook #'flycheck-mode)
-  :config
-  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
-
+;; Incremental and narrowing framework
 (use-package helm
   :ensure t
   :bind (("C-c i" . helm-imenu)
@@ -455,32 +413,42 @@ comment at the end of the line."
                 helm-boring-file-regexp-list '("\\.DS_Store$"))
   :diminish helm-mode)
 
-(use-package helm-eshell
-  :after helm
-  :init (add-hook 'eshell-mode-hook
-                  #'(lambda ()
-                      (bind-key "C-r" #'helm-eshell-history eshell-mode-map))))
-
-(use-package helm-flycheck
-  :after helm
+;; Show number of matches in mode-line while searching
+(use-package anzu
   :ensure t
-  :bind (("C-c f" . helm-flycheck)))
+  :bind (([remap query-replace-regexp] . anzu-query-replace-regexp)
+         ([remap query-replace] . anzu-query-replace))
+  :init (add-hook 'after-init-hook #'global-anzu-mode)
+  :config (setq anzu-deactivate-region t
+                anzu-replace-to-string-separator " => ")
+  :diminish (anzu-mode))
 
-(use-package magit
+;; Increase selected region by semantic units
+(use-package expand-region
   :ensure t
-  :config (setq-default magit-restore-window-configuration t)
-  :bind (("C-c g" . magit-status)))
+  :bind (("C-x x" . er/expand-region))
+  :config (setq expand-region-contract-fast-key "X"))
 
+;; Highlight brackets according to their depth
+(use-package rainbow-delimiters
+  :ensure t
+  :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode-enable))
+
+;; Multiple cursors for Emacs
 (use-package multiple-cursors
   :ensure t
   :bind (("C-," . mc/mark-next-symbol-like-this)
          ("C-*" . mc/mark-more-like-this-extended)
          ("C-;" . mc/mark-next-like-this)))
 
-(use-package rainbow-delimiters
+;; Operate on current line if region is undefined
+(use-package whole-line-or-region
   :ensure t
-  :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode-enable))
+  :init (whole-line-or-region-global-mode t)
+  :diminish whole-line-or-region-local-mode)
 
+
+;; Automatic insertion, wrapping and paredit-like navigation with user defined pairs
 (use-package smartparens-config
   :ensure smartparens
   :init
@@ -496,6 +464,102 @@ comment at the end of the line."
                                                       ("* ||\n[i]" "RET"))))
   :diminish smartparens-mode)
 
+;; Modular text completion framework
+(use-package company
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'company-mode)
+  (add-hook 'eshell-mode-hook #'company-mode)
+  :bind (:map company-mode-map
+              ([remap completion-at-point] . company-complete)
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous))
+  :config
+  (defun company-mode/backend-with-yas (backend)
+    (if (and (listp backend) (member 'company-yasnippet backend))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+
+  (setq company-minimum-prefix-length 2
+        company-selection-wrap-around t
+        company-tooltip-flip-when-above t
+        company-tooltip-align-annotations t
+        company-backends '(company-css
+                           company-clang
+                           company-cmake
+                           company-files
+                           company-capf
+                           company-keywords)
+        company-backends (mapcar #'company-mode/backend-with-yas
+                                 company-backends))
+  :diminish company-mode)
+
+;; On-the-fly syntax checking
+(use-package flycheck
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'flycheck-mode)
+  (add-hook 'LaTeX-mode-hook #'flycheck-mode)
+  :config
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+
+;; Integrate Helm with eshell
+(use-package helm-eshell
+  :after helm
+  :init (add-hook 'eshell-mode-hook
+                  #'(lambda ()
+                      (bind-key "C-r" #'helm-eshell-history eshell-mode-map))))
+
+;; Integrate Helm with flycheck
+(use-package helm-flycheck
+  :after helm
+  :ensure t
+  :bind (("C-c f" . helm-flycheck)))
+
+;; A Git porcelain inside Emacs
+(use-package magit
+  :ensure t
+  :config (setq-default magit-restore-window-configuration t)
+  :bind (("C-c g" . magit-status)))
+
+;; Yet another snippet extension for Emacs
+(use-package yasnippet
+  :ensure t
+  :init (add-hook 'prog-mode-hook #'yas-minor-mode)
+  :config
+  (setq yas-snippet-dirs yas-installed-snippets-dir
+        yas-verbosity 2)
+  (yas-reload-all)
+  :diminish yas-minor-mode)
+
+;; C/C++
+(use-package clang-format
+  :ensure t
+  :after cc-mode
+  :init (add-hook 'c-mode-hook #'(lambda ()
+                                   (add-hook 'before-save-hook #'clang-format-buffer nil t))))
+
+(use-package irony
+  :ensure t
+  :after cc-mode
+  :init
+  (add-hook 'c++-mode-hook #'irony-mode)
+  (add-hook 'c-mode-hook #'irony-mode)
+  (add-hook 'irony-mode-hook #'irony-cdb-autosetup-compile-options)
+  :diminish irony-mode)
+
+(use-package company-irony
+  :ensure t
+  :after cc-mode
+  :config (add-to-list 'company-backends 'company-irony))
+
+(use-package company-irony-c-headers
+  :ensure t
+  :after cc-mode
+  :config (add-to-list 'company-backends 'company-irony-c-headers))
+
+;; TeX
 (use-package tex
   :ensure auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
@@ -507,11 +571,17 @@ comment at the end of the line."
         TeX-view-program-selection '((output-pdf "Preview"))
         TeX-view-program-list '(("Preview" "open -a Preview.app %o"))))
 
+;; Web
+(use-package company-web
+  :after company
+  :ensure t
+  :init (add-hook 'web-mode-hook #'(lambda ()
+                                     (add-to-list 'company-backends
+                                                  'company-web-html))))
 (use-package web-mode
   :ensure t
   :mode (("\\.html?\\'" . web-mode)
-         ("\\.php\\'" . web-mode)
-         ("\\.css\\'" . web-mode))
+         ("\\.php\\'" . web-mode))
   :bind (:map web-mode-map
               ("M-<up>" . web-mode-element-previous)
               ("M-<down>" . web-mode-element-next)
@@ -521,8 +591,8 @@ comment at the end of the line."
               ("C-c k" . web-mode-element-kill )
               ("C-c v" . web-mode-element-vanish)
               ("C-c w" . web-mode-element-wrap)
-              ("C-c r" . web-mode-element-rename)
-              ("C-x x" . web-mode-mark-and-expand))
+              ("C-c r" . web-mode-element-rename))
+  :init (add-hook 'web-mode-hook #'toggle-truncate-lines)
   :config (setq web-mode-markup-indent-offset 2
                 web-mode-css-indent-offset 2
                 web-mode-code-indent-offset 2
@@ -530,19 +600,82 @@ comment at the end of the line."
                 web-mode-enable-auto-pairing t
                 web-mode-enable-current-element-highlight t))
 
-(use-package whole-line-or-region
+;; Javascript
+(use-package js2-mode
   :ensure t
-  :config (add-hook 'after-init-hook #'whole-line-or-region-mode)
-  :diminish whole-line-or-region-mode)
-
-(use-package yasnippet
-  :ensure t
-  :init (add-hook 'prog-mode-hook #'yas-minor-mode)
+  :mode "\\.js\\'"
+  :bind (:map js2-mode-map ("M-j" . ngq/my-join-line))
   :config
-  (setq yas-snippet-dirs yas-installed-snippets-dir
-        yas-verbosity 2)
-  (yas-reload-all)
-  :diminish yas-minor-mode)
+  (setq-default js2-basic-offset 2
+                js2-basic-indent 2
+                js2-auto-indent-p t
+                js2-cleanup-whitespace t
+                js2-enter-indents-newline t
+                js2-indent-on-enter-key t
+                js2-mode-show-parse-errors nil
+                js2-mode-show-strict-warnings nil))
+
+(use-package tern
+  :ensure t
+  :bind (:map tern-mode-keymap ([remap tern-rename-variable] . ngq/tern-rename-variable))
+  :init (add-hook 'js2-mode-hook #'tern-mode)
+  :config
+  (defun ngq/tern-rename-variable ()
+    "Wraps `tern-rename-variable' to provide the `symbol-at-point' as the
+default input and avoid useless renaming in case the new variable name is the
+same as the old one."
+    (interactive)
+    (let* ((old-var-name (symbol-name (symbol-at-point)))
+           (new-var-name (read-string "New variable name: " old-var-name)))
+      (if (not (string= old-var-name new-var-name))
+          (tern-rename-variable new-var-name)
+        (message "Did not rename variable; New name matches the old one.")))))
+
+(use-package company-tern
+  :ensure t
+  :after tern
+  :config (add-to-list 'company-backends 'company-tern))
+
+;; Python
+(use-package python
+  :mode "\\.py\\'"
+  :config
+  (when (executable-find "ipython")
+    (setq python-shell-interpreter "ipython"
+          python-shell-interpreter-args "--simple-prompt -i")))
+
+(use-package py-autopep8
+  :after python
+  :ensure t
+  :init (add-hook 'python-mode-hook #'py-autopep8-enable-on-save))
+
+(use-package anaconda-mode
+  :after python
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook #'anaconda-mode)
+  (add-hook 'python-mode-hook #'anaconda-eldoc-mode)
+  :diminish anaconda-mode)
+
+(use-package company-anaconda
+  :after anaconda-mode
+  :ensure t
+  :config (add-to-list 'company-backends 'company-anaconda))
+
+;; Misc editing modes
+(use-package json-mode
+  :ensure t
+  :mode "\\.json\\'"
+  :config (setq-default json-reformat:indent-width 2))
+
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.y(a)?ml\\'"
+  :config (add-hook 'yaml-mode-hook #'(lambda () (auto-fill-mode -1))))
+
+(use-package markdown-mode
+  :ensure t
+  :mode ("\\.\\(markdown\\|md\\)\\'" . gfm-mode))
 
 ;; Load custom settings, if they do exist
 (let ((user-local-file (concat user-emacs-directory "local.el")))
