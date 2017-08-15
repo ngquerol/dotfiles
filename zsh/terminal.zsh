@@ -1,14 +1,14 @@
 # 256 colors support
-if [[ ! $TERM =~ "-256color$" ]]; then
+if [[ ! "${TERM}" =~ "-256color$" ]]; then
     TERM_256COLORS="${TERM}-256color"
     TERMINFO_DIRECTORIES=(
-        "${HOME}/.terminfo"
+        "~/.terminfo"
         "/etc/terminfo"
         "/lib/terminfo"
         "/usr/share/terminfo"
     )
 
-    if [ -x $commands[toe] ] && toe -a | grep -q "${TERM_256COLORS}"; then
+    if [ -x $commands[toe] ] && toe -a 2>/dev/null | grep -q "${TERM_256COLORS}"; then
         export TERM="${TERM_256COLORS}"
     else
         for dir in $TERMINFO_DIRECTORIES; do
@@ -24,13 +24,11 @@ if [[ ! $TERM =~ "-256color$" ]]; then
 fi
 
 # terminal title & VCS info
-if [[ $TERM =~ "^xterm" ]]; then
-    precmd() {
-        vcs_info
-        print -Pn "\e]0;%n@%m: %~\a"
-    }
+precmd() {
+    vcs_info
+    [[ $TERM =~ "^xterm" ]] && print -Pn "\e]0;%n@%m: %~\a"
+}
 
-    preexec() {
-        print -Pn "\e]0;%n@%m: $1\a"
-    }
-fi
+preexec() {
+    [[ $TERM =~ "^xterm" ]] && print -Pn "\e]0;%n@%m: ${2}\a"
+}

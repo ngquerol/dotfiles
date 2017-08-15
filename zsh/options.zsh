@@ -1,5 +1,4 @@
 setopt autocd
-setopt complete_aliases
 setopt complete_in_word
 setopt correct
 setopt list_types
@@ -13,6 +12,6 @@ setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
 setopt hist_save_no_dups
-setopt histverify
+setopt hist_verify
 setopt inc_append_history
 setopt share_history

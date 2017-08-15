@@ -6,16 +6,16 @@ if [ -d /usr/local/share/zsh-completions ]; then
 fi
 
 # rebuild completion cache only if it hasn't been done in the last 24 hours
-if [[ -n ${HOME}/.zsh/.cache/zcache(#qN.mh+24) ]]; then
-    compinit -d ${HOME}/.zsh/.cache/zcache
+if [[ -n ~/.zsh/.cache/zcache(#qN.mh+24) ]]; then
+    compinit -C -d ~/.zsh/.cache/zcache
 else
-    compinit -C -d ${HOME}/.zsh/.cache/zcache
+    compinit -d ~/.zsh/.cache/zcache
 fi
 
 bashcompinit
 
 # completion cache
-zstyle ":completion:*" cache-path ${HOME}/.zsh/.cache/zcache
+zstyle ":completion:*" cache-path ~/.zsh/.cache/zcache
 zstyle ":completion::complete:*" use-cache true
 
 # completions list
