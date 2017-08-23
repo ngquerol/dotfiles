@@ -1,22 +1,17 @@
 autoload -Uz compinit
 autoload -Uz bashcompinit
 
-if [ -d /usr/local/share/zsh-completions ]; then
-    fpath=(/usr/local/share/zsh-completions ${fpath})
-fi
+zmodload zsh/complist
 
-# rebuild completion cache only if it hasn't been done in the last 24 hours
-if [[ -n ~/.zsh/.cache/zcache(#qN.mh+24) ]]; then
-    compinit -C -d ~/.zsh/.cache/zcache
-else
-    compinit -d ~/.zsh/.cache/zcache
-fi
+# additional completions
+[ -d /usr/local/share/zsh-completions ] && fpath+=(/usr/local/share/zsh-completions)
 
-bashcompinit
+# completion dump
+compinit -i -d "${HOME}/.zsh/.cache/zcompdump" && bashcompinit
 
 # completion cache
-zstyle ":completion:*" cache-path ~/.zsh/.cache/zcache
 zstyle ":completion::complete:*" use-cache true
+zstyle ":completion:*" cache-path "${HOME}/.zsh/.cache/zcompcache"
 
 # completions list
 zstyle ":completion:*" menu select=long-list select=1
@@ -26,8 +21,7 @@ zstyle ":completion:*:warnings" format "%F{green}No matches found.%f"
 zstyle ":completion:*" group-name ""
 
 # completions list colors
-if [ -n "${LS_COLORS}" ]; then
-    zmodload zsh/complist
+if [ -v "${LS_COLORS}" ]; then
     zstyle ":completion:*:" list-colors ${(s.:.)LS_COLORS}
 fi
 

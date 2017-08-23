@@ -1,3 +1,5 @@
+## linux-specific settings
+
 alias open="xdg-open &>/dev/null"
 
 if [ -f /etc/debian_version ]; then

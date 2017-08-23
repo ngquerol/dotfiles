@@ -1,8 +1,8 @@
-# 256 colors support
+# look for existing 256 colors support and set $TERM accordingly
 if [[ ! "${TERM}" =~ "-256color$" ]]; then
     TERM_256COLORS="${TERM}-256color"
     TERMINFO_DIRECTORIES=(
-        "~/.terminfo"
+        "${HOME}/.terminfo"
         "/etc/terminfo"
         "/lib/terminfo"
         "/usr/share/terminfo"
@@ -12,7 +12,7 @@ if [[ ! "${TERM}" =~ "-256color$" ]]; then
         export TERM="${TERM_256COLORS}"
     else
         for dir in $TERMINFO_DIRECTORIES; do
-            if [ -e "${dir}/${TERM[1]}/${TERM_256COLORS}" ]; then
+            if [ -d "${dir}/${TERM[1]}/${TERM_256COLORS}" ]; then
                 export TERM="${TERM_256COLORS}"
                 break
             fi
@@ -23,12 +23,18 @@ if [[ ! "${TERM}" =~ "-256color$" ]]; then
     unset TERMINFO_DIRECTORIES
 fi
 
-# terminal title & VCS info
-precmd() {
-    vcs_info
-    [[ $TERM =~ "^xterm" ]] && print -Pn "\e]0;%n@%m: %~\a"
+# set & update the terminal's title
+set_xterm_title_pwd() {
+    print -Pn "\e]0;%n@%m: %~\a"
 }
 
-preexec() {
-    [[ $TERM =~ "^xterm" ]] && print -Pn "\e]0;%n@%m: ${2}\a"
+set_xterm_title_cmd() {
+    print -Pn "\e]0;%n@%m: ${2}\a"
 }
+
+typeset -gU precmd_functions preexec_functions
+
+if [[ $TERM =~ "^xterm" ]]; then
+    precmd_functions+=(set_xterm_title_pwd)
+    preexec_functions+=(set_xterm_title_cmd)
+fi

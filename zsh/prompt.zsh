@@ -1,23 +1,35 @@
-autoload -Uz vcs_info
+## prompt customization
 
-zstyle ":vcs_info:*" enable git
-zstyle ":vcs_info:*" check-for-changes true
-zstyle ":vcs_info:*" get-revision true
-zstyle ":vcs_info:*" stagedstr "%F{green}*%f "
-zstyle ":vcs_info:*" unstagedstr "%F{yellow}*%f "
-zstyle ":vcs_info:git*" formats "%F{cyan}± %b%f %F{white}%.7i%f %m%c%u"
-zstyle ":vcs_info:git*" actionformats "%F{cyan}± %b%f %F{blue}[%a]%f %F{white}%(!.%.7i.)%f %m%c%u"
-zstyle ":vcs_info:git*+set-message:*" hooks git-untracked git-aheadbehind git-remotebranch
+precmd_functions+=(render_prompt)
 
-NEWLINE=$'\n'
+# render the prompt itself
+render_prompt() {
+    local prompt_newline=$'\n'
+    local prompt_character='→'
+    local -a preprompt_parts
 
-PROMPT='${NEWLINE}%B%F{green}$(prompt_dir)%f ${vcs_info_msg_0_}${NEWLINE}%(?.%F{white}.%F{red})→%f%b '
+    # ssh host & username info
+    [ -v "${SSH_CLIENT}" ] && preprompt_parts+='%B%F{yellow}⚡%f %F{blue}%n@%m%f%b'
 
-[ -n "${SSH_CLIENT}" ] && PROMPT='%B%F{yellow}⚡%f %F{blue}%n@%m%f%b ${PROMPT}'
+    # current working directory
+    preprompt_parts+='%B%F{green}$(prompt_directory)%f%b'
 
-RPROMPT='%(1j|%B%F{black}%j %(2j|jobs|job)%f%b|)'
+    # VCS status
+    preprompt_parts+='${vcs_info_msg_0_}'
 
-prompt_dir() {
+    local ps1=(
+        ${prompt_newline}
+        ${(j. .)preprompt_parts}
+        ${prompt_newline}
+        "%B%(?.%F{white}.%F{red})${prompt_character} %f%b"
+    )
+
+    PROMPT=${(j..)ps1}
+}
+
+# show the current working directory, omitting directories if exceeding a certain limit
+
+prompt_directory() {
     local max_dir_len=${COLUMNS}
     local current_dir=${PWD/#$HOME/\~}
 
@@ -29,6 +41,22 @@ prompt_dir() {
     fi
 }
 
+## vcs information retrieval
+
+autoload -Uz vcs_info
+
+precmd_functions+=(vcs_info)
+
+zstyle ":vcs_info:*" enable git
+zstyle ":vcs_info:*" check-for-changes true
+zstyle ":vcs_info:*" get-revision true
+zstyle ":vcs_info:*" stagedstr "%F{green}*%f "
+zstyle ":vcs_info:*" unstagedstr "%F{yellow}*%f "
+zstyle ":vcs_info:git*" formats "%F{cyan}± %b%f %F{white}%.7i%f %m%c%u"
+zstyle ":vcs_info:git*" actionformats "%F{cyan}± %b%f %F{blue}[%a]%f %F{white}%(!.%.7i.)%f %m%c%u"
+zstyle ":vcs_info:git*+set-message:*" hooks git-untracked git-aheadbehind git-remotebranch
+
+# show an indicator if there are untracked changes
 +vi-git-untracked() {
     if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]] && \
            git status --porcelain | grep "??" &> /dev/null; then
@@ -36,6 +64,7 @@ prompt_dir() {
     fi
 }
 
+# show how many commits the current branch is ahead/behind relative to the remote
 +vi-git-aheadbehind() {
     local ahead behind
     local -a gitstatus
@@ -53,6 +82,7 @@ prompt_dir() {
     fi
 }
 
+# show the name of the remote branch if it differs from the local one
 +vi-git-remotebranch() {
     local remote
 

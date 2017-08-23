@@ -10,12 +10,3 @@ man() {
         LESS_TERMCAP_us=$(printf "\e[0;32m") \
         man "$@"
 }
-
-# display man pages formatted as postscript
-pman() {
-    if [[ (${#} -eq 1) && (-n ${1}) ]]; then
-        man -t ${1} | open -f -a /Applications/Preview.app
-    else
-        print "Usage: pman <man page>"
-    fi
-}
