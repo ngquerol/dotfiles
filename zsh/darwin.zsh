@@ -1,4 +1,4 @@
-## darwin-specific settings
+## darwin-specific configuration
 
 # silence 'last login' text
 [ ! -f ~/.hushlogin ] && touch ~/.hushlogin

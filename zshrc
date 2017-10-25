@@ -2,12 +2,12 @@
 
 # settings modules
 files=(
-    options
-    completion
-    prompt
     aliases
-    functions
     bindkeys
+    completion
+    functions
+    options
+    prompt
     terminal
 )
 
@@ -22,3 +22,6 @@ unset OS
 for file in ${files}; do
     source "${HOME}/.zsh/${file}.zsh"
 done
+
+# machine-dependent settings
+[ -e "${HOME}/.zsh/local.zsh" ] && source "${HOME}/.zsh/local.zsh" 

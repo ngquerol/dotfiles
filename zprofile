@@ -5,7 +5,7 @@
 
 # utilities
 export BROWSER=open
-export EDITOR=vi
+export EDITOR=vim
 
 # history
 export HISTFILE="${HOME}/.zsh/.cache/zhistory"

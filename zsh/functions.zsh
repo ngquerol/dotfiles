@@ -1,3 +1,5 @@
+## shell functions
+
 # colored man pages
 man() {
     env \

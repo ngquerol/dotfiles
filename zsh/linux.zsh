@@ -1,4 +1,4 @@
-## linux-specific settings
+## linux-specific configuration
 
 alias open="xdg-open &>/dev/null"
 

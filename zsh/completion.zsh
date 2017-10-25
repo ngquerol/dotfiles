@@ -1,3 +1,5 @@
+## zsh completion configuration
+
 autoload -Uz compinit
 autoload -Uz bashcompinit
 

@@ -1,3 +1,5 @@
+## shell aliases
+
 alias rm="rm -r"
 alias rmf="rm -rf"
 

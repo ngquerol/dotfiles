@@ -70,10 +70,10 @@ zstyle ":vcs_info:git*+set-message:*" hooks git-untracked git-aheadbehind git-re
     local -a gitstatus
 
     behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | grep -ch "^")
-    (( $behind )) && gitstatus+=( "-%F{red}${behind}%f " )
+    (( $behind )) && gitstatus+=( "%F{red}↓%f${behind} " )
 
     ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | grep -ch "^")
-    (( $ahead )) && gitstatus+=( "+%F{green}${ahead}%f " )
+    (( $ahead )) && gitstatus+=( "%F{green}↑%f${ahead} " )
 
     hook_com[misc]+=${gitstatus}
 

@@ -1,3 +1,5 @@
+## terminal-related configuration
+
 # look for existing 256 colors support and set $TERM accordingly
 if [[ ! "${TERM}" =~ "-256color$" ]]; then
     TERM_256COLORS="${TERM}-256color"
