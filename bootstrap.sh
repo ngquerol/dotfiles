@@ -8,12 +8,12 @@ script_path=$(cd "$(dirname "${0}")" && pwd)
 
 symlink() {
     source="${1}"
-    target="${HOME}/.$(basename ${1})"
+    target="${HOME}/.$(basename "${1}")"
 
-    ln -Fhsv "${source}" "${target}"
+    ln -Fnsv "${source}" "${target}"
 }
 
-printf "Symlinking files...\n"
+printf "Symlinking files...\\n"
 
 symlink "${script_path}/zsh"
 symlink "${script_path}/zshrc"
@@ -24,4 +24,4 @@ symlink "${script_path}/gitconfig"
 symlink "${script_path}/emacs.d"
 symlink "${script_path}/vimrc"
 
-printf "Done.\n"
+printf "Done.\\n"
