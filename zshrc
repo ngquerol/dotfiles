@@ -6,6 +6,7 @@ files=(
     bindkeys
     completion
     functions
+    local
     options
     prompt
     terminal
@@ -20,8 +21,6 @@ unset OS
 
 # source every applicable configuration file
 for file in ${files}; do
-    source "${HOME}/.zsh/${file}.zsh"
+    [ -f "${HOME}/.zsh/${file}.zsh" ] && source "${HOME}/.zsh/${file}.zsh"
 done
 
-# machine-dependent settings
-[ -e "${HOME}/.zsh/local.zsh" ] && source "${HOME}/.zsh/local.zsh" 

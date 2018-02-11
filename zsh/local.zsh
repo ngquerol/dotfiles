@@ -1,2 +1,2 @@
-## ZSH local interactive shell configuration
+# ZSH local interactive shell configuration
 
