@@ -13,10 +13,10 @@ case $TERM in
         bindkey "\e[6~"   end-of-history       # PageDown
         bindkey "\e[2~"   quoted-insert        # Ins
         bindkey "\e[3~"   delete-char          # Del
-        bindkey "\e[1;5C" emacs-forward-word   # Ctrl-Right
-        bindkey "\e[1;5D" emacs-backward-word  # Ctrl-Left
-        bindkey "\e[1;9C" forward-word         # Alt-Right
-        bindkey "\e[1;9D" backward-word        # Alt-Left
+        bindkey "\e[1;5C"  forward-word        # Ctrl-Right
+        bindkey "\e[1;5D"  backward-word       # Ctrl-Left
+        bindkey "\e[1;3C" emacs-forward-word   # Alt-Right
+        bindkey "\e[1;3D" emacs-backward-word  # Alt-Left
         bindkey "\C-w"    kill-region          # Ctrl-w
         ;;
     linux*)
