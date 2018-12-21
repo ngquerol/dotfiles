@@ -1,12 +1,15 @@
 ## darwin-specific configuration
 
+# macOS-specific aliases
+alias top="top -o cpu"
+
 # silence 'last login' text
 [ ! -f ~/.hushlogin ] && touch ~/.hushlogin
 
 # brew aliases
 if [ -x $commands[brew] ]; then
     alias bup="brew update && brew upgrade"
-    alias bcl="brew cleanup -s && brew prune -s && brew cask cleanup"
+    alias bcl="brew cleanup -s && brew prune"
 fi
 
 # display man pages formatted as postscript
