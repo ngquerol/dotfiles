@@ -14,7 +14,8 @@ export SAVEHIST=10000
 
 # global path arrays
 typeset -gU cdpath fpath mailpath path
-path+=("${HOME}/.bin")
+path=("${HOME}/.bin" $path)
 
 # machine-dependent configuration
 [ -f "${HOME}/.zprofile.local" ] && source "${HOME}/.zprofile.local"
+
