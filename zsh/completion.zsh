@@ -8,12 +8,16 @@ zmodload zsh/complist
 # additional completions
 [ -d /usr/local/share/zsh-completions ] && fpath+=(/usr/local/share/zsh-completions)
 
-# completion dump (every 24 hours to speed up things)
-for dump in ${HOME}/.zsh/.cache/.zcompdump(N.mh+24); do
+# load & initialize the completion system every 24 hours
+_comp_files=(${HOME}/.zsh/.cache/zcompdump(Nm-24))
+if (( $#_comp_files )); then
+  compinit -i -C -d "${HOME}/.zsh/.cache/zcompdump"
+else
+  echo "Initializing completions..."
   compinit -i -d "${HOME}/.zsh/.cache/zcompdump"
-done
+fi
+unset _comp_files
 
-compinit -C -d "${HOME}/.zsh/.cache/zcompdump"
 bashcompinit
 
 # completion cache
