@@ -8,8 +8,9 @@ alias top="top -o cpu"
 
 # brew aliases
 if [ -x $commands[brew] ]; then
+    path=("/usr/local/bin" "/usr/local/sbin" $path)
     alias bup="brew update && brew upgrade"
-    alias bcl="brew cleanup -s && brew prune"
+    alias bcl="brew cleanup -s"
 fi
 
 # display man pages formatted as postscript
