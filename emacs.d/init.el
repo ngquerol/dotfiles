@@ -1,28 +1,26 @@
-;;; init.el - Emacs startup file
+;; init.el - Emacs startup file
+;; Author : Nicolas G.Querol<nicolas.gquerol @gmail.com>
 
-;; Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
-
-;; Better GC settings
-(setq-default gc-cons-threshold (* 20 1204 1204)
-              gc-cons-percentage 0.5)
-
-;;; Package.el
+;; Package.el
 (require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(setq package-enable-at-startup nil
+      package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("gnu"."https://elpa.gnu.org/packages/")))
 (package-initialize)
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package))
+  (package-install 'use-package)
+  (package-install 'diminish))
 
 (eval-when-compile
   (require 'use-package))
 (require 'diminish)
 (require 'bind-key)
 
-(setq use-package-verbose t)
+(setq use-package-always-ensure t
+      use-package-compute-statistics t)
 
 ;;; Locales
 (set-language-environment 'utf-8)
@@ -31,9 +29,7 @@
 ;;; Interface
 
 ;; Turn off mouse interface
-(dolist (mode '(tool-bar-mode
-                scroll-bar-mode
-                blink-cursor-mode))
+(dolist (mode '(tool-bar-mode scroll-bar-mode blink-cursor-mode))
   (when (fboundp mode) (funcall mode -1)))
 
 ;; Disable GUI dialogs & useless messages
@@ -41,6 +37,13 @@
       use-dialog-box nil
       inhibit-startup-screen t
       inhibit-startup-echo-area-message t)
+
+(unless (display-graphic-p)
+  (menu-bar-mode -1))
+
+;; Initial frame size
+(setq initial-frame-alist '((width . 90)
+                            (height . 45)))
 
 ;; Display buffer name in frame title
 (setq frame-title-format
@@ -50,12 +53,28 @@
 (fset 'yes-or-no-p #'y-or-n-p)
 
 ;; Show sometimes useful info
-(setq-default indicate-buffer-boundaries 'right)
-(column-number-mode t)
+(add-hook 'prog-mode-hook #'(lambda ()
+                              (setq-local indicate-buffer-boundaries 'right)
+                              (setq-local indicate-empty-lines t)))
+
+;; Line numbers
+(bind-key "C-c n" #'display-line-numbers-mode)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 ;; Smooth scrolling
 (setq scroll-conservatively 10000
       scroll-margin 5)
+
+;; Highlight current line
+(add-hook 'prog-mode-hook #'hl-line-mode)
+
+;; Disable scroll-margin for specific modes
+(mapc (lambda (hook) (add-hook hook #'(lambda ()
+                                        (setq-local scroll-margin 0))))
+      '(comint-mode-hook
+        eshell-mode-hook
+        messages-buffer-mode-hook
+        term-mode-hook))
 
 ;; Show commands as they are typed
 (setq echo-keystrokes 0.01)
@@ -64,13 +83,15 @@
 (setq ring-bell-function #'ignore)
 
 ;; OS-specific settings
-(if (eq system-type 'darwin)
-    (progn (use-package exec-path-from-shell
-             :ensure t
-             :init (exec-path-from-shell-initialize))
-           (setq mac-option-modifier 'alt
-                 mac-command-modifier 'meta
-                 mac-right-option-modifier 'none)))
+(when (eq system-type 'darwin)
+  (setq mac-option-modifier 'alt
+        mac-command-modifier 'meta
+        mac-right-option-modifier 'none)
+  (mac-auto-operator-composition-mode)
+  (use-package exec-path-from-shell
+    :if (display-graphic-p)
+    :config (setq exec-path-from-shell-check-startup-files nil)
+    (exec-path-from-shell-initialize)))
 
 ;; Switch windows with windmove
 (use-package windmove
@@ -110,11 +131,26 @@
 (global-set-key (kbd "C-c D") #'ngq/delete-file-and-buffer)
 
 ;;; Editing
-(setq-default auto-save-default nil
-              make-backup-files nil
-              case-fold-search t
+
+(setq-default case-fold-search t
               sentence-end-double-space nil
               require-final-newline t)
+
+;; Backup (this is a test)
+
+;; Backup files when they are saved
+(setq-default backup-by-copying t
+	          delete-old-versions t
+	          kept-new-versions 4
+	          kept-old-versions 2
+	          version-control t
+	          vc-make-backup-files t)
+
+;; Auto-save after 20 seconds of inactivity, or after 200 characters typed, if
+;; the buffer is modified.
+(setq-default auto-save-timeout 20
+              auto-save-interval 200)
+(auto-save-visited-mode t)
 
 ;; Indentation
 (setq-default indent-tabs-mode nil
@@ -124,7 +160,7 @@
 (delete-selection-mode t)
 
 ;; Reload buffers automagically if the corresponding file has been changed
-(use-package auto-revert
+(use-package autorevert
   :init (global-auto-revert-mode t)
   :diminish auto-revert-mode)
 
@@ -134,9 +170,6 @@
 ;; Hard-wrap lines at 80 columns when editing text files
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook #'auto-fill-mode)
-
-;; Sentences are delimited by a single space
-(setq sentence-end-double-space nil)
 
 ;; Automagically indent when inserting a newline
 (global-set-key (kbd "RET") #'reindent-then-newline-and-indent)
@@ -168,8 +201,27 @@ Position the cursor at it's beginning, according to the current mode."
   (forward-line -1)
   (indent-according-to-mode))
 
-(global-set-key (kbd "M-o") #'ngq/smart-open-line)
-(global-set-key (kbd "M-O") #'ngq/smart-open-line-above)
+(global-set-key (kbd "C-<return>") #'ngq/smart-open-line)
+(global-set-key (kbd "C-S-<return>") #'ngq/smart-open-line-above)
+
+;; Move current line up or down
+(defun ngq/move-line-up ()
+  "Move up the current line."
+  (interactive)
+  (transpose-lines 1)
+  (forward-line -2)
+  (indent-according-to-mode))
+
+(defun ngq/move-line-down ()
+  "Move down the current line."
+  (interactive)
+  (forward-line 1)
+  (transpose-lines 1)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+(global-set-key (kbd "C-S-<up>") #'ngq/move-line-up)
+(global-set-key (kbd "C-S-<down>") #'ngq/move-line-down)
 
 ;; Smart beginning of line
 (defun ngq/smart-beginning-of-line ()
@@ -202,36 +254,31 @@ comment at the end of the line."
 
 ;;; Dired
 (use-package dired
-  :config
-  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-  (setq-default dired-dwim-target t
-                dired-hide-details-hide-symlink-targets nil
-                dired-auto-revert-buffer t
-                dired-isearch-filenames t
-                dired-use-ls-dired nil
-                dired-listing-switches "-alh"))
+  :ensure nil
+  :commands dired
+  :hook ((dired-mode . dired-hide-details-mode)
+         (dired-mode . dired-omit-mode))
+  :config (setq-default dired-dwim-target t
+                        dired-hide-details-hide-symlink-targets nil
+                        dired-auto-revert-buffer t
+                        dired-isearch-filenames t
+                        dired-use-ls-dired nil
+                        dired-listing-switches "-alGh"))
 
 (use-package wdired
   :after dired
-  :bind (:map dired-mode-map
-              ("C-c C-e" . wdired-change-to-wdired-mode))
+  :bind (:map dired-mode-map ("C-c C-e" . wdired-change-to-wdired-mode))
   :config (setq wdired-use-dired-vertical-movement 'sometimes
                 wdired-confirm-overwrite t
                 wdired-use-interactive-rename t))
 
 (use-package dired-x
   :after dired
-  :config
-  (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$")))
-
-(use-package dired+
-  :after dired
-  :ensure t
-  :config (diredp-toggle-find-file-reuse-dir t))
+  :ensure nil
+  :config (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$")))
 
 (use-package eshell
-  :bind (("C-c s" . ngq/eshell-here))
-  :init
+  :preface
   (defun ngq/eshell-exit-or-delete ()
     "Mimic shell behaviour: delete char under point or, if there is
   no input, exit eshell"
@@ -244,39 +291,41 @@ comment at the end of the line."
       (delete-char 1)))
 
   (defun ngq/eshell-clear ()
-    "Clear the eshell buffer"
+    "Clear eshell's buffer"
     (interactive)
     (let ((eshell-buffer-maximum-lines 0))
       (eshell-truncate-buffer)))
 
   (defun ngq/eshell-here ()
-    "Opens a new eshell in the directory associated with the current buffer's
-  file. Reuses a previously opened eshell if applicable."
+    "Opens eshell in the directory associated with the current buffer's file.
+
+Reuses a previously opened eshell buffer if possible. "
     (interactive)
     (let ((current-directory (expand-file-name default-directory))
           (eshell-buffer-height (/ (window-total-height) 4))
           (eshell-buffer-name "*eshell*"))
-      (unless (string= (buffer-name) eshell-buffer-name)
-        (when (= (length (window-list)) 1)
-          (split-window-vertically (- eshell-buffer-height)))
-        (other-window 1)
-        (if (get-buffer eshell-buffer-name)
-            (switch-to-buffer eshell-buffer-name)
-          (eshell)))
+      (if-let (eshell-buffer (get-buffer eshell-buffer-name))
+          (progn (select-window (get-buffer-window eshell-buffer))
+                 (switch-to-buffer eshell-buffer))
+        (progn (select-window (split-window-below (- eshell-buffer-height)))
+               (eshell)))
+      (message current-directory)
       (unless (string= current-directory default-directory)
         (eshell/cd current-directory)
         (eshell-send-input)
         (ngq/eshell-clear)
         (message "eshell: Changed directory to %s" current-directory))))
-  :init
-  (add-hook 'eshell-first-time-mode-hook
-            #'(lambda () (add-to-list 'eshell-output-filter-functions
-                                      'eshell-postoutput-scroll-to-bottom
-                                      'eshell-truncate-buffer)))
-  (add-hook 'eshell-mode-hook #'(lambda ()
-                                  (bind-key "C-d" #'ngq/eshell-exit-or-delete eshell-mode-map)))
-  (add-hook 'eshell-mode-hook #'(lambda ()
-                                  (bind-key "C-l" #'ngq/eshell-clear eshell-mode-map)))
+  :bind (("C-c s" . ngq/eshell-here))
+  :init (add-hook 'eshell-first-time-mode-hook
+                  #'(lambda () (add-to-list 'eshell-output-filter-functions
+                                            'eshell-postoutput-scroll-to-bottom
+                                            'eshell-truncate-buffer)
+                      (setq-local indicate-buffer-boundaries nil)
+                      (setq-local indicate-empty-lines nil)))
+  (add-hook 'eshell-mode-hook
+            #'(lambda () (progn
+                           (bind-key "C-d" #'ngq/eshell-exit-or-delete eshell-mode-map)
+                           (bind-key "C-l" #'ngq/eshell-clear eshell-mode-map))))
   :config (setq-default eshell-hist-ignoredups             t
                         eshell-history-size                1024
                         eshell-save-history-on-exit        t
@@ -287,23 +336,46 @@ comment at the end of the line."
                         eshell-scroll-to-bottom-on-output  t
                         eshell-scroll-show-maximum-output  t))
 
+;; Recent files & history
+(use-package recentf
+  :config (setq recentf-max-menu-items 15
+                recentf-max-saved-items 200
+                recentf-auto-cleanup 60
+                recentf-exclude (append recentf-exclude
+                                        '("/\\.git/.*\\'"
+                                          "/elpa/.*\\'"
+                                          "/tmp/.*\\'"
+                                          "/var/tmp/.*\\'"))))
+
+(use-package saveplace
+  :hook (after-init . save-place-mode)
+  :config (setq-default save-place-forget-unreadable-files t))
+
+(use-package savehist
+  :hook (after-init . savehist-mode)
+  :config (setq savehist-save-minibuffer-history t
+                savehist-autosave-interval 60))
+
 ;;; Ediff
 (use-package ediff-wind
+  :ensure nil
+  :commands (ediff)
   :config (setq ediff-window-setup-function #'ediff-setup-windows-plain
                 ediff-split-window-function #'split-window-horizontally))
 
 ;;; Misc
 
+;; Hide eldoc-mode in the modeline
 (setq eldoc-minor-mode-string nil)
 
 ;; Always follow symlinks to file in VCS repos
 (use-package vc-hooks
-  :defer (setq vc-follow-symlinks t
-               find-file-visit-truename t))
+  :ensure nil
+  :config (setq vc-follow-symlinks t
+                find-file-visit-truename t))
 
 ;; Kill the current buffer without confirmation
-;; (global-set-key (kbd "C-x k") #'kill-this-buffer)
-;; (global-set-key (kbd "C-x K") #'kill-buffer)
+(global-set-key (kbd "C-x S-k") #'kill-this-buffer)
 
 ;; Shell scripts
 (use-package sh-script
@@ -323,168 +395,179 @@ comment at the end of the line."
   :mode "\\.css\\'"
   :config (setq css-indent-offset 2))
 
-;;; Backups
-
-(defconst user-temp-files-directory (concat user-emacs-directory ".cache/")
-  "Directory where temporary (but persistent accross sessions) files reside.")
-
-;; Keep backup and auto save files out of the way
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory))
-      auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t))
-      auto-save-list-file-prefix temporary-file-directory)
-
-;; Recent files & history
-(use-package recentf
-  :config
-  (setq recentf-save-file (concat user-temp-files-directory "recentf-list")
-        recentf-max-menu-items 15
-        recentf-max-saved-items 200
-        recentf-auto-cleanup 60
-        recentf-exclude (append recentf-exclude '("/\\.git/.*\\'"
-                                                  "/elpa/.*\\'"
-                                                  "/tmp/.*\\'"
-                                                  "/var/tmp/.*\\'"))))
-
-(use-package saveplace
-  :init (add-hook 'after-init-hook #'save-place-mode)
-  :config
-  (setq-default save-place-file (concat user-temp-files-directory
-                                        "saved-places")
-                save-place-forget-unreadable-files t))
-
-(use-package savehist
-  :init (add-hook 'after-init-hook #'savehist-mode)
-  :config (setq savehist-file (concat user-temp-files-directory
-                                      "minibuffer-history")
-                savehist-save-minibuffer-history t
-                savehist-autosave-interval 60))
-
 ;;; External packages
+
+;; Organize trash files
+(use-package no-littering
+  :config
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory))
+
+;; Traverse backed-up versions of a file
+(use-package backup-walker
+  :bind (("C-c b" . backup-walker-start)))
+
+;; Reuse the current dired buffer to visit a directory
+(use-package dired-single
+  :after dired
+  :bind (:map dired-mode-map
+              ([return] . dired-single-buffer)
+              ([mouse-1] . dired-single-buffer-mouse)
+              ([remap dired-up-directory] . (lambda () (interactive)
+                                              (dired-single-buffer "..")))))
 
 ;; Incremental and narrowing framework
 (use-package helm
-  :ensure t
+  :defines helm-boring-buffer-regexp-list
   :bind (("C-c i" . helm-imenu)
+         ("C-c o" . helm-occur)
+         ("C-c m" . helm-man-woman)
+         ("C-c r" . helm-resume)
          ("C-x C-r" . helm-recentf)
          ("M-y" . helm-show-kill-ring)
-         ([remap find-file] . helm-find-files)
-         ([remap list-buffers] . helm-buffers-list)
-         ([remap switch-to-buffer] . helm-mini)
-         ([remap execute-extended-command] . helm-M-x)
+         ("C-x C-f" . helm-find-files)
+         ("C-x C-b" . helm-buffers-list)
+         ("C-x b" . helm-mini)
+         ("M-x" . helm-M-x)
          :map helm-map
          ("<tab>" . helm-execute-persistent-action)
          ("C-z" . helm-select-action)
          :map isearch-mode-map
          ("C-o" . helm-occur-from-isearch))
-  :init
-  (add-hook 'helm-mode-hook #'helm-autoresize-mode)
-  (helm-mode t)
-  (helm-adaptive-mode t)
-  :config
-  (setq-default helm-buffers-fuzzy-matching t
-                helm-M-x-fuzzy-match t
-                helm-recentf-fuzzy-match t
-                helm-eshell-fuzzy-match t
-                helm-display-header-line nil
-                helm-move-to-line-cycle-in-source t
-                helm-ff-skip-boring-files t
-                helm-ff-file-name-history-use-recentf t
-                helm-ff-auto-update-initial-value t
-                helm-ff-newfile-prompt-p nil
-                helm-adaptive-history-file (concat user-temp-files-directory
-                                                   "helm-adaptive-history")
-                helm-boring-buffer-regexp-list '("\\*WoMan-Log*"
-                                                 "\\*Man "
-                                                 "\\*Colors*"
-                                                 "\\*Help*"
-                                                 "\\*code-conversion-work*"
-                                                 "\\*Echo Area"
-                                                 "\\*Minibuf"
-                                                 "\\*helm"
-                                                 "\\*tramp"
-                                                 "\\*epc"
-                                                 "\\*Completions"
-                                                 "\\*Compile-Log"
-                                                 "\\*clang-output"
-                                                 "\\*clang-error"
-                                                 "\\*magit")
-                helm-boring-file-regexp-list '("\\.DS_Store$"))
+  :init (progn (helm-mode t)
+               (helm-adaptive-mode t)
+               (helm-autoresize-mode t))
+  :config (setq-default helm-candidate-number-limit 100
+                        helm-mode-fuzzy-match t
+                        helm-completion-in-region-fuzzy-match t
+                        helm-display-header-line nil
+                        helm-split-window-inside-p t
+                        helm-always-two-windows t
+                        helm-move-to-line-cycle-in-source t
+                        helm-ff-skip-boring-files t
+                        helm-ff-file-name-history-use-recentf t
+                        helm-ff-auto-update-initial-value t
+                        helm-ff-newfile-prompt-p nil
+                        helm-autoresize-min-height 10
+                        helm-autoresize-max-height 40
+                        helm-boring-buffer-regexp-list (append
+                                                        helm-boring-buffer-regexp-list
+                                                        '("\\*WoMan-Log*"
+                                                          "\\*Man "
+                                                          "\\*Colors*"
+                                                          "\\*Help*"
+                                                          "\\*code-conversion-work*"
+                                                          "\\*tramp"
+                                                          "\\*epc"
+                                                          "\\*Completions"
+                                                          "\\*Compile-Log"
+                                                          "\\*clang-output"
+                                                          "\\*clang-error"
+                                                          "\\*magit"))
+                        helm-boring-file-regexp-list (append
+                                                      helm-boring-file-regexp-list
+                                                      '("\\.DS_Store$")))
   :diminish helm-mode)
 
-;; Show number of matches in mode-line while searching
-(use-package anzu
-  :ensure t
-  :bind (([remap query-replace-regexp] . anzu-query-replace-regexp)
-         ([remap query-replace] . anzu-query-replace))
-  :init (add-hook 'after-init-hook #'global-anzu-mode)
-  :config (setq anzu-deactivate-region t
-                anzu-replace-to-string-separator " => ")
-  :diminish (anzu-mode))
+;; Integrate Helm with eshell
+(use-package helm-eshell
+  :after (helm eshell)
+  :ensure nil
+  :init (add-hook 'eshell-mode-hook #'(lambda ()
+                                        (bind-key "C-r" #'helm-eshell-history eshell-mode-map)))
+  :config (setq helm-eshell-fuzzy-match t))
+
+
+;; Projectile
+
+(use-package projectile
+  :defer t
+  :bind (("C-c p" . projectile-command-map))
+  :init (projectile-mode)
+  :config (setq projectile-find-dir-includes-top-level t))
+
+(use-package helm-projectile
+  :after (helm projectile)
+  :config
+  (setq projectile-completion-system 'helm)
+  (helm-projectile-on))
 
 ;; Increase selected region by semantic units
 (use-package expand-region
-  :ensure t
   :bind (("C-x x" . er/expand-region))
   :config (setq expand-region-contract-fast-key "X"))
 
 ;; Highlight brackets according to their depth
 (use-package rainbow-delimiters
-  :ensure t
-  :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode-enable))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Multiple cursors for Emacs
 (use-package multiple-cursors
-  :ensure t
   :bind (("C-," . mc/mark-next-symbol-like-this)
          ("C-*" . mc/mark-more-like-this-extended)
          ("C-;" . mc/mark-next-like-this)))
 
 ;; Operate on current line if region is undefined
 (use-package whole-line-or-region
-  :ensure t
   :init (whole-line-or-region-global-mode t)
   :diminish whole-line-or-region-local-mode)
 
-
 ;; Automatic insertion, wrapping and paredit-like navigation with user defined pairs
-(use-package smartparens-config
-  :ensure smartparens
-  :init
-  (smartparens-global-mode t)
-  (show-smartparens-global-mode t)
-  (dolist (hook '(inferior-emacs-lisp-mode-hook
-                  emacs-lisp-mode-hook
-                  racket-mode-hook))
-    (add-hook hook #'smartparens-strict-mode))
-  :config (sp-with-modes '(c-mode c++-mode js2-mode web-mode)
-            (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
-            (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
-                                                      ("* ||\n[i]" "RET"))))
+(use-package smartparens
+  :hook ((lisp-mode . smartparens-strict-mode)
+         (emacs-lisp-mode . smartparens-strict-mode)
+         (cider-mode . smartparens-strict-mode)
+         (cider-repl-mode . smartparens-strict-mode)
+         (prog-mode . smartparens-global-mode)
+         (prog-mode . show-smartparens-global-mode))
+  :bind (("C-M-f" . sp-forward-sexp)
+         ("C-M-b" . sp-backward-sexp)
+         ("C-M-d" . sp-down-sexp)
+         ("C-M-a" . sp-backward-down-sexp)
+         ("C-S-d" . sp-beginning-of-sexp)
+         ("C-S-a" . sp-end-of-sexp)
+         ("C-M-e" . sp-up-sexp)
+         ("C-M-u" . sp-backward-up-sexp)
+         ("C-M-t" . sp-transpose-sexp)
+         ("C-M-n" . sp-next-sexp)
+         ("C-M-p" . sp-previous-sexp)
+         ("C-M-k" . sp-kill-sexp)
+         ("C-M-w" . sp-copy-sexp)
+         ("M-<delete>" . sp-unwrap-sexp)
+         ("M-<backspace>" . sp-backward-unwrap-sexp)
+         ("C-M-<left>" . sp-backward-slurp-sexp)
+         ("C-M-<right>" . sp-backward-barf-sexp)
+         ("M-D" . sp-splice-sexp)
+         ("C-M-<delete>" . sp-splice-sexp-killing-forward)
+         ("C-M-<backspace>" . sp-splice-sexp-killing-backward)
+         ("C-S-<backspace>" . sp-splice-sexp-killing-around)
+         ("C-]" . sp-select-next-thing-exchange)
+         ("C-<left_bracket>" . sp-select-previous-thing)
+         ("C-M-]" . sp-select-next-thing)
+         ("M-F" . sp-forward-symbol)
+         ("M-B" . sp-backward-symbol)
+         ("C-\"" . sp-change-inner))
+  :config (progn (require 'smartparens-config)
+                 (require 'smartparens-html)
+                 (sp-with-modes '(c-mode c++-mode js2-mode web-mode)
+                   (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
+                   (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
+                                                             ("* ||\n[i]" "RET")))))
   :diminish smartparens-mode)
 
 ;; Modular text completion framework
 (use-package company
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook #'company-mode)
-  (add-hook 'eshell-mode-hook #'company-mode)
-  :bind (:map company-mode-map
-              ([remap completion-at-point] . company-complete)
+  :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous))
+  :hook ((prog-mode eshell-mode cider-repl-mode) . company-mode)
+  :preface (defun company-mode/backend-with-yas (backend)
+             (if (and (listp backend) (member 'company-yasnippet backend))
+                 backend
+               (append (if (consp backend) backend (list backend))
+                       '(:with company-yasnippet))))
   :config
-  (defun company-mode/backend-with-yas (backend)
-    (if (and (listp backend) (member 'company-yasnippet backend))
-        backend
-      (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet))))
-
   (setq company-minimum-prefix-length 2
-        company-selection-wrap-around t
-        company-tooltip-flip-when-above t
-        company-tooltip-align-annotations t
         company-backends '(company-css
                            company-clang
                            company-cmake
@@ -492,78 +575,82 @@ comment at the end of the line."
                            company-capf
                            company-keywords)
         company-backends (mapcar #'company-mode/backend-with-yas
-                                 company-backends))
+                                 company-backends)
+        company-transformers '(company-sort-by-occurrence))
   :diminish company-mode)
+
+(use-package company-quickhelp
+  :disabled ; doesn't work in emacs-mac port
+  :after company
+  :init (company-quickhelp-mode)
+  :config (setq company-quickhelp-max-lines 20
+                company-quickhelp-delay 1.5
+                company-quickhelp-use-propertized-text t))
 
 ;; On-the-fly syntax checking
 (use-package flycheck
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook #'flycheck-mode)
-  (add-hook 'LaTeX-mode-hook #'flycheck-mode)
-  :config
-  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+  :hook ((prog-mode LaTeX-mode) . flycheck-mode)
+  :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 
-;; Integrate Helm with eshell
-(use-package helm-eshell
-  :after helm
-  :init (add-hook 'eshell-mode-hook
-                  #'(lambda ()
-                      (bind-key "C-r" #'helm-eshell-history eshell-mode-map))))
+(use-package flycheck-pos-tip
+  :after flycheck
+  :hook (flycheck-mode . flycheck-pos-tip-mode)
+  :config (setq flycheck-pos-tip-max-width 100))
 
 ;; Integrate Helm with flycheck
 (use-package helm-flycheck
-  :after helm
-  :ensure t
+  :after (helm flycheck)
   :bind (("C-c f" . helm-flycheck)))
 
 ;; A Git porcelain inside Emacs
 (use-package magit
-  :ensure t
-  :config (setq-default magit-restore-window-configuration t)
-  :bind (("C-c g" . magit-status)))
+  :bind (("C-c g" . magit-status))
+  :config (setq-default magit-restore-window-configuration t))
 
 ;; Yet another snippet extension for Emacs
+(use-package yasnippet-snippets)
+
 (use-package yasnippet
-  :ensure t
-  :init (add-hook 'prog-mode-hook #'yas-minor-mode)
-  :config
-  (setq yas-snippet-dirs yas-installed-snippets-dir
-        yas-verbosity 2)
-  (yas-reload-all)
+  :after yasnippet-snippets
+  :hook (prog-mode . yas-minor-mode)
+  :config (yas-reload-all)
   :diminish yas-minor-mode)
 
 ;; C/C++
 (use-package clang-format
-  :ensure t
+  :if (executable-find "clang-format")
   :after cc-mode
-  :init (add-hook 'c-mode-hook #'(lambda ()
-                                   (add-hook 'before-save-hook #'clang-format-buffer nil t))))
+  :init (dolist (mode '(c-mode-hook c++-mode-hook))
+          (add-hook mode (lambda ()
+                           (add-hook 'before-save-hook
+                                     #'clang-format-buffer nil t)))))
 
 (use-package irony
-  :ensure t
-  :after cc-mode
-  :init
-  (add-hook 'c++-mode-hook #'irony-mode)
-  (add-hook 'c-mode-hook #'irony-mode)
-  (add-hook 'irony-mode-hook #'irony-cdb-autosetup-compile-options)
+  :hook ((c++-mode . irony-mode)
+         (c-mode . irony-mode)
+         (irony-mode . irony-cdb-autosetup-compile-options))
+  :config (setq irony-server-install-prefix irony-user-dir)
   :diminish irony-mode)
 
+(use-package irony-eldoc
+  :after irony
+  :hook (irony-mode . irony-eldoc))
+
 (use-package company-irony
-  :ensure t
-  :after cc-mode
-  :config (add-to-list 'company-backends 'company-irony))
+  :after (irony company)
+  :config (with-eval-after-load 'company
+            (add-to-list 'company-backends 'company-irony)))
 
 (use-package company-irony-c-headers
-  :ensure t
-  :after cc-mode
-  :config (add-to-list 'company-backends 'company-irony-c-headers))
+  :after (irony company)
+  :config (with-eval-after-load 'company
+            (add-to-list 'company-backends 'company-irony-c-headers)))
 
 ;; TeX
 (use-package tex
   :ensure auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
-  :init (add-hook 'LaTeX-mode-hook #'visual-line-mode)
+  :hook (LaTeX-mode . visual-line-mode)
   :config
   (setq TeX-parse-self t
         TeX-auto-save t
@@ -572,16 +659,10 @@ comment at the end of the line."
         TeX-view-program-list '(("Preview" "open -a Preview.app %o"))))
 
 ;; Web
-(use-package company-web
-  :after company
-  :ensure t
-  :init (add-hook 'web-mode-hook #'(lambda ()
-                                     (add-to-list 'company-backends
-                                                  'company-web-html))))
 (use-package web-mode
-  :ensure t
   :mode (("\\.html?\\'" . web-mode)
-         ("\\.php\\'" . web-mode))
+         ("\\.php\\'" . web-mode)
+         ("\\.eex\\'" . web-mode))
   :bind (:map web-mode-map
               ("M-<up>" . web-mode-element-previous)
               ("M-<down>" . web-mode-element-next)
@@ -600,9 +681,13 @@ comment at the end of the line."
                 web-mode-enable-auto-pairing t
                 web-mode-enable-current-element-highlight t))
 
+(use-package company-web
+  :after (company web-mode)
+  :config (with-eval-after-load 'company
+            (add-to-list 'company-backends 'company-web-html)))
+
 ;; Javascript
 (use-package js2-mode
-  :ensure t
   :mode "\\.js\\'"
   :bind (:map js2-mode-map ("M-j" . ngq/my-join-line))
   :config
@@ -616,10 +701,11 @@ comment at the end of the line."
                 js2-mode-show-strict-warnings nil))
 
 (use-package tern
-  :ensure t
-  :bind (:map tern-mode-keymap ([remap tern-rename-variable] . ngq/tern-rename-variable))
-  :init (add-hook 'js2-mode-hook #'tern-mode)
-  :config
+  :if (executable-find "tern")
+  :bind (:map tern-mode-keymap
+              ([remap tern-rename-variable] . ngq/tern-rename-variable))
+  :hook js2-mode
+  :preface
   (defun ngq/tern-rename-variable ()
     "Wraps `tern-rename-variable' to provide the `symbol-at-point' as the
 default input and avoid useless renaming in case the new variable name is the
@@ -632,57 +718,113 @@ same as the old one."
         (message "Did not rename variable; New name matches the old one.")))))
 
 (use-package company-tern
-  :ensure t
-  :after tern
-  :config (add-to-list 'company-backends 'company-tern))
+  :after company tern
+  :config (with-eval-after-load 'company
+            (add-to-list 'company-backends 'company-tern)))
 
 ;; Python
 (use-package python
-  :mode "\\.py\\'"
-  :config
-  (when (executable-find "ipython")
-    (setq python-shell-interpreter "ipython"
-          python-shell-interpreter-args "--simple-prompt -i")))
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode)
+  :config (when (executable-find "ipython")
+            (setq python-shell-interpreter "ipython"
+                  python-shell-interpreter-args "--simple-prompt -i")))
 
 (use-package py-autopep8
   :after python
-  :ensure t
-  :init (add-hook 'python-mode-hook #'py-autopep8-enable-on-save))
+  :hook (python-mode . py-autopep8-enable-on-save))
 
 (use-package anaconda-mode
   :after python
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook #'anaconda-mode)
-  (add-hook 'python-mode-hook #'anaconda-eldoc-mode)
+  :hook python-mode
   :diminish anaconda-mode)
 
 (use-package company-anaconda
-  :after anaconda-mode
-  :ensure t
-  :config (add-to-list 'company-backends 'company-anaconda))
+  :after python
+  :config (with-eval-after-load 'company
+            (add-to-list 'company-backends 'company-anaconda)))
+
+;; Clojure
+
+(use-package clojure-mode
+  :mode (("\\.clj\\'" . clojure-mode)
+         ("\\.cljs\\'" . clojure-mode)
+         ("\\.edn\\'" . clojure-mode))
+  :hook (clojure-mode . smartparens-strict-mode))
+
+(use-package clojure-mode-extra-font-locking
+  :after clojure-mode)
+
+(use-package clj-refactor
+  :after clojure-mode
+  :hook (clojure-mode . clj-refactor-mode)
+  :config (setq cljr-warn-on-eval nil)
+  :diminish clj-refactor-mode)
+
+(use-package cljr-helm
+  :after clj-refactor helm
+  :bind (:map clojure-mode-map
+              ("C-c C-r" . cljr-helm)
+              :map clojurescript-mode-map
+              ("C-c C-r" . cljr-helm)))
+
+(use-package cider
+  :after clojure-mode
+  :hook ((cider-mode . eldoc-mode)
+         (cider-mode . cider-company-enable-fuzzy-completion)
+         (cider-repl-mode . cider-company-enable-fuzzy-completion))
+  :bind (:map cider-repl-mode-map ("C-c C-l" . cider-repl-clear-buffer))
+  :config (setq cider-repl-use-pretty-printing t
+                cider-repl-use-clojure-font-lock t
+                cider-repl-result-prefix ";; => "
+                cider-font-lock-dynamically '(macro core function var)
+                cider-overlays-use-font-lock t
+                cider-show-error-buffer nil
+                cider-repl-display-help-banner nil
+                nrepl-hide-special-buffers t))
+
+(use-package flycheck-clojure
+  :disabled
+  :after clojure-mode
+  :config (flycheck-clojure-setup))
 
 ;; Misc editing modes
 (use-package json-mode
-  :ensure t
   :mode "\\.json\\'"
   :config (setq-default json-reformat:indent-width 2))
 
 (use-package yaml-mode
-  :ensure t
   :mode "\\.y(a)?ml\\'"
   :config (add-hook 'yaml-mode-hook #'(lambda () (auto-fill-mode -1))))
 
 (use-package markdown-mode
-  :ensure t
   :mode ("\\.\\(markdown\\|md\\)\\'" . gfm-mode))
+
+;; Aggressive-indent
+(use-package aggressive-indent
+  :hook ((emacs-lisp-mode lisp-mode clojure-mode) . aggressive-indent-mode)
+  :diminish aggressive-indent-mode)
+
+;; Which-key
+(use-package which-key
+  :init (which-key-mode)
+  :diminish (which-key-mode))
+
+;; Highlight VCS changes
+
+(use-package diff-hl
+  :hook ((diff-hl-mode . diff-hl-dired-mode)
+         (diff-hl-mode . diff-hl-flydiff-mode))
+  :init (global-diff-hl-mode t)
+  :config (setq diff-hl-draw-borders nil))
 
 ;; Load custom settings, if they do exist
 (let ((user-local-file (concat user-emacs-directory "local.el")))
-  (if (file-readable-p user-local-file)
-      (load-file user-local-file)))
+  (when (file-readable-p user-local-file)
+    (load-file user-local-file)))
 
-;; Settings handled by Custom
+;; Settings handled by Custom.el
 (let ((user-custom-file (concat user-emacs-directory "custom.el")))
   (setq custom-file user-custom-file)
-  (load user-custom-file))
+  (when (file-readable-p user-custom-file)
+    (load user-custom-file)))

@@ -1,11 +1,5 @@
 elpa/*
-.cache/*
-!.cache/.gitkeep
-eshell/*
-!eshell/alias
-url/*
+var/*
+!var/eshell/alias
 local.el
-.mc-lists.el
-tramp
-irony
 custom.el
