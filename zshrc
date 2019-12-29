@@ -1,12 +1,14 @@
 ## interactive shell configuration
 
+# zmodload zsh/zprof
+
 # settings modules
 files=(
     aliases
     bindkeys
     completion
     functions
-    local
+    history
     options
     prompt
     terminal
@@ -24,3 +26,4 @@ for file in ${files}; do
     [ -f "${HOME}/.zsh/${file}.zsh" ] && source "${HOME}/.zsh/${file}.zsh"
 done
 
+# zprof

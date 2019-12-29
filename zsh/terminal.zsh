@@ -26,17 +26,21 @@ if [[ ! "${TERM}" =~ "-256color$" ]]; then
 fi
 
 # set & update the terminal's title
-set_xterm_title_pwd() {
+
+if [[ "${TERM}" == (dumb|linux|*bsd*|eterm*) ]]; then
+  return
+fi
+
+autoload -Uz add-zsh-hook
+
+function set-window-title-pwd() {
     print -Pn "\e]0;%n@%m: %~\a"
 }
 
-set_xterm_title_cmd() {
+add-zsh-hook precmd set-window-title-pwd
+
+function set-window-title-cmd() {
     print -Pn "\e]0;%n@%m: ${2}\a"
 }
 
-typeset -gU precmd_functions preexec_functions
-
-if [[ $TERM =~ "^xterm" ]]; then
-    precmd_functions+=(set_xterm_title_pwd)
-    preexec_functions+=(set_xterm_title_cmd)
-fi
+add-zsh-hook preexec set-window-title-cmd

@@ -1,71 +1,32 @@
 ## prompt customization
 
-precmd_functions+=(render_prompt)
-
-# render the prompt itself
-render_prompt() {
-    local prompt_newline=$'\n'
-    local prompt_character='→'
-    local -a preprompt_parts
-
-    # ssh host & username info
-    [ -v "${SSH_CLIENT}" ] && preprompt_parts+='%B%F{yellow}⚡%f %F{blue}%n@%m%f%b'
-
-    # current working directory
-    preprompt_parts+='%B%F{green}$(prompt_directory)%f%b'
-
-    # VCS status
-    preprompt_parts+='${vcs_info_msg_0_}'
-
-    local ps1=(
-        ${prompt_newline}
-        ${(j. .)preprompt_parts}
-        ${prompt_newline}
-        "%B%(?.%F{white}.%F{red})${prompt_character} %f%b"
-    )
-
-    PROMPT=${(j..)ps1}
-}
-
-# show the current working directory, omitting directories if exceeding a certain limit
-
-prompt_directory() {
-    local max_dir_len=${COLUMNS}
-    local current_dir=${PWD/#$HOME/\~}
-
-    if [[ ${#current_dir} -ge max_dir_len ]]; then
-        echo -n "${current_dir}" \
-            | awk -F '/' '{ print $1 "/" $2 "/…/" $(NF-1) "/" $(NF)}'
-    else
-        echo "${current_dir}"
-    fi
-}
-
 ## vcs information retrieval
 
 autoload -Uz vcs_info
+autoload -Uz add-zsh-hook
 
-precmd_functions+=(vcs_info)
+add-zsh-hook precmd vcs_info
 
 zstyle ":vcs_info:*" enable git
 zstyle ":vcs_info:*" check-for-changes true
 zstyle ":vcs_info:*" get-revision true
-zstyle ":vcs_info:*" stagedstr "%F{green}*%f "
-zstyle ":vcs_info:*" unstagedstr "%F{yellow}*%f "
+zstyle ":vcs_info:*" stagedstr "%F{green}*%f"
+zstyle ":vcs_info:*" unstagedstr "%F{yellow}*%f"
 zstyle ":vcs_info:git*" formats "%F{cyan}± %b%f %F{white}%.7i%f %m%c%u"
-zstyle ":vcs_info:git*" actionformats "%F{cyan}± %b%f %F{blue}[%a]%f %F{white}%(!.%.7i.)%f %m%c%u"
-zstyle ":vcs_info:git*+set-message:*" hooks git-untracked git-aheadbehind git-remotebranch
+zstyle ":vcs_info:git*" actionformats "%F{cyan}± %b%f %F{yellow}(%a)%f %F{white}%.7i%f %m%c%u"
+zstyle ":vcs_info:git*+set-message:*" hooks git-untracked git-aheadbehind git-remotebranch git-stash
 
-# show an indicator if there are untracked changes
-+vi-git-untracked() {
-    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]] && \
-           git status --porcelain | grep "??" &> /dev/null; then
-        hook_com[unstaged]+="%F{red}*%f "
+# show an indicator if there are untracked files
+function +vi-git-untracked() {
+    if [[ ! $(git ls-files --other --directory --exclude-standard) ]]; then
+        return
     fi
+
+    hook_com[unstaged]+="%F{red}*%f"
 }
 
 # show how many commits the current branch is ahead/behind relative to the remote
-+vi-git-aheadbehind() {
+function +vi-git-aheadbehind() {
     local ahead behind
     local -a gitstatus
 
@@ -76,20 +37,88 @@ zstyle ":vcs_info:git*+set-message:*" hooks git-untracked git-aheadbehind git-re
     (( $ahead )) && gitstatus+=( "%F{green}↑%f${ahead} " )
 
     hook_com[misc]+=${gitstatus}
-
-    if [[ -n ${hook_com[misc]} ]]; then
-        hook_com[misc]="${hook_com[misc]}"
-    fi
 }
 
 # show the name of the remote branch if it differs from the local one
-+vi-git-remotebranch() {
+function +vi-git-remotebranch() {
     local remote
 
     remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
-        --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
+                   --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
 
     if [[ -n ${remote} && ${remote#*/} != ${hook_com[branch]} ]]; then
         hook_com[branch]="${hook_com[branch]} [${remote}]"
     fi
 }
+
+# show count of stashed changes
+function +vi-git-stash() {
+    if [[ ! -s "${vcs_comm[gitdir]}/logs/refs/stash" ]]; then
+        return
+    fi
+
+    local -a stashes=(${(f)"$(<${vcs_comm[gitdir]}/logs/refs/stash)"})
+
+    if [ ${#stashes} -gt 0 ]; then
+        hook_com[misc]+="%F{magenta}$%f"
+    fi
+}
+
+# print a newline before the prompt, unless it's the first prompt in the process
+function print_newline() {
+    if [ -z "$NEWLINE_BEFORE_PROMPT" ]; then
+        NEWLINE_BEFORE_PROMPT=1
+    elif [ "$NEWLINE_BEFORE_PROMPT" -eq 1 ]; then
+        echo ""
+    fi
+}
+
+add-zsh-hook precmd print_newline
+
+# abbreviate path (fish-style) if exceeding a certain length
+function prompt_pwd() {
+  local length_limit=$(( $COLUMNS * 0.4 ))
+  local path_array=(${(s:/:)${PWD/${HOME}/\~}})
+  local path_index=1
+
+  while (( ${#${(j:/:)path_array}[@]} > $length_limit )); do
+    path_array[path_index++]="${path_array[path_index]:0:1}"
+  done
+
+  if [[ ${path_array[1]} != \~ ]]; then
+    path_array=("" $path_array)
+  fi
+
+  echo ${(j:/:)path_array}
+}
+
+# render the prompt itself
+function render_prompt() {
+
+    # left prompt
+    local -a left_prompt
+
+    # ssh host & username info
+    [ -v "${SSH_CLIENT}" ] && left_prompt+='%B%F{yellow}⚡%f %F{blue}%n@%m%f%b'
+
+    # current working directory
+    left_prompt+='%B%F{green}$(prompt_pwd)%f%b'
+
+    # arrow, red if last exit code != 0
+    left_prompt+='%B%(?.%F{white}.%F{red})→%f%b '
+
+    PROMPT=${(j. .)left_prompt}
+
+    # right prompt
+    local -a right_prompt
+
+    # background jobs
+    right_prompt+='%F{yellow}%(1j.%jj.)%f'
+
+    # VCS info
+    right_prompt+='${vcs_info_msg_0_}'
+
+    RPROMPT=${(j. .)right_prompt}
+}
+
+add-zsh-hook precmd render_prompt

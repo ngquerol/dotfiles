@@ -5,15 +5,13 @@ autoload -Uz bashcompinit
 
 zmodload zsh/complist
 
-# additional completions
-[ -d /usr/local/share/zsh-completions ] && fpath+=(/usr/local/share/zsh-completions)
-
-# load & initialize the completion system every 24 hours
-_comp_files=(${HOME}/.zsh/.cache/zcompdump(Nm-24))
+# load and initialize the completion system with a cache time of 24 hours
+_comp_files=(${HOME}/.zsh/.cache/zcompdump(N.mh-24))
 if (( $#_comp_files )); then
   compinit -i -C -d "${HOME}/.zsh/.cache/zcompdump"
 else
   echo "Initializing completions..."
+  rm -f "${HOME}/.zsh/.cache/zcompdump"
   compinit -i -d "${HOME}/.zsh/.cache/zcompdump"
 fi
 unset _comp_files
@@ -21,7 +19,8 @@ unset _comp_files
 bashcompinit
 
 # completion cache
-zstyle ":completion::complete:*" use-cache true
+zstyle ":completion:*" accept-exact "*(N)"
+zstyle ":completion::complete:*" use-cache on
 zstyle ":completion:*" cache-path "${HOME}/.zsh/.cache/zcompcache"
 
 # completions list
@@ -45,6 +44,7 @@ zstyle ":completion:*" squeeze-slashes true
 # allow mistakes
 zstyle ":completion:*" completer _complete _match _approximate
 zstyle ":completion:*:match:*" original only
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 zstyle ":completion:*:approximate:*" max-errors "reply=($((($#PREFIX+$#SUFFIX)/3))numeric)"
 
 # do not try to complete exact matches anyway
