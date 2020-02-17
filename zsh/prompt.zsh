@@ -79,10 +79,9 @@ add-zsh-hook precmd print_newline
 function prompt_pwd() {
   local length_limit=$(( $COLUMNS * 0.4 ))
   local path_array=(${(s:/:)${PWD/${HOME}/\~}})
-  local path_index=1
 
-  while (( ${#${(j:/:)path_array}[@]} > $length_limit )); do
-    path_array[path_index++]="${path_array[path_index]:0:1}"
+  for (( i = 1; ${#${(j:/:)path_array}} > $length_limit && i < $#path_array; i++ )) do
+    path_array[i]="${path_array[i]:0:1}"
   done
 
   if [[ ${path_array[1]} != \~ ]]; then
