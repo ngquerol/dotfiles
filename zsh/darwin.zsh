@@ -17,7 +17,7 @@ if [ -x $commands[brew] ]; then
   export HOMEBREW_PREFIX=$(brew --prefix)
 
   path=("${HOMEBREW_PREFIX}/bin" "${HOMEBREW_PREFIX}/sbin" $path)
-  infopath=("$(brew --prefix)/share/info" $infopath)
+  infopath=("${HOMEBREW_PREFIX}/share/info" $infopath)
 
   alias bup="brew update && brew upgrade && brew cask upgrade"
   alias bcl="brew cleanup -s"
@@ -25,10 +25,6 @@ if [ -x $commands[brew] ]; then
   # additional completions
   if [ -d "${HOMEBREW_PREFIX}/share/zsh-completions" ]; then
     fpath+=("/usr/local/share/zsh-completions")
-  fi
-
-  if [ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]; then
-    source "/usr/local/etc/profile.d/bash_completion.sh"
   fi
 fi
 
