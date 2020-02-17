@@ -13,12 +13,12 @@ zstyle ":vcs_info:*" get-revision true
 zstyle ":vcs_info:*" stagedstr "%F{green}*%f"
 zstyle ":vcs_info:*" unstagedstr "%F{yellow}*%f"
 zstyle ":vcs_info:git*" formats "%F{cyan}± %b%f %F{white}%.7i%f %m%c%u"
-zstyle ":vcs_info:git*" actionformats "%F{cyan}± %b%f %F{yellow}(%a)%f %F{white}%.7i%f %m%c%u"
+zstyle ":vcs_info:git*" actionformats "%F{cyan}± %b%f %F{yellow}(%a)%f"
 zstyle ":vcs_info:git*+set-message:*" hooks git-untracked git-aheadbehind git-remotebranch git-stash
 
 # show an indicator if there are untracked files
 function +vi-git-untracked() {
-    if [[ ! $(git ls-files --other --directory --exclude-standard) ]]; then
+    if [[ ! $(git ls-files --others --exclude-standard) ]]; then
         return
     fi
 
