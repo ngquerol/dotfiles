@@ -17,6 +17,7 @@ if [ -x $commands[brew] ]; then
   export HOMEBREW_PREFIX=$(brew --prefix)
 
   path=("${HOMEBREW_PREFIX}/bin" "${HOMEBREW_PREFIX}/sbin" $path)
+  infopath=("$(brew --prefix)/share/info" $infopath)
 
   alias bup="brew update && brew upgrade && brew cask upgrade"
   alias bcl="brew cleanup -s"

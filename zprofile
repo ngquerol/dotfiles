@@ -10,7 +10,7 @@ export EDITOR="vi"
 export VISUAL="$EDITOR"
 
 # global path arrays
-typeset -gU cdpath fpath mailpath path
+typeset -gU cdpath fpath mailpath manpath infopath path
 path=("${HOME}/.bin" $path)
 
 # machine-dependent configuration
