@@ -89,6 +89,11 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
     runtime! macros/matchit.vim
 endif
 
+" Jump to the last known cursor position, if applicable.
+if has("autocmd")
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+endif
+
 if empty(mapcheck('<C-U>', 'i'))
     inoremap <C-U> <C-G>u<C-U>
 endif
