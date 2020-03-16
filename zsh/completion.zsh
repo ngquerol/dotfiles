@@ -6,13 +6,13 @@ autoload -Uz bashcompinit
 zmodload zsh/complist
 
 # load and initialize the completion system with a cache time of 24 hours
-_comp_files=(${HOME}/.zsh/.cache/zcompdump(N.mh-24))
+_comp_files=(${ZSH_CACHE_DIRECTORY}/zcompdump(N.mh-24))
 if (( $#_comp_files )); then
-  compinit -i -C -d "${HOME}/.zsh/.cache/zcompdump"
+  compinit -i -C -d "${ZSH_CACHE_DIRECTORY}/zcompdump"
 else
   echo "Initializing completions..."
-  rm -f "${HOME}/.zsh/.cache/zcompdump"
-  compinit -i -d "${HOME}/.zsh/.cache/zcompdump"
+  rm -f "${ZSH_CACHE_DIRECTORY}/zcompdump"
+  compinit -i -d "${ZSH_CACHE_DIRECTORY}/zcompdump"
 fi
 unset _comp_files
 
@@ -21,7 +21,7 @@ bashcompinit
 # completion cache
 zstyle ":completion:*" accept-exact "*(N)"
 zstyle ":completion::complete:*" use-cache on
-zstyle ":completion:*" cache-path "${HOME}/.zsh/.cache/zcompcache"
+zstyle ":completion:*" cache-path "${ZSH_CACHE_DIRECTORY}/zcompcache"
 
 # completions list
 zstyle ":completion:*" menu select=long-list select=1

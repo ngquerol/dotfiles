@@ -21,6 +21,9 @@ OS=$(uname)
 
 unset OS
 
+# create support directories, if necessary
+[ -d ${ZSH_CACHE_DIRECTORY} ] || mkdir -p "${ZSH_CACHE_DIRECTORY}"
+
 # source every applicable configuration file
 for file in ${files}; do
     [ -f "${HOME}/.zsh/${file}.zsh" ] && source "${HOME}/.zsh/${file}.zsh"

@@ -1,6 +1,6 @@
 ## history configuration
 
-export HISTFILE="${HOME}/.zsh/.cache/zhistory"
+export HISTFILE="${ZSH_CACHE_DIRECTORY}/zhistory"
 export HISTSIZE=10000
 export SAVEHIST=10000
 
