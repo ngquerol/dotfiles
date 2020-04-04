@@ -13,4 +13,3 @@ setopt hist_ignore_space    # do not add any commands to history that begin with
 setopt hist_reduce_blanks   # remove superfluous blanks from each command line being added to the history list.
 setopt hist_save_no_dups    # when saving, older commands that duplicate newer commands are omitted
 setopt hist_verify          # upon history 'selection', don't execute immediately
-setopt share_history        # causes all terminals to share the same history 'session'
