@@ -22,7 +22,20 @@ if [ -x $commands[brew] ]; then
   alias bup="brew update && brew upgrade && brew cask upgrade"
   alias bcl="brew cleanup -s"
 
-  # additional completions
+  # configuration for installed homebrew packages
+
+  # homebrew libraries & headers
+  # note: C_INCLUDE_PATH, CPLUS_INCLUDE_PATH, OBJC_INCLUDE_PATH and
+  # OBJCPLUS_INCLUDE_PATH are also available for language-specific headers.
+  export CPATH="${HOMEBREW_PREFIX}/include"
+  export LIBRARY_PATH="${HOMEBREW_PREFIX}/lib"
+
+  # homebrew LLVM
+  if [ -d "${HOMEBREW_PREFIX}/opt/llvm" ]; then
+    path=("${HOMEBREW_PREFIX}/opt/llvm/bin" $path)
+  fi
+
+  # additional ZSH completions
   if [ -d "${HOMEBREW_PREFIX}/share/zsh-completions" ]; then
     fpath+=("/usr/local/share/zsh-completions")
   fi
