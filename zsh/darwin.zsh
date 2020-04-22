@@ -2,6 +2,7 @@
 
 # macOS-specific aliases
 alias top="top -o cpu"
+alias ll="ls -lhFGT"
 
 # silence 'last login' text
 [ ! -f ~/.hushlogin ] && touch ~/.hushlogin
