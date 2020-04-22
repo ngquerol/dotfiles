@@ -53,9 +53,10 @@ link() {
 
         ln -Fns "${script_path}/${dotfile}" "${target}"
     else
-        if [ -n "${verbose_opt}" ] && [ -e "${target}" ]; then
-            printf "\rSkipping \"%s\": target \"%s\" already exists." \
-                   "${dotfile}" "${target}"
+        if [ -e "${target}" ]; then
+            [ -n "${verbose_opt}" ] && \
+                printf "\rSkipping \"%s\": target \"%s\" already exists.\n" \
+                       "${dotfile}" "${target}"
             return
         fi
 
