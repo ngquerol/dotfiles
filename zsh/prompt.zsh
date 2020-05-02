@@ -19,7 +19,7 @@ zstyle ":vcs_info:*" unstagedstr "%F{yellow}*%f"
 zstyle ":vcs_info:git:*" patch-format "%F{magenta}(%n/%a)%f %.7p"
 zstyle ":vcs_info:git:*" formats "%F{cyan}± %b%f %.7i%m%c%u"
 zstyle ":vcs_info:git:*" actionformats "%F{cyan}± %b%f %F{magenta}%a%f%m%c%u"
-zstyle ":vcs_info:git*+set-message:*" hooks git-untracked git-aheadbehind git-remotebranch git-stash git-message 
+zstyle ":vcs_info:git*+set-message:*" hooks git-untracked git-aheadbehind git-remotebranch git-stash git-message
 
 # show an indicator if there are untracked files
 function +vi-git-untracked() {
@@ -102,11 +102,11 @@ function prompt_pwd() {
     path_array[i]="${path_array[i]:0:1}"
   done
 
-  if [[ ${path_array[1]} != \~ ]]; then
-    path_array=("" $path_array)
-  fi
+  local path_string=${(j:/:)path_array}
 
-  echo ${(j:/:)path_array}
+  [[ ${path_string[1]} != \~ ]] && path_string="/${path_string}"
+
+  echo ${path_string}
 }
 
 # render the prompt itself
