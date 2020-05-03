@@ -2,5 +2,3 @@
 /bin/*
 !/bin/backup.sh
 !/bin/flac2alac.sh
-zprofile.local
-zsh/local.zsh

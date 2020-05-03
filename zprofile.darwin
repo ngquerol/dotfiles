@@ -1,0 +1,29 @@
+## macOS-specific login shell configuration
+
+if [ -x $commands[brew] ]; then
+    # homebrew(-cask) options
+    export HOMEBREW_NO_ANALYTICS=1
+    export HOMEBREW_NO_INSECURE_REDIRECT=1
+    export HOMEBREW_CASK_OPTS=--require-sha
+    export HOMEBREW_PREFIX=$(brew --prefix)
+
+    # headers & libraries
+    # note: C_INCLUDE_PATH, CPLUS_INCLUDE_PATH, OBJC_INCLUDE_PATH and
+    # OBJCPLUS_INCLUDE_PATH are also available for language-specific headers.
+    export CPATH="${HOMEBREW_PREFIX}/include"
+    export LIBRARY_PATH="${HOMEBREW_PREFIX}/lib"
+
+    # binaries & info pages
+    path=("${HOMEBREW_PREFIX}/sbin" $path)
+    infopath=("${HOMEBREW_PREFIX}/share/info" $infopath)
+
+    # keg-only LLVM
+    if [ -d "${HOMEBREW_PREFIX}/opt/llvm" ]; then
+        path=("${HOMEBREW_PREFIX}/opt/llvm/bin" $path)
+    fi
+
+    # additional ZSH completions
+    if [ -d "${HOMEBREW_PREFIX}/share/zsh-completions" ]; then
+        fpath+=("/usr/local/share/zsh-completions")
+    fi
+fi

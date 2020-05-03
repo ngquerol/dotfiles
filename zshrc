@@ -15,11 +15,7 @@ files=(
 )
 
 # os-specific settings
-OS=$(uname)
-
-[ -f "${HOME}/.zsh/${OS:l}.zsh" ] && files+="${OS:l}"
-
-unset OS
+[ -f "${HOME}/.zsh/${ZSH_OS_NAME}.zsh" ] && files+="${ZSH_OS_NAME}"
 
 # create support directories, if necessary
 [ -d ${ZSH_CACHE_DIRECTORY} ] || mkdir -p "${ZSH_CACHE_DIRECTORY}"
