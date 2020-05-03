@@ -1,46 +1,41 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -o errexit
 set -o nounset
 
 ## Global variables
 
-# Dotfiles (regular files or directories) to manage
-dotfiles=(
-    "zsh"
-    "zshrc"
-    "zprofile"
-    "zprofile.local"
-    "bin"
-    "gitconfig"
-    "emacs.d"
-    "vimrc"
-)
-
 # Absolute path this script is in
-script_path=$(cd "$(dirname "${0}")" && pwd)
+script_dir_path=$(cd "$(dirname "${0}")" && pwd)
+
+# Filename of this script
+script_name=$(basename "${0}")
+
+# Absolute script path
+script_path="${script_dir_path}/${script_name}"
 
 ## Functions
 
 link_target() {
-    local dotfile
-    dotfile=${1}
+    dotfile="${1##*/}"
 
     echo "${HOME}/.${dotfile}"
+
+    unset dotfile
 }
 
 unlink() {
-    local target
     target="$(link_target "${1}")"
 
     if [ -L "${target}" ]; then
         [ -n "${verbose_opt}" ] && echo "Removing symlink \"${target}\""
         rm "${target}"
     fi
+
+    unset target
 }
 
 link() {
-    local target
     target="$(link_target "${1}")"
 
     [ -n "${verbose_opt}" ] && printf "\"%s\" => \"%s\"" \
@@ -51,7 +46,7 @@ link() {
             printf " (clobbering existing target)"
         fi
 
-        ln -Fns "${script_path}/${dotfile}" "${target}"
+        ln -Fns "${dotfile}" "${target}"
     else
         if [ -e "${target}" ]; then
             [ -n "${verbose_opt}" ] && \
@@ -60,14 +55,16 @@ link() {
             return
         fi
 
-        ln -ns "${script_path}/${dotfile}" "${target}"
+        ln -ns "${dotfile}" "${target}"
     fi
 
     [ -n "${verbose_opt}" ] && printf "\n"
+
+    unset target
 }
 
 print_usage() {
-    echo "usage: ${0} [-(-l)ink|-(-u)nlink] (-(-v)erbose) (-(-f)orce)"
+    echo "usage: ${script_name} [-(-l)ink|-(-u)nlink] (-(-v)erbose) (-(-f)orce)"
 }
 
 ## Entry point
@@ -77,7 +74,7 @@ unlink_opt=
 clobber_opt=
 verbose_opt=
 
-while (( $# )); do
+while [ $# -gt 0 ]; do
     case ${1} in
         -l|--link) [ -n "${unlink_opt}" ] && \
                        { print_usage >&2; exit 1; } || link_opt=1 ;;
@@ -91,19 +88,27 @@ while (( $# )); do
     shift
 done
 
-if [ -z "$link_opt" ] && [ -z "$unlink_opt" ]; then
+if [ -z "${link_opt}" ] && [ -z "${unlink_opt}" ]; then
     print_usage >&2
     exit 1
 fi
 
-if [ -n "$link_opt" ]; then
+if [ -n "${link_opt}" ]; then
     echo "Symlinking dotfiles..."
-    for dotfile in "${dotfiles[@]}"; do link "${dotfile}"; done
+    for dotfile in "${script_dir_path}"/*; do
+        if [ -e "${dotfile}" ] && [ "${dotfile}" != "${script_path}" ]; then
+            link "${dotfile}"
+        fi
+    done
     echo "Done."
 fi
 
-if [ -n "$unlink_opt" ]; then
+if [ -n "${unlink_opt}" ]; then
     echo "Unlinking dotfiles..."
-    for dotfile in "${dotfiles[@]}"; do unlink "${dotfile}"; done
+    for dotfile in "${script_dir_path}"/*; do
+        if [ -e "${dotfile}" ] && [ "${dotfile}" != "${script_path}" ]; then
+            unlink "${dotfile}"
+        fi
+    done
     echo "Done."
 fi
