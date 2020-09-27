@@ -1,6 +1,6 @@
 ## shell functions
 
-# colored man pages
+# better man pages
 function man() {
   env \
     LESS_TERMCAP_mb=$(printf "\e[1;34m") \
@@ -10,5 +10,7 @@ function man() {
     LESS_TERMCAP_so=$(printf "\e[1;47;30m") \
     LESS_TERMCAP_ue=$(printf "\e[0m") \
     LESS_TERMCAP_us=$(printf "\e[0;32m") \
+    GROFF_NO_SGR=1 \
+    MANPAGER="less -s -M +Gg" \
     man "$@"
 }

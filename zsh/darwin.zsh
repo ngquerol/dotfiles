@@ -9,7 +9,7 @@ alias ll="ls -lhFGT"
 
 # homebrew aliases
 if [ -x $commands[brew] ]; then
-  alias bup="brew update && brew upgrade && brew cask upgrade"
+  alias bup="brew upgrade"
   alias bcl="brew cleanup -s"
 fi
 
@@ -29,7 +29,7 @@ function tmcleanlocal() {
 
     for s in $snapshots; do
       printf "Deleting local Time Machine snapshot \"%s\"...\n" "${s}"
-      tmutil deletelocalsnapshots ${s} &>/dev/null
+      tmutil deletelocalsnapshots ${s} 1>/dev/null
     done
   fi
 }

@@ -15,9 +15,10 @@ esac
 [ ! -v LC_ALL ] && export LC_ALL=fr_FR.UTF-8
 
 # common environment variables
-export BROWSER=open
+export BROWSER="open"
 export EDITOR="vi"
 export VISUAL="$EDITOR"
+export PAGER="less -s -M +Gg"
 
 # ZSH-related environment variables
 export ZSH_CACHE_DIRECTORY="${HOME}/.cache/zsh"
