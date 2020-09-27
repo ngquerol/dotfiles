@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: http_handler
+# key: http_handler
+# --
+
+func(rw http.ResponseWriter, r *http.Request) {
+	$0
+}

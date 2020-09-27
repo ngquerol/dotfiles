@@ -1,0 +1,222 @@
+html { margin: 0; padding: 0; box-sizing: border-box; }
+
+*, *:before, *:after { box-sizing: inherit; }
+
+body {
+  margin: 0 auto;
+  padding: 0;
+  max-width: 700px;
+  color: #555;
+  background-color: #fafafa;
+  line-height: 1.5;
+  font-size: 16px;
+  font-family: ui-sans-serif,
+               system-ui, -apple-system, BlinkMacSystemFont,
+               "Helvetica Neue",
+               "Segoe UI", Arial,
+               Roboto,
+               Oxygen-Sans, Ubuntu, Cantarell,
+               sans-serif;
+}
+
+main > header { padding: 1em 0; }
+
+header { border-bottom: 1px solid #ccc; }
+
+footer { border-top: 1px solid #ccc; text-align: right; color: #aaa; }
+
+footer p { margin: .5em 0; }
+
+a { text-decoration: none; color: #1976d2; }
+
+a:hover { text-decoration: underline; }
+
+a[href^="http://"]:after,
+a[href^="https://"]:after,
+a[href^="//"]:after {
+  content: "\27b6";
+  color: #aaa;
+  position: relative;
+  left: .1em;
+  bottom: .3em;
+}
+
+figure { margin: 1.5em 0 1em 0; }
+
+figcaption, caption { margin-top: .5em; text-align: center; }
+
+img, .org-svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 80%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+pre, code, time, .timestamp {
+  font-family: ui-monospace,
+               Consolas,
+               Menlo, Monaco,
+               "Liberation Mono",
+               "Courier New",
+               monospace;
+}
+
+pre, code { font-size: .9em; }
+
+code { border: 1px solid #ccc; border-radius: 5px; padding: .125em; }
+
+pre {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: .5em;
+  overflow-x: auto;
+}
+
+dt { font-weight: bold; }
+
+dt:before {
+  content: "\261e";
+  font-size: 1.75em;
+  vertical-align: middle;
+  margin-right: .5em;
+}
+
+dd { margin-left: 2.5em; }
+
+details { border: 1px solid #ccc; border-radius: 5px; padding: 0 .5em; }
+
+summary { opacity: .5; }
+
+table { max-width: 90%; margin: 2em auto; }
+
+table, th, td { border-collapse: collapse; }
+
+th, td { padding: .75em; font-weight: normal; }
+
+th { border-bottom: 2px solid #ccc; font-weight: bold; }
+
+td { border: 1px solid #ccc; }
+
+tbody + tbody { border-top: 2px solid #ccc; }
+
+blockquote, .verse {
+  font-family: ui-serif,
+               Constantia,
+               "Lucida Bright", Lucidabright, "Lucida Serif", Lucida,
+               "DejaVu Serif", "Bitstream Vera Serif",
+               "Liberation Serif", Georgia, serif;
+  font-style: italic;
+  opacity: .75;
+  margin-left: 1.5em;
+}
+
+.title { text-align: center; margin: 0; }
+
+.subtitle { text-align: center; margin: 0; }
+
+*:not(.katex-html) > .tag span {
+  font-size: 1rem;
+  font-weight: normal;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: .125em .25em;
+
+}
+
+.underline { text-decoration: underline; }
+
+.t-above { caption-side: top; }
+
+.t-bottom { caption-side: bottom; }
+
+.outline-2 { margin-top: 4em; }
+
+.footdef:first-of-type { margin-top: 1em; }
+
+div.footpara { display: inline-block; }
+
+p.footpara { margin-top: 0; margin-bottom: 1em; }
+
+.org-right, .right { text-align: right; }
+
+.org-left, .left { text-align: left; }
+
+.org-center { text-align: center; }
+
+.org-ul > li.on:before,
+.org-ol > li.on:before,
+.org-ul > li.off:before,
+.org-ol > li.off:before {
+  font-size: larger;
+}
+
+.org-ul > li.on:before,
+.org-ol > li.on:before {
+  content: "\2611";
+  color: #66bb6a;
+}
+
+.org-ul > li.off:before,
+.org-ol > li.off:before {
+  content: "\2612";
+  color: #e57373;
+}
+
+.todo, .done, .timestamp {
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 0 .25em;
+  margin-right: .25em;
+  font-size: .9rem;
+  font-weight: normal;
+}
+
+.todo:before, .done:before {
+  margin-left: .125em;
+  margin-right: .25em;
+}
+
+.todo.TODO { color: #e57373; border-color: #e57373; background-color: #e5737320; }
+.todo.TODO:before { content: "\25cb"; }
+
+.todo.WAITING { color: #ffaf39; border-color: #ffaf39; background-color: #ffaf3920; }
+.todo.WAITING:before { content: "\25b3"; }
+
+.todo.INPROGRESS { color: #1e88e5; border-color: #1e88e5; background-color: #1e88e520; }
+.todo.INPROGRESS:before { content: "\25b7"; }
+
+.done.CANCELLED { color: #aaa; border-color: #aaa; background-color: #aaaaaa20; }
+.done.CANCELLED:before { content: "\2717"; }
+
+.done.DONE { color: #66bb6a; border-color: #66bb6a; background-color: #66bb6a20; }
+.done.DONE:before { content: "\2713"; }
+
+.org-svg { background-color: #fafafa; }
+
+/* small screen widths */
+@media screen and (max-width: 800px) {
+  body { padding: 0 2em; }
+}
+@media screen and (max-width: 640px) {
+  body { padding: 0 1em; }
+}
+
+/* dark color-scheme support */
+@media screen and (prefers-color-scheme: dark) {
+  body { color: #aaa; background-color: #222; }
+  a { color: #4e85b5; }
+  img, .org-svg { filter: brightness(.75); transition: filter .2s; }
+  img:hover, .org-svg:hover { filter: none; }
+  pre { background-color: #2A2A2A; }
+  details,
+  th, td,
+  #footnotes,
+  pre, code,
+  .tag span,
+  img, .org-svg,
+  tbody + tbody,
+  header, footer { border-color: #555; }
+}

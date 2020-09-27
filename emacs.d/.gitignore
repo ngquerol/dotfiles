@@ -1,5 +1,5 @@
-elpa/*
-var/*
-!var/eshell/alias
-local.el
+elpa/
+quelpa/
+var/
+lisp/init-local.el
 custom.el
