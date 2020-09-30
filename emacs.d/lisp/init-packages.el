@@ -25,11 +25,11 @@
               use-package-enable-imenu-support t
               use-package-compute-statistics t)
 
-;; Use Quelpa to manage local or git packages
+;; Use Quelpa to manage local or git packages only
 (use-package quelpa-use-package
-  :config 
-  (setq-default quelpa-checkout-melpa-p nil)
-  (quelpa-use-package-activate-advice))
+  :init (setq quelpa-checkout-melpa-p nil
+              quelpa-use-package-inhibit-loading-quelpa t)
+  :config (quelpa-use-package-activate-advice))
 
 (provide 'init-packages)
 
