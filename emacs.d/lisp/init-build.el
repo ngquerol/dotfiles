@@ -18,20 +18,33 @@
 lying between `compilation-filter-start' and `point'."
     (ansi-color-apply-on-region compilation-filter-start (point)))
 
+  (defun --bury-compilation-buffer (buffer)
+    (delete-window (get-buffer-window buffer))
+    (bury-buffer buffer))
+
+  (defun --maybe-bury-compilation-buffer (buffer delay)
+    (let ((timer (run-with-timer delay nil #'--bury-compilation-buffer buffer)))
+      (add-hook 'window-selection-change-functions
+                (lambda (_)
+                  (when (eq buffer (window-buffer (selected-window)))
+                    (cancel-timer timer))) nil t)))
+
   (defun ngq/bury-compilation-buffer-if-successful (buffer string)
-    "Bury compilation BUFFER and delete its window (after a short delay) if no
-warnings or errors were produced; Otherwise select its window."
+    "Bury compilation BUFFER and delete its window after a short delay if:
+
+- no warnings or errors were produced during compilation
+
+- it is not expressely selected by the user
+
+Otherwise select its window."
     (let ((problem-regexp (rx (or (sequence "warn" (optional "ing"))
-                                  (sequence "err" (optional "or"))))))
-      (if (and (string-match "finished" string)
+                                  (sequence "err" (optional "or")))))
+          (finished-output "finished"))
+      (if (and (string-match finished-output string)
                (not (with-current-buffer buffer
                       (goto-char (point-min))
                       (search-forward-regexp problem-regexp nil t))))
-          (run-with-timer 1 nil
-                          (lambda (buffer)
-                            (delete-window (get-buffer-window buffer))
-                            (bury-buffer buffer))
-                          buffer)
+          (--maybe-bury-compilation-buffer buffer 2)
         (pop-to-buffer buffer nil t))))
   :config
   (setq-default compilation-scroll-output 'first-error
