@@ -2,4 +2,5 @@
 /bin/*
 !/bin/backup.sh
 !/bin/flac2alac.sh
+!/bin/tmux_system_stats.sh
 zprofile.local
