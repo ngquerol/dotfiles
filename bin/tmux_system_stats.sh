@@ -79,12 +79,20 @@ mem_usage() {
     mem_stats | awk -v scale="1048576" '{ printf "mem: %.2f/%.2fG", $2/scale, $1/scale + $2/scale }'
 }
 
+num_cores() {
+    if [ "${os}" == "Darwin" ]; then
+        sysctl -nq "hw.ncpu"
+    else
+        nproc
+    fi
+}
+
 load_avg(){
-    uptime | awk '{
+    uptime | awk -v "num_cores=$(num_cores)" '{
     sub(/,$/, "", $(NF-2));
     sub(/,$/, "", $(NF-1));
     sub(/,$/, "", $NF);
-    printf "load: %.2f %.2f %.2f", $(NF-2), $(NF-1), $NF
+    printf "load: %.2f %.2f %.2f", $(NF-2)/num_cores, $(NF-1)/num_cores, $NF/num_cores
   }'
 }
 
