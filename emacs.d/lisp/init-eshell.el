@@ -28,7 +28,8 @@
     (if (= (point) (point-at-eol))
         (progn
           (eshell-life-is-too-much)
-          (delete-window))
+          (when (window-deletable-p)
+            (delete-window)))
       (delete-char 1)))
 
   (defun ngq/eshell-clear ()
@@ -46,32 +47,35 @@
 Reuses a previously opened eshell buffer if possible. "
     (interactive)
     (let ((current-directory (expand-file-name default-directory)))
-      (let ((buffer (get-buffer "*eshell*")))
-        (if buffer (progn (select-window (get-buffer-window buffer))
-                          (switch-to-buffer buffer)))
-        (select-window (split-window-below (- (/ (frame-height) 4))))
-        (eshell))
+      (let ((size (- (/ (frame-height) 4)))
+            (buffer (get-buffer "*eshell*")))
+        (unless (eq buffer (current-buffer))
+          (if buffer
+              (progn (switch-to-buffer-other-window buffer)
+                     (window-resize (get-buffer-window) size))
+            (select-window (split-window-below size))
+            (eshell))))
       (message current-directory)
       (unless (string= current-directory default-directory)
         (eshell/cd current-directory)
         (ngq/eshell-clear)
         (message "eshell: Changed directory to %s" current-directory))))
 
-  (defun ngq/eshell-first-time-hook ()
-    "Common `eshell-mode' configuration, set when eshell first loads."
+  ;; needed because `eshell-mode-map' is local
+  (defun ngq/eshell-mode-hook ()
+    "Common `eshell-mode' configuration."
+    (define-key eshell-mode-map (kbd "C-n") #'eshell-next-input)
+    (define-key eshell-mode-map (kbd "C-p") #'eshell-previous-input)
+    (define-key eshell-mode-map (kbd "C-M-n") #'eshell-next-prompt)
+    (define-key eshell-mode-map (kbd "C-M-p") #'eshell-previous-prompt)
+    (define-key eshell-mode-map (kbd "C-d") #'ngq/eshell-exit-or-delete)
+    (define-key eshell-mode-map (kbd "C-l") #'ngq/eshell-clear)
     (mapc
      (lambda (func) (add-to-list 'eshell-output-filter-functions func))
      '(eshell-truncate-buffer
        eshell-postoutput-scroll-to-bottom)))
 
-  ;; needed because `eshell-mode-map' is local
-  (defun ngq/eshell-mode-hook ()
-    "Common `eshell-mode' configuration."
-    (bind-key "C-d" #'ngq/eshell-exit-or-delete eshell-mode-map)
-    (bind-key "C-l" #'ngq/eshell-clear eshell-mode-map))
-
-  :hook ((eshell-first-time-mode . ngq/eshell-first-time-hook)
-         (eshell-mode . ngq/eshell-mode-hook))
+  :hook (eshell-mode . ngq/eshell-mode-hook)
   :bind ("C-c $" . ngq/eshell-here)
   :config (setq-default eshell-hist-ignoredups t
                         eshell-history-size 1024
