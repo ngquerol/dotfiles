@@ -64,15 +64,6 @@
 (setq track-eol t
       line-move-visual nil)
 
-;; Add a little more breathing room between lines
-(setq-default line-spacing 1)
-
-;; Pop mark more conveniently
-(setq set-mark-command-repeat-pop t)
-
-;; Use view mode for read-only buffers.
-(setq view-read-only t)
-
 ;; No blinking cursor
 (blink-cursor-mode -1)
 
@@ -89,7 +80,7 @@
   :hook (after-init . global-tab-line-mode)
   :config
   (setq tab-line-new-button-show nil)
-  (dolist (mode '(ediff-mode eshell-mode process-menu-mode term-mode compilation-mode))
+  (dolist (mode '(ediff-mode eshell-mode process-menu-mode term-mode))
     (add-to-list 'tab-line-exclude-modes mode)))
 
 ;; Nicer scrolling
