@@ -28,3 +28,5 @@
     rb = rebase --autosquash
     so = show --stat
     st = status --short --branch
+[pull]
+	ff = only
