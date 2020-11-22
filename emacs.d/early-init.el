@@ -14,6 +14,7 @@
                             (vertical-scroll-bars . nil)
                             (menu-bar-lines . 0)
                             (tool-bar-lines . 0)
+                            (internal-border-width . 0)
                             (height . 50)
                             (width . 90)))
 
