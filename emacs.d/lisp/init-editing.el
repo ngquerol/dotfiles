@@ -132,7 +132,8 @@ Position the cursor at it's beginning, according to the current mode."
          ("C-c m s" . mc/mark-all-symbols-like-this-in-defun)
          ("C-c m w" . mc/mark-all-words-like-this-in-defun)
          ("C-c m e" . mc/edit-lines)
-         ("C-c m a" . mc/mark-all-dwim)))
+         ("C-c m a" . mc/mark-all-dwim)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 
 ;; Comment what I really mean
 (use-package comment-dwim-2
