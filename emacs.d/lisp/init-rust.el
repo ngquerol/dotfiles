@@ -17,8 +17,11 @@
 	          ("C-c C-r" . rustic-cargo-run)
 	          ("C-c C-t" . rustic-cargo-test)
 	          ("C-c C-y" . rustic-cargo-clippy))
-  :config (setq rustic-compile-backtrace "FULL"
-                rustic-format-on-save t))
+  :config (setq-default rustic-compile-backtrace "FULL"
+                        rustic-format-on-save t
+                        lsp-rust-analyzer-display-chaining-hints t
+                        lsp-rust-analyzer-display-parameter-hints t
+                        lsp-rust-analyzer-server-display-inlay-hints t))
 
 (provide 'init-rust)
 
