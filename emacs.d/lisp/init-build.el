@@ -33,19 +33,19 @@ lying between `compilation-filter-start' and `point'."
     "Bury compilation BUFFER and delete its window after a short delay if:
 
 - no warnings or errors were produced during compilation
-
 - it is not expressely selected by the user
 
 Otherwise select its window."
-    (let ((problem-regexp (rx (or (sequence "warn" (optional "ing"))
-                                  (sequence "err" (optional "or")))))
-          (finished-output "finished"))
+    (let ((delay 3)
+          (finished-output "finished")
+          (problem-regexp (rx (or (sequence "warn" (optional "ing"))
+                                  (sequence "err" (optional "or"))))))
       (if (and (string-match finished-output string)
                (not (with-current-buffer buffer
                       (goto-char (point-min))
                       (search-forward-regexp problem-regexp nil t))))
-          (--maybe-bury-compilation-buffer buffer 2)
-        (pop-to-buffer buffer nil t))))
+          (--maybe-bury-compilation-buffer buffer delay)
+        (pop-to-buffer buffer))))
   :config
   (setq-default compilation-scroll-output 'first-error
                 compilation-always-kill t
