@@ -40,7 +40,7 @@
 
   ;; Retrieve environment variables from the shell
   (use-package exec-path-from-shell
-    :config (setq-default exec-path-from-shell-check-startup-files nil
+    :config (setq-default exec-path-from-shell-warn-duration-millis 250
                           exec-path-from-shell-arguments '("-l")
                           exec-path-from-shell-variables '("PATH"
                                                            "MANPATH"
