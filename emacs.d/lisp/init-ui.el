@@ -80,7 +80,7 @@
   :hook (after-init . global-tab-line-mode)
   :config
   (setq tab-line-new-button-show nil)
-  (dolist (mode '(ediff-mode eshell-mode process-menu-mode term-mode))
+  (dolist (mode '(ediff-mode eshell-mode process-menu-mode term-mode compilation-mode))
     (add-to-list 'tab-line-exclude-modes mode)))
 
 ;; Nicer scrolling
