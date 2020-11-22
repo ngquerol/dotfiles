@@ -32,7 +32,8 @@
 
 (use-package abridge-diff
   :after magit
-  :config (abridge-diff-mode t))
+  :config (abridge-diff-mode t)
+  :diminish)
 
 (use-package diff-hl
   :hook ((dired-mode . (lambda ()
