@@ -101,10 +101,6 @@
   (with-eval-after-load 'flycheck
     (global-set-key (kbd "C-c f") #'counsel-flycheck))
 
-  (with-eval-after-load 'helpful
-    (setq counsel-describe-function-function #'helpful-callable
-          counsel-describe-variable-function #'helpful-variable))
-
   (global-set-key (kbd "C-c s") (cond
                                  ((executable-find "rg") #'counsel-rg)
                                  ((executable-find "git" #'counsel-git-grep))

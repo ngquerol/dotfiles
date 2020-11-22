@@ -64,6 +64,15 @@
 (setq track-eol t
       line-move-visual nil)
 
+;; Add a little more breathing room between lines
+(setq-default line-spacing 1)
+
+;; Pop mark more conveniently
+(setq set-mark-command-repeat-pop t)
+
+;; Use view mode for read-only buffers.
+(setq view-read-only t)
+
 ;; No blinking cursor
 (blink-cursor-mode -1)
 
@@ -80,7 +89,7 @@
   :hook (after-init . global-tab-line-mode)
   :config
   (setq tab-line-new-button-show nil)
-  (dolist (mode '(ediff-mode eshell-mode process-menu-mode term-mode))
+  (dolist (mode '(ediff-mode eshell-mode process-menu-mode term-mode compilation-mode))
     (add-to-list 'tab-line-exclude-modes mode)))
 
 ;; Nicer scrolling
@@ -208,7 +217,9 @@
          ([remap describe-key-briefly] . #'helpful-command)
          ("C-c C-d" . #'helpful-at-point)
          :map helpful-mode-map
-         ("q" . (lambda () (interactive) (quit-window t)))))
+         ("q" . (lambda () (interactive) (quit-window t))))
+  :config (setq-default counsel-describe-function-function #'helpful-callable
+                        counsel-describe-variable-function #'helpful-variable))
 
 ;; Project explorer
 (use-package treemacs
@@ -267,13 +278,29 @@
   :custom-face (vhl/default-face ((t (:inherit highlight))))
   :diminish)
 
-;; Better-looking modeline
-(use-package doom-modeline
-  :hook (after-init . doom-modeline-mode)
-  :config (setq doom-modeline-height 20
-                doom-modeline-icon nil
-                doom-modeline-unicode-fallback t
-                doom-modeline-checker-simple-format nil))
+;; Minimal yet good-looking modeline
+(use-package mood-line
+  :hook (after-init . mood-line-mode)
+  :config (setq mood-line-show-cursor-point t
+                mood-line-show-encoding-information t
+                mood-line-show-eol-style t))
+
+;; To feel right at home upon startup
+(use-package dashboard
+  :config
+  (setq dashboard-set-navigator t
+        dashboard-center-content t
+        dashboard-set-init-info t
+        dashboard-items '((recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5))
+        dashboard-page-separator "
+
+")
+  (dashboard-setup-startup-hook)
+
+  (with-eval-after-load 'tab-line
+    (add-to-list 'tab-line-exclude-modes 'dashboard-mode)))
 
 (provide 'init-ui)
 
