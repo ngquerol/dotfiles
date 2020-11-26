@@ -45,9 +45,10 @@
 ;; Show buffer boundaries and highlight current line in `prog-mode'
 (defun ngq/prog-mode-hook ()
   "Common `prog-mode' configuration."
-  (setq-local indicate-buffer-boundaries 'right)
-  (setq-local indicate-empty-lines t)
-  (hl-line-mode t))
+  (when (display-graphic-p)
+    (setq-local indicate-buffer-boundaries 'right)
+    (setq-local indicate-empty-lines t)
+    (hl-line-mode t)))
 
 (add-hook 'prog-mode-hook #'ngq/prog-mode-hook)
 
