@@ -13,12 +13,15 @@
 ;; Bootstrap `package.el'
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-;; ;; Bootstrap `use-package'
+;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package)
   (package-install 'bind-key)
   (package-install 'diminish))
+
+(eval-when-compile
+  (require 'use-package))
 
 (setq-default use-package-always-ensure t
               use-package-expand-minimally t
