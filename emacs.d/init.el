@@ -15,20 +15,8 @@
     (error "This Emacs is too old -- this config requires version %s or higher"
            minimum-version)))
 
-;; Personal information
-(setq user-full-name "Nicolas G. Querol"
-      user-mail-address "nicolas.gquerol@gmail.com")
-
-;; Start in the user's HOME directory
-(setq default-directory (getenv "HOME"))
-
-;; If `user-emacs-directory' is a symlink, use its target directly
-(when-let ((true-user-emacs-directory
-            (file-symlink-p (directory-file-name user-emacs-directory))))
-  (setq user-emacs-directory true-user-emacs-directory))
-
 ;; Add the split configuration files to the `load-path'
-(add-to-list 'load-path (locate-user-emacs-file "lisp"))
+(add-to-list 'load-path ngq/lisp-directory)
 
 ;; Bootstrap the package manager
 (require 'init-packages)
@@ -48,11 +36,10 @@
 
 ;; Global
 
-(require 'init-company)
-(require 'init-flycheck)
-(require 'init-ivy)
+(require 'init-completion)
 (require 'init-lsp)
 (require 'init-projectile)
+(require 'init-flycheck)
 
 ;; Domain-specific
 
@@ -73,14 +60,9 @@
 (require 'init-vcs)
 (require 'init-web)
 (require 'init-yaml)
-(require 'init-yasnippet)
 
 ;; Machine-specific (optional)
 (require 'init-local nil t)
-
-;; Load settings managed via `custom.el'
-(setq custom-file (locate-user-emacs-file "custom.el"))
-(load custom-file 'noerror)
 
 (provide 'init)
 

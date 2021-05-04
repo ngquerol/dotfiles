@@ -58,7 +58,7 @@ its subchildren are updated."
 
 (use-package ob
   :after org
-  :ensure nil
+  :straight nil
   :config
   (setq-default org-confirm-babel-evaluate nil
                 org-babel-noweb-error-all-langs t
@@ -72,7 +72,7 @@ its subchildren are updated."
 
 (use-package ox-html
   :after org
-  :ensure nil
+  :straight nil
   :config
   (setq-default org-html-doctype "html5"
                 org-html-html5-fancy t

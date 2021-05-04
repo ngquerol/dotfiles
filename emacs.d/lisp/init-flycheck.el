@@ -10,7 +10,8 @@
 
 (use-package flycheck
   :hook ((prog-mode LaTeX-mode) . flycheck-mode)
-  :config (setq flycheck-emacs-lisp-load-path 'inherit))
+  :config (setq flycheck-emacs-lisp-load-path 'inherit)
+  :diminish)
 
 (provide 'init-flycheck)
 

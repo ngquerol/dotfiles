@@ -11,9 +11,9 @@
 
 ;; Set frame title
 (setq frame-title-format '((:eval
-                            (if buffer-file-name
+                            (if-let ((file-name (buffer-file-name)))
                                 (concat
-                                 (abbreviate-file-name (buffer-file-name))
+                                 file-name
                                  (cond
                                   (buffer-read-only " (read-only)")
                                   ((buffer-modified-p) "*")))
@@ -26,7 +26,9 @@
                            (:eval (system-name))))
 
 ;; Ask for "y or n" instead of "yes or no"
-(fset 'yes-or-no-p #'y-or-n-p)
+(when (boundp 'use-short-answers)
+  (fset 'yes-or-no-p #'y-or-n-p)
+  (setq use-short-answers t))
 
 ;; Do not try to use the default font when displaying symbols
 (setq use-default-font-for-symbols nil)
@@ -85,12 +87,13 @@
 
 ;; Show tabs for window-local buffers
 (use-package tab-line
-  :ensure nil
+  :straight (:type built-in)
   :if (display-graphic-p)
   :hook (after-init . global-tab-line-mode)
   :config
-  (setq tab-line-new-button-show nil)
-  (dolist (mode '(ediff-mode eshell-mode process-menu-mode term-mode compilation-mode))
+  (setq tab-line-new-button-show nil
+        tab-line-tabs-function #'tab-line-tabs-buffer-groups)
+  (dolist (mode '(ediff-mode eshell-mode process-menu-mode term-mode compilation-mode help-mode))
     (add-to-list 'tab-line-exclude-modes mode)))
 
 ;; Nicer scrolling
@@ -118,7 +121,7 @@
 
 ;; Remember recently visited files
 (use-package recentf
-  :ensure nil
+  :straight (:type built-in)
   :config
   (setq recentf-max-saved-items 200
         recentf-auto-cleanup 60
@@ -131,13 +134,13 @@
 
 ;; Remember last visited place in a file
 (use-package saveplace
-  :ensure nil
+  :straight (:type built-in)
   :hook (after-init . save-place-mode)
   :config (setq save-place-forget-unreadable-files t))
 
 ;; Save minibuffer history
 (use-package savehist
-  :ensure nil
+  :straight (:type built-in)
   :hook (after-init . savehist-mode)
   :config (setq history-delete-duplicates t
                 savehist-autosave-interval 60
@@ -148,12 +151,12 @@
 
 ;; Switch windows with windmove
 (use-package windmove
-  :ensure nil
+  :straight (:type built-in)
   :config (windmove-default-keybindings 'shift))
 
 ;; Comint buffers
 (use-package comint
-  :ensure nil
+  :straight (:type built-in)
   :defer t
   :config (setq comint-process-echoes t
                 comint-prompt-read-only t
@@ -165,7 +168,7 @@
 
 ;; Man pages
 (use-package woman
-  :ensure nil
+  :straight (:type built-in)
   :bind ("C-c C-x m" . woman)
   :commands woman
   :config (setq woman-fill-frame t
@@ -176,6 +179,63 @@
                 ;; Handle lowercase headings / "see also"
                 Man-heading-regexp "^\\([A-Z][a-zA-Z0-9 /-:]+\\)$"
                 Man-see-also-regexp "\\(SEE ALSO\\|See also\\)"))
+
+;; Diffs
+(use-package ediff
+  :straight (:type built-in)
+  :defer
+  :config (setq ediff-ignore-similar-regions t))
+
+(use-package ediff-wind
+  :straight (:type built-in)
+  :after ediff
+  :config (setq ediff-window-setup-function #'ediff-setup-windows-plain-compare))
+
+;; Display rules for specific buffers & modes
+(add-to-list 'display-buffer-alist '((lambda (buffer _) (with-current-buffer buffer
+                                                          (seq-some (lambda (mode)
+                                                                      (derived-mode-p mode))
+                                                                    '(helpful-mode
+                                                                      help-mode
+                                                                      compilation-mode))))
+                                     (display-buffer-reuse-window display-buffer-below-selected)
+                                     (reusable-frames . visible)
+                                     (window-height . 0.33)))
+
+;; External packages
+
+;; Highlight/dim all parens, brackets, etc.
+(use-package paren-face
+  :hook (prog-mode . paren-face-mode)
+  :config (setq paren-face-regexp "[][(){}||]"
+                paren-face-modes '(prog-mode)))
+
+;; Highlight TODOs, FIXMEs, etc.
+(use-package hl-todo
+  :hook (prog-mode . global-hl-todo-mode))
+
+;; Highlight surrounding parentheses
+(use-package highlight-parentheses
+  :disabled t
+  :hook ((highlight-parentheses-mode-hook . ngq/set-highlight-parentheses-colors)
+         ((emacs-lisp-mode lisp-mode clojure-mode) . highlight-parentheses-mode))
+  :preface
+  (defun ngq/--fade-out-color (highlight-color steps)
+    (require 'color)
+    (mapcar (lambda (rgb) (apply #'color-rgb-to-hex rgb))
+            (color-gradient
+             (color-name-to-rgb highlight-color)
+             (color-name-to-rgb (face-foreground 'parenthesis)) steps)))
+
+  (defun ngq/set-highlight-parentheses-colors ()
+    (setq highlight-parentheses-colors (ngq/--fade-out-color "OrangeRed1" 5)))
+  :custom-face (highlight-parentheses-highlight ((t (:weight semibold))))
+  :diminish)
+
+;; Pulse modified region
+(use-package goggles
+  :hook (after-init . goggles-mode)
+  :diminish)
 
 ;; External packages
 
@@ -202,8 +262,8 @@
 (use-package which-key
   :hook (after-init . which-key-mode)
   :config
-  (setq which-key-idle-delay 0.25
-        which-key-add-column-padding 1
+  (setq which-key-idle-secondary-delay 0.05
+        which-key-add-column-padding 2
         which-key-sort-order 'which-key-prefix-then-key-order
         which-key-sort-uppercase-first nil)
   (which-key-setup-side-window-bottom)
@@ -212,15 +272,19 @@
 ;; Better help buffers
 (use-package helpful
   :defer t
-  :bind (([remap describe-function] . #'helpful-callable)
-         ([remap describe-variable] . #'helpful-variable)
-         ([remap describe-key] . #'helpful-key)
-         ([remap describe-key-briefly] . #'helpful-command)
+  :bind (("C-h f" . #'helpful-callable)
+         ("C-h v" . #'helpful-variable)
+         ("C-h k" . #'helpful-key)
+         ("C-h c" . #'helpful-command)
          ("C-c C-d" . #'helpful-at-point)
          :map helpful-mode-map
          ("q" . (lambda () (interactive) (quit-window t))))
-  :config (setq-default counsel-describe-function-function #'helpful-callable
-                        counsel-describe-variable-function #'helpful-variable))
+  :init
+  (with-eval-after-load 'counsel
+    (setq-default counsel-describe-function-function #'helpful-callable
+                  counsel-describe-variable-function #'helpful-variable))
+  (with-eval-after-load 'tab-line
+    (add-to-list 'tab-line-exclude-modes 'helpful-mode)))
 
 ;; Project explorer
 (use-package treemacs
@@ -273,31 +337,25 @@
 (use-package treemacs-magit
   :after treemacs magit)
 
-;; Provide visual feedback to some editing operations
-(use-package volatile-highlights
-  :hook (after-init . volatile-highlights-mode)
-  :custom-face (vhl/default-face ((t (:inherit highlight))))
-  :diminish)
-
-;; Minimal yet good-looking modeline
-(use-package mood-line
-  :hook (after-init . mood-line-mode)
-  :config (setq mood-line-show-cursor-point t
-                mood-line-show-encoding-information t
-                mood-line-show-eol-style t))
-
 ;; To feel right at home upon startup
 (use-package dashboard
   :config
   (setq dashboard-set-navigator t
         dashboard-center-content t
         dashboard-set-init-info t
+        dashboard-startup-banner 2
         dashboard-items '((recents  . 5)
                           (bookmarks . 5)
                           (projects . 5))
         dashboard-page-separator "
 
+
 ")
+
+  (let ((custom-banner (concat user-emacs-directory "/banner.txt")))
+    (when (file-readable-p custom-banner)
+      (setq dashboard-startup-banner custom-banner)))
+
   (dashboard-setup-startup-hook)
 
   (with-eval-after-load 'tab-line

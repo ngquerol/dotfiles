@@ -26,14 +26,16 @@
               ([remap xref-find-definitions] . #'lsp-find-definition)
               ([remap xref-find-references] . #'lsp-find-references)
               ("C-c C-d" . #'lsp-describe-thing-at-point))
-  :config (setq-default lsp-keep-workspace-alive nil
-                        lsp-imenu-sort-methods '(position kind name)
-                        lsp-signature-auto-activate '(:after-completion
-                                                      :on-trigger-char)))
+  :config (setq lsp-completion-provider :none
+                lsp-keep-workspace-alive nil
+                lsp-imenu-sort-methods '(position kind name)
+                lsp-modeline-diagnostics-enable nil
+                lsp-signature-auto-activate '(:after-completion :on-trigger-char)
+                lsp-signature-render-documentation t
+                lsp-signature-doc-lines 1
+                lsp-treemacs-theme "Iconless"))
 
-(use-package lsp-ui-mode
-  :ensure lsp-ui
-  :after lsp-mode
+(use-package lsp-ui
   :preface
   (defun lsp-ui--imenu-window-p (window)
     (let ((buffer (window-buffer window)))
@@ -59,17 +61,15 @@
           (kill-buffer (window-buffer window))
         (lsp-ui-imenu)
         (set-window-fringes window 0 0))))
+  :hook (lsp-mode . lsp-ui-mode)
   :bind (:map lsp-command-map
               ("Tm" . ngq/lsp-ui-toggle-imenu-window)
               :map lsp-ui-imenu-mode-map
               ([remap lsp-ui-imenu--kill] . #'ngq/lsp-ui-toggle-imenu-window))
-  :config (setq lsp-ui-doc-enable nil
-                lsp-ui-sideline-enable nil
-                lsp-ui-imenu-enable t
-                lsp-ui-imenu-window-width 25))
-
-(use-package lsp-treemacs
-  :after lsp treemacs)
+  :init (setq-default lsp-ui-doc-enable nil
+                      lsp-ui-sideline-enable nil
+                      lsp-ui-imenu-enable t
+                      lsp-ui-imenu-window-width 25))
 
 (provide 'init-lsp)
 

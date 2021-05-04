@@ -1,4 +1,4 @@
-;;; init-packages.el --- package.el configuration -*- lexical-binding: t -*-
+;;; init-packages.el --- Packages configuration -*- lexical-binding: t -*-
 
 ;; Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 
@@ -8,31 +8,30 @@
 
 ;;; Code:
 
-(require 'package)
+;; Manage packages using `straight.el' & `use-package'
+(setq straight-check-for-modifications '(find-when-checking)
+      straight-vc-git-default-clone-depth 1
+      straight-use-package-by-default t
+      straight-base-dir user-emacs-directory)
 
-;; Bootstrap `package.el'
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-;; Bootstrap `use-package'
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package)
-  (package-install 'bind-key)
-  (package-install 'diminish))
+(straight-use-package 'use-package)
+(straight-use-package 'diminish)
 
-(eval-when-compile
-  (require 'use-package))
-
-(setq-default use-package-always-ensure t
-              use-package-expand-minimally t
-              use-package-enable-imenu-support t
-              use-package-compute-statistics t)
-
-;; Use Quelpa to manage local or git packages only
-(use-package quelpa-use-package
-  :init (setq quelpa-checkout-melpa-p nil
-              quelpa-use-package-inhibit-loading-quelpa t)
-  :config (quelpa-use-package-activate-advice))
+(setq use-package-compute-statistics t
+      use-package-expand-minimally t)
 
 (provide 'init-packages)
 

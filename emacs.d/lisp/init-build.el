@@ -10,7 +10,7 @@
 
 ;; Compilation buffers
 (use-package compile
-  :ensure nil
+  :straight (:type built-in)
   :commands compile
   :preface
   (defun ngq/colorize-compilation-buffer ()
@@ -40,12 +40,13 @@ Otherwise select its window."
           (finished-output "finished")
           (problem-regexp (rx (or (sequence "warn" (optional "ing"))
                                   (sequence "err" (optional "or"))))))
-      (if (and (string-match finished-output string)
-               (not (with-current-buffer buffer
-                      (goto-char (point-min))
-                      (search-forward-regexp problem-regexp nil t))))
-          (--maybe-bury-compilation-buffer buffer delay)
-        (pop-to-buffer buffer))))
+      (unless (eq buffer (window-buffer (selected-window)))
+        (if (and (string-match finished-output string)
+                 (not (with-current-buffer buffer
+                        (goto-char (point-min))
+                        (search-forward-regexp problem-regexp nil t))))
+            (--maybe-bury-compilation-buffer buffer delay)
+          (pop-to-buffer buffer)))))
   :config
   (setq-default compilation-scroll-output 'first-error
                 compilation-always-kill t

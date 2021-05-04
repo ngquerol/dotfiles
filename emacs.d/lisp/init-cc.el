@@ -11,7 +11,7 @@
 ;;; Code:
 
 (use-package cc-mode
-  :ensure nil
+  :straight nil
   :bind (:map c-mode-base-map
               ("C-c C-o" . ff-find-other-file)
               ("C-c C-c" . compile)
@@ -43,8 +43,7 @@
   (setcdr (assoc 'other c-default-style) "llvm")
 
   ;; LSP integration via clangd
-  (when (and (package-installed-p 'lsp-mode)
-             (executable-find "clangd"))
+  (when (executable-find "clangd")
     (setq-default lsp-clients-clangd-args '("--all-scopes-completion"
                                             "--background-index"
                                             "--completion-style=detailed"

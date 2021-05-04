@@ -65,26 +65,31 @@ Position the cursor at it's beginning, according to the current mode."
 ;; Align according to regexp
 (global-set-key (kbd "C-c a") #'align-regexp)
 
+;; Change case of region if active, of word otherwise.
+(global-set-key [remap upcase-word] #'upcase-dwim)
+(global-set-key [remap downcase-word] #'downcase-dwim)
+(global-set-key [remap capitalize-word] #'capitalize-dwim)
+
 ;; Reload buffers automagically if the corresponding file has been changed
 (use-package autorevert
-  :ensure nil
+  :straight nil
   :hook (after-init . global-auto-revert-mode)
   :config (setq auto-revert-avoid-polling t)
   :diminish auto-revert-mode)
 
 ;; Show some whitespace characters
 (use-package whitespace
-  :ensure nil
+  :straight nil
   :hook (after-init . global-whitespace-mode)
   :config
-  (setq whitespace-style '(face tabs tab-mark))
+  (setq whitespace-style '(tab-mark face trailing missing-newline-at-eof))
   (setf (cdr (assoc 'tab-mark whitespace-display-mappings))
         '(?\t [?\u00bb ?\t] [?\t]))
   :diminish global-whitespace-mode)
 
 ;; Expand abbreviations
 (use-package abbrev
-  :ensure nil
+  :straight nil
   :config
   (setq save-abbrevs 'silently)
   (when (file-exists-p abbrev-file-name)
@@ -177,14 +182,6 @@ Position the cursor at it's beginning, according to the current mode."
          ("C-M-(" . sp-change-enclosing))
   :config (require 'smartparens-config)
   :diminish smartparens-mode)
-
-;; Basically the opposite of rainbow-delimiters
-(use-package paren-face
-  :hook (prog-mode . paren-face-mode))
-
-;; Highlight TODOs, FIXMEs, etc.
-(use-package hl-todo
-  :hook (prog-mode . global-hl-todo-mode))
 
 ;; Aggressive-indent, in lisp modes
 (use-package aggressive-indent

@@ -8,16 +8,24 @@
 
 ;;; Code:
 
-;; Use UTF-8 whenever possible
-(setq locale-coding-system 'utf-8)
-(set-language-environment 'utf-8)
-(set-selection-coding-system (if (eq system-type 'windows-nt)
-                                 'utf-16-le
-                               'utf-8))
-(prefer-coding-system 'utf-8)
+;; Personal information
+(setq user-full-name "Nicolas G. Querol"
+      user-mail-address "nicolas.gquerol@gmail.com")
 
-;; Increase the chunk size of the data read from subprocesses
-(setq read-process-output-max (* 1024 1024))
+;; Start in the user's HOME directory
+(setq default-directory (getenv "HOME"))
+
+;; Use UTF-8 whenever possible
+(prefer-coding-system       'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-language-environment 'utf-8)
+
+;; Native compilation
+(when (featurep 'nativecomp)
+  (setq comp-speed 2
+        comp-async-report-warnings-errors nil))
 
 ;; External packages
 
@@ -28,7 +36,9 @@
             undo-fu-session-incompatible-files
             woman-cache-filename)
   :config
-  (setq auto-save-file-name-transforms
+  (setq no-littering-etc-directory ngq/etc-directory
+        no-littering-var-directory ngq/var-directory
+        auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
   (with-eval-after-load 'recentf
@@ -40,6 +50,9 @@
   (with-eval-after-load 'woman
     (setq woman-cache-filename
           (no-littering-expand-var-file-name "woman-cache.el"))))
+
+;; Strat-up profiler
+(use-package esup)
 
 (provide 'init-core)
 

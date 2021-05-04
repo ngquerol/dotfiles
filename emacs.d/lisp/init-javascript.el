@@ -9,15 +9,14 @@
 ;;; Code:
 
 (use-package js-mode
-  :ensure nil
+  :straight nil
   :mode "\\.jsx?\\'"
   :hook (js-mode . (lambda () (setq-default js-indent-level 2
                                             js-jsx-indent-level 2
                                             js-chain-indent t)))
   :config
   ;; LSP integration
-  (when (and (package-installed-p 'lsp-mode)
-             (executable-find "tsserver"))
+  (when (executable-find "tsserver")
     (add-hook 'js-mode-hook #'lsp-deferred)))
 
 (use-package json-mode

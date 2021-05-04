@@ -36,19 +36,17 @@
         web-mode-enable-current-column-highlight t)
 
   ;; LSP integration
-  (when (and (package-installed-p 'lsp-mode)
-             (executable-find "html-languageserver"))
+  (when (executable-find "html-languageserver")
     (add-hook 'web-mode-hook #'lsp-deferred)))
 
 (use-package css-mode
-  :ensure nil
+  :straight nil
   :mode "\\.css\\'"
   :config
   (setq css-indent-offset 2)
 
   ;; LSP integration
-  (when (and (package-installed-p 'lsp-mode)
-             (executable-find "css-languageserver"))
+  (when (executable-find "css-languageserver")
     (add-hook 'css-mode-hook #'lsp-deferred)))
 
 (provide 'init-web)

@@ -18,8 +18,7 @@
                   python-shell-interpreter-args "-i --simple-prompt"))
 
   ;; LSP integration
-  (when (and (package-installed-p 'lsp-mode)
-             (executable-find "pyls"))
+  (when (executable-find "pyls")
     (add-hook 'python-mode-hook #'lsp-deferred)))
 
 (use-package python-black

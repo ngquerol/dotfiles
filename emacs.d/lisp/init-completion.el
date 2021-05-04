@@ -1,0 +1,147 @@
+;;; init-completion.el --- Emacs completion UI -*- lexical-binding: t -*-
+
+;;; Commentary:
+
+;; Configuration pertaining to the completion / selection UI within Emacs.
+
+;;; Code:
+
+;; Completing read UI
+(use-package selectrum
+  :bind (("C-x M-r" . selectrum-repeat))
+  :hook (after-init . selectrum-mode)
+  :config (setq selectrum-count-style 'current/matches))
+
+(use-package selectrum-prescient
+  :hook ((selectrum-mode . selectrum-prescient-mode)
+         (selectrum-prescient-mode . prescient-persist-mode)))
+
+(use-package orderless
+  :config
+  (setq orderless-matching-styles '(orderless-regexp orderless-literal orderless-initialism)
+        orderless-style-dispatchers '((lambda (pattern &rest _)
+                                        (when (string-prefix-p "!" pattern)
+                                          `(orderless-without-literal . ,(substring pattern 1))))
+                                      (lambda (pattern &rest _)
+                                        (when (string-suffix-p "~" pattern)
+                                          `(orderless-flex . ,(substring pattern 0 -1))))
+                                      (lambda (pattern &rest _)
+                                        (when (string-suffix-p "=" pattern)
+                                          `(orderless-literal . ,(substring pattern 0 -1))))))
+
+  (with-eval-after-load 'selectrum
+    selectrum-refine-candidates-function #'orderless-filter
+    selectrum-highlight-candidates-function #'orderless-highlight-matches))
+
+(use-package marginalia
+  :hook (selectrum-mode . marginalia-mode)
+  :bind (:map minibuffer-local-map ("C-o" . marginalia-cycle))
+  :config (setq marginalia-annotators '(marginalia-annotators-heavy
+                                        marginalia-annotators-light
+                                        nil)))
+
+(use-package consult
+  :bind (("M-X" . consult-mode-command)
+         ("C-x C-r" . consult-recent-file)
+         ("C-c i" . consult-imenu)
+         ("C-c h" . consult-man)
+         ("C-c b" . consult-compile-error)
+         ([remap isearch-forward] . consult-line)
+         ([remap switch-to-buffer] . consult-buffer)
+         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+         ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
+         ([remap yank-pop] . consult-yank-pop)
+         ([remap goto-line] . consult-goto-line))
+  :config
+  (setq consult-preview-key nil
+        consult-project-root-function #'(lambda () (cdr (project-current))))
+
+  (global-set-key (kbd "C-c s") (cond
+                                 ((executable-find "rg") #'consult-ripgrep)
+                                 ((executable-find "git" #'consult-git-grep))
+                                 (t #'consult-grep)))
+
+  (with-eval-after-load 'projectile
+    (global-set-key (kbd "C-c I") #'consult-project-imenu)
+    (setq consult-project-root-function 'projectile-project-root)))
+
+(use-package consult-flycheck
+  :after (consult flycheck)
+  :bind (:map flycheck-mode-map
+              ("C-c f" . #'consult-flycheck)))
+
+(use-package embark
+  :after selectrum
+  :bind (("M-o" . embark-act)
+         :map selectrum-minibuffer-map
+         ("M-o"   . embark-act))
+  :config (setq embark-quit-after-action nil
+                embark-prompter #'embark-keymap-prompter
+                embark-action-indicator
+                (lambda (map _target)
+                  (which-key--show-keymap "Embark" map nil nil 'no-paging)
+                  #'which-key--hide-popup-ignore-command)
+                embark-become-indicator embark-action-indicator))
+
+(use-package embark-consult
+  :after (embark consult))
+
+;; Completions at point
+(use-package company
+  :hook ((prog-mode eshell-mode cider-repl-mode comint-mode) . company-mode)
+  :preface (defun ngq/company-activate-local-backend (backend)
+             (make-local-variable 'company-backends)
+             (setq company-backends (copy-tree company-backends))
+             (push backend (car company-backends)))
+  :bind ((:map company-mode-map
+               ("TAB" . #'company-indent-or-complete-common))
+         (:map company-active-map
+               ("C-l" . #'company-show-location)
+               ("C-s" . #'company-filter-candidates)
+               ("C-d" . #'company-show-doc-buffer)
+               ("C-a" . #'company-select-first)
+               ("C-e" . #'company-select-last)
+               ("C-n" . #'company-select-next)
+               ("C-p" . #'company-select-previous)))
+  :config (setq company-require-match 'never
+                company-minimum-prefix-length 2
+                company-selection-wrap-around t
+                company-tooltip-align-annotations t
+                company-tooltip-width-grow-only t
+                company-format-margin-function #'company-text-icons-margin
+                company-idle-delay 0.1
+                company-frontends '(company-pseudo-tooltip-frontend
+                                    company-echo-metadata-frontend)
+                company-backends '((company-capf :with company-yasnippet)
+                                   (company-files
+                                    company-keywords
+                                    company-dabbrev-code
+                                    company-dabbrev)))
+  :diminish company-mode)
+
+(use-package company-dabbrev
+  :straight nil
+  :after company
+  :config (setq company-dabbrev-downcase nil
+                company-dabbrev-ignore-case t))
+
+;; Snippets
+(use-package yasnippet
+  :hook (prog-mode . yas-minor-mode)
+  :bind (:map yas-minor-mode-map
+              ("C-c & n" . yas-new-snippet)
+              ("C-c & s" . yas-insert-snippet)
+              ("C-c & v" . yas-visit-snippet-file)
+              ("C-c & r" . yas-reload-all)
+              ("C-c & &" . yas-describe-tables))
+  :init (setq yas-wrap-around-region t
+              yas-verbosity 1)
+  :diminish yas-minor-mode)
+
+(use-package yasnippet-snippets
+  :after yasnippet
+  :config (yasnippet-snippets-initialize))
+
+(provide 'init-completion)
+
+;;; init-completion.el ends here

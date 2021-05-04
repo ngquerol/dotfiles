@@ -10,7 +10,7 @@
 
 ;; Shell scripts
 (use-package sh-script
-  :ensure nil
+  :straight nil
   :mode ("\\.zsh\\'" . shell-script-mode))
 
 (provide 'init-shell)

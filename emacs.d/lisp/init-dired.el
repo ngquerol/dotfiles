@@ -9,7 +9,7 @@
 ;;; Code:
 
 (use-package dired
-  :ensure nil
+  :straight nil
   :commands (dired dired-jump)
   :hook ((dired-mode . dired-hide-details-mode)
          (dired-mode . auto-revert-mode)
@@ -34,14 +34,14 @@
 
 (use-package dired-x
   :after dired
-  :ensure nil
+  :straight nil
   :bind (:map dired-mode-map ("C-x M-o" . dired-omit-mode))
   :config (setq dired-clean-confirm-killing-deleted-buffers nil
                 dired-omit-files (concat dired-omit-files "\\|^\\..+$")))
 
 (use-package wdired
   :after dired
-  :ensure nil
+  :straight nil
   :bind (:map dired-mode-map ("C-c C-e" . wdired-change-to-wdired-mode))
   :config (setq wdired-use-dired-vertical-movement 'sometimes
                 wdired-confirm-overwrite t

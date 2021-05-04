@@ -9,7 +9,7 @@
 ;;; Code:
 
 (use-package vc-hooks
-  :ensure nil
+  :straight nil
   :config (setq vc-follow-symlinks t
                 find-file-visit-truename t))
 
@@ -36,6 +36,7 @@
   :diminish)
 
 (use-package diff-hl
+  :disabled t
   :hook ((dired-mode . (lambda ()
                          (setq-local diff-hl-side 'left)
                          (diff-hl-dired-mode)))
@@ -46,8 +47,9 @@
   (setq diff-hl-draw-borders nil
         diff-hl-side 'right)
 
-  (eval-after-load 'magit
-    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
+  (with-eval-after-load 'magit
+    (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+    (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)))
 
 (provide 'init-vcs)
 
