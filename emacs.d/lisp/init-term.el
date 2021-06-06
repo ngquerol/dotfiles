@@ -38,6 +38,12 @@
   (add-hook 'post-command-hook #'ngq/update-xterm-title)
   (add-hook 'tty-setup-hook #'ngq/tty-setup-hook))
 
+;; External packages
+
+(use-package xclip
+  :unless (display-graphic-p)
+  :hook (after-init . xclip-mode))
+
 (provide 'init-term)
 
 ;;; init-term.el ends here
