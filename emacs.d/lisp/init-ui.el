@@ -119,6 +119,11 @@
 (setq auto-save-default nil
       make-backup-files nil)
 
+;; Do not allow the cursor in the minibuffer prompt
+(setq minibuffer-prompt-properties
+      '(read-only t cursor-intangible t face minibuffer-prompt))
+(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
 ;; Remember recently visited files
 (use-package recentf
   :straight (:type built-in)
@@ -192,15 +197,17 @@
   :config (setq ediff-window-setup-function #'ediff-setup-windows-plain-compare))
 
 ;; Display rules for specific buffers & modes
-(add-to-list 'display-buffer-alist '((lambda (buffer _) (with-current-buffer buffer
-                                                          (seq-some (lambda (mode)
-                                                                      (derived-mode-p mode))
-                                                                    '(helpful-mode
-                                                                      help-mode
-                                                                      compilation-mode))))
-                                     (display-buffer-reuse-window display-buffer-below-selected)
-                                     (reusable-frames . visible)
-                                     (window-height . 0.33)))
+(add-to-list 'display-buffer-alist
+             '((lambda (buffer _)
+                 (with-current-buffer buffer
+                   (seq-some (lambda (mode)
+                               (derived-mode-p mode))
+                             '(helpful-mode
+                               help-mode
+                               compilation-mode))))
+               (display-buffer-reuse-window display-buffer-below-selected)
+               (reusable-frames . visible)
+               (window-height . 0.33)))
 
 ;; External packages
 

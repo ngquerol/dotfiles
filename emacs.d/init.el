@@ -33,6 +33,7 @@
 (require 'init-term)
 (require 'init-utils)
 (require 'init-ui)
+(require 'init-theme)
 
 ;; Global
 

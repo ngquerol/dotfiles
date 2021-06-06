@@ -24,9 +24,11 @@
 (defconst ngq/var-directory
   (expand-file-name "var" user-emacs-directory))
 
-;; Keep natively compiled .el files out of the way
-(when (featurep 'nativecomp)
-  (setcar comp-eln-load-path
+;; Native compilation
+(when (featurep 'native-compile)
+  (setq native-comp-speed 2
+        native-comp-async-report-warnings-errors nil)
+  (setcar native-comp-eln-load-path
           (expand-file-name "eln-cache/" ngq/var-directory)))
 
 ;; Disable most GUI widgets early on

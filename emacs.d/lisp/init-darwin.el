@@ -29,7 +29,7 @@
   (menu-bar-mode t)
 
   ;; Use the appropriate system font to display emoji
-  (set-fontset-font nil 'symbol "Apple Color Emoji" nil 'prepend)
+  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
   ;; Standard macOS app keybindings
   (when (fboundp 'ns-do-hide-emacs)

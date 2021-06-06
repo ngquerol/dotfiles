@@ -13,7 +13,7 @@
       user-mail-address "nicolas.gquerol@gmail.com")
 
 ;; Start in the user's HOME directory
-(setq default-directory (getenv "HOME"))
+(setq default-directory (file-name-as-directory (getenv "HOME")))
 
 ;; Use UTF-8 whenever possible
 (prefer-coding-system       'utf-8)
@@ -21,11 +21,6 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment 'utf-8)
-
-;; Native compilation
-(when (featurep 'nativecomp)
-  (setq comp-speed 2
-        comp-async-report-warnings-errors nil))
 
 ;; External packages
 

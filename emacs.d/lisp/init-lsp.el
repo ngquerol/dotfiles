@@ -12,16 +12,10 @@
 (setq-default lsp-keymap-prefix "C-c l")
 
 (use-package lsp-mode
-  :preface
-  (defun ngq/enable-lsp-capf ()
-    (setq-local completion-category-defaults
-                (add-to-list 'completion-category-defaults
-                             '(lsp-capf (styles basic)))
-                completion-at-point-functions #'lsp-completion-at-point))
   :commands (lsp lsp-deferred)
   :hook ((lsp-mode . lsp-enable-which-key-integration)
-         (lsp-mode . ngq/enable-lsp-capf)
          (lsp-mode . lsp-signature-mode))
+  :bind-keymap ("C-c l" . lsp-command-map)
   :bind (:map lsp-mode-map
               ([remap xref-find-definitions] . #'lsp-find-definition)
               ([remap xref-find-references] . #'lsp-find-references)
@@ -33,7 +27,7 @@
                 lsp-signature-auto-activate '(:after-completion :on-trigger-char)
                 lsp-signature-render-documentation t
                 lsp-signature-doc-lines 1
-                lsp-treemacs-theme "Iconless"))
+                lsp-headerline-breadcrumb-icons-enable nil))
 
 (use-package lsp-ui
   :preface

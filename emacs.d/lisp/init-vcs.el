@@ -21,7 +21,8 @@
   :config
   (setq-default magit-restore-window-configuration t
                 magit-diff-refine-hunk 'all
-                magit-save-some-buffers 'dontask)
+                magit-save-some-buffers 'dontask
+                magit-no-message '("Turning on magit-auto-revert-mode..."))
 
   (magit-add-section-hook 'magit-status-sections-hook
                           'magit-insert-unpulled-from-upstream
