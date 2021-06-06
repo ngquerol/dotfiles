@@ -241,7 +241,7 @@
 
 ;; Pulse modified region
 (use-package goggles
-  :hook (after-init . goggles-mode)
+  :hook ((prog-mode text-mode) . goggles-mode)
   :diminish)
 
 ;; External packages
