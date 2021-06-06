@@ -1,8 +1,7 @@
 elpa/
 var/
 lisp/init-local.el
-straight/links
-straight/build
-straight/repos
-straight/build-cache.el
+straight/*
+!straight/versions/
+!straight/versions/default.el
 custom.el
