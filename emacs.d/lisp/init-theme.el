@@ -35,24 +35,25 @@
                 (find-font (font-spec :family name)))
               fonts))
 
-  (defun ngq/set-fonts (appearance)
+  (defun ngq/set-fonts ()
     (let ((monospace-font (ngq/find-font '("Iosevka SS15" "Menlo" "Consolas" "Dejavu Mono")))
           (variable-width-font (ngq/find-font '("SF Compact Text" "Segoe UI" "Dejavu Sans"))))
       (set-face-attribute 'default nil :family monospace-font :height 120)
       (set-face-attribute 'bold nil :weight 'semibold)
       (set-face-attribute 'variable-pitch nil :family variable-width-font :height 130)
       (set-face-attribute 'fixed-pitch nil :family monospace-font)
-      (set-face-attribute 'fixed-pitch-serif nil :family monospace-font)
-      (set-face-attribute 'mode-line nil :box (pcase 'appearance
-                                                ('light "#aaa")
-                                                ('dark "#505050")))))
+      (set-face-attribute 'fixed-pitch-serif nil :family monospace-font)))
 
   (defun ngq/set-theme (appearance)
     (mapc #'disable-theme custom-enabled-themes)
     (pcase appearance
-      ('light (load-theme 'modus-operandi t))
-      ('dark (load-theme 'modus-vivendi t)))
-    (ngq/set-fonts appearance))
+      ('light
+       (load-theme 'modus-operandi t)
+       (set-face-attribute 'mode-line nil :box '(:color "#aaaaaa")))
+      ('dark
+       (load-theme 'modus-vivendi t)
+       (set-face-attribute 'mode-line nil :box '(:color "#505050"))))
+    (ngq/set-fonts))
   :config
   (setq modus-themes-completions 'opinionated
         modus-themes-fringes nil

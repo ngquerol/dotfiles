@@ -6,13 +6,6 @@
 
 ;;; Code:
 
-(use-package minibuffer
-  :straight nil
-  :config
-  (setq completion-styles '(basic partial-completion)
-        completion-category-overrides '((file (styles . (partial-completion)))
-                                        (unicode-name (styles . (substring))))))
-
 ;; External packages
 
 (use-package vertico
@@ -25,7 +18,10 @@
 
 (use-package orderless
   :config
-  (add-to-list 'completion-styles 'orderless 'append)
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles . (initials)))
+                                        (unicode-name (styles . (substring)))))
 
   (setq orderless-matching-styles
         '(orderless-literal orderless-regexp orderless-initialism)
