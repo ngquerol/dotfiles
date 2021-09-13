@@ -57,30 +57,18 @@
   :config
   (setq modus-themes-completions 'opinionated
         modus-themes-fringes nil
-        modus-themes-lang-checkers 'subtle-foreground
-        modus-themes-links 'faint-neutral-underline
-        modus-themes-mode-line nil
-        modus-themes-org-blocks 'greyscale
-        modus-themes-paren-match 'subtle-bold
-        modus-themes-prompts 'subtle-accented
-        modus-themes-region 'bg-only-no-extend
+        modus-themes-lang-checkers '(background)
+        modus-themes-links '(faint neutral-underline)
+        modus-themes-org-blocks '(gray-background)
+        modus-themes-paren-match '(bold)
+        modus-themes-prompts '(bold)
+        modus-themes-region '(bg-only no-extend)
         modus-themes-bold-constructs t
-        modus-themes-slanted-constructs t
+        modus-themes-italic-constructs t
         modus-themes-subtle-line-numbers t
-        modus-themes-syntax 'faint
-        modus-themes-diffs 'desaturated
-        modus-themes-vivendi-color-overrides '((bg-main . "#1a1f26")
-                                               (bg-dim . "#161129")
-                                               (bg-alt . "#181732")
-                                               (bg-hl-line . "#282a36")
-                                               (bg-active . "#282e46")
-                                               (bg-inactive . "#1a1e39")
-                                               (bg-region . "#393a53")
-                                               (bg-header . "#202037")
-                                               (bg-tab-bar . "#262b41")
-                                               (bg-tab-active . "#120f18")
-                                               (bg-tab-inactive . "#3a3a5a")
-                                               (fg-unfocused . "#9a9aab"))
+        modus-themes-syntax '(faint)
+        modus-themes-diffs '(desaturated)
+        modus-themes-mode-line nil
         modus-themes-variable-pitch-headings t
         modus-themes-variable-pitch-ui t)
 
