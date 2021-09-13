@@ -124,7 +124,8 @@
   (defun ngq/just-one-face (fn &rest args)
     (let ((orderless-match-faces [completions-common-part]))
       (apply fn args)))
-  :bind ((:map company-mode-map
+  :bind (([remap completion-at-point] . company-manual-begin)
+         (:map company-mode-map
                ("TAB" . #'company-indent-or-complete-common))
          (:map company-active-map
                ("C-l" . #'company-show-location)
