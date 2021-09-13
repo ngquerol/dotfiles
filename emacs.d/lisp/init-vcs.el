@@ -33,8 +33,7 @@
 
 (use-package abridge-diff
   :after magit
-  :config (abridge-diff-mode t)
-  :diminish)
+  :config (abridge-diff-mode t))
 
 (use-package diff-hl
   :disabled t

@@ -74,8 +74,7 @@ Position the cursor at it's beginning, according to the current mode."
 (use-package autorevert
   :straight nil
   :hook (after-init . global-auto-revert-mode)
-  :config (setq auto-revert-avoid-polling t)
-  :diminish auto-revert-mode)
+  :config (setq auto-revert-avoid-polling t))
 
 ;; Show some whitespace characters
 (use-package whitespace
@@ -84,8 +83,7 @@ Position the cursor at it's beginning, according to the current mode."
   :config
   (setq whitespace-style '(tab-mark face trailing missing-newline-at-eof))
   (setf (cdr (assoc 'tab-mark whitespace-display-mappings))
-        '(?\t [?\u00bb ?\t] [?\t]))
-  :diminish global-whitespace-mode)
+        '(?\t [?\u00bb ?\t] [?\t])))
 
 ;; Expand abbreviations
 (use-package abbrev
@@ -93,8 +91,7 @@ Position the cursor at it's beginning, according to the current mode."
   :config
   (setq save-abbrevs 'silently)
   (when (file-exists-p abbrev-file-name)
-    (quietly-read-abbrev-file))
-  :diminish)
+    (quietly-read-abbrev-file)))
 
 ;; External packages
 
@@ -125,7 +122,7 @@ Position the cursor at it's beginning, according to the current mode."
 (use-package whole-line-or-region
   :hook (after-init . whole-line-or-region-global-mode)
   :bind ("C-w" . whole-line-or-region-kill-region) ;; KLUDGE
-  :diminish whole-line-or-region-local-mode)
+  )
 
 ;;  A regexp/replace command for Emacs with interactive visual feedback
 (use-package visual-regexp
@@ -180,13 +177,11 @@ Position the cursor at it's beginning, according to the current mode."
          ("C-M-)" . sp-rewrap-sexp)
          ("C-(" . sp-change-inner)
          ("C-M-(" . sp-change-enclosing))
-  :config (require 'smartparens-config)
-  :diminish smartparens-mode)
+  :config (require 'smartparens-config))
 
 ;; Aggressive-indent, in lisp modes
 (use-package aggressive-indent
-  :hook ((emacs-lisp-mode lisp-mode clojure-mode) . aggressive-indent-mode)
-  :diminish aggressive-indent-mode)
+  :hook ((emacs-lisp-mode lisp-mode clojure-mode) . aggressive-indent-mode))
 
 (provide 'init-editing)
 

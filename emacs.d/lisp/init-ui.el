@@ -211,6 +211,10 @@
 
 ;; External packages
 
+;; Hide minor-modes in a tidy menu
+(use-package minions
+  :config (minions-mode t))
+
 ;; Highlight/dim all parens, brackets, etc.
 (use-package paren-face
   :hook (prog-mode . paren-face-mode)
@@ -236,13 +240,11 @@
 
   (defun ngq/set-highlight-parentheses-colors ()
     (setq highlight-parentheses-colors (ngq/--fade-out-color "OrangeRed1" 5)))
-  :custom-face (highlight-parentheses-highlight ((t (:weight semibold))))
-  :diminish)
+  :custom-face (highlight-parentheses-highlight ((t (:weight semibold)))))
 
 ;; Pulse modified region
 (use-package goggles
-  :hook ((prog-mode text-mode) . goggles-mode)
-  :diminish)
+  :hook ((prog-mode text-mode) . goggles-mode))
 
 ;; External packages
 
@@ -273,8 +275,7 @@
         which-key-add-column-padding 2
         which-key-sort-order 'which-key-prefix-then-key-order
         which-key-sort-uppercase-first nil)
-  (which-key-setup-side-window-bottom)
-  :diminish)
+  (which-key-setup-side-window-bottom))
 
 ;; Better help buffers
 (use-package helpful

@@ -28,7 +28,6 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
-(straight-use-package 'diminish)
 
 (setq use-package-compute-statistics t
       use-package-expand-minimally t)

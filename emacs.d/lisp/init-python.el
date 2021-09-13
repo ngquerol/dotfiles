@@ -73,8 +73,7 @@ Return either a string or nil."
 
 (use-package python-black
   :if (executable-find "black")
-  :hook ((python-mode . python-black-on-save-mode))
-  :diminish python-black-on-save-mode)
+  :hook ((python-mode . python-black-on-save-mode)))
 
 (provide 'init-python)
 

@@ -18,8 +18,7 @@
   :preface (defun ngq/company-activate-robe ()
              (ngq/company-activate-local-backend 'company-robe))
   :hook ((ruby-mode . robe-mode)
-         (ruby-mode . ngq/company-activate-robe))
-  :diminish)
+         (ruby-mode . ngq/company-activate-robe)))
 
 (provide 'init-ruby)
 

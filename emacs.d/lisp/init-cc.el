@@ -60,8 +60,7 @@
   :if (executable-find "clang-format")
   :hook ((c-mode c++-mode objc-mode) . clang-format+-mode)
   :bind (:map c-mode-base-map ("C-c C-f" . clang-format-region))
-  :config (setq clang-format+-context 'definition)
-  :diminish)
+  :config (setq clang-format+-context 'definition))
 
 (provide 'init-cc)
 

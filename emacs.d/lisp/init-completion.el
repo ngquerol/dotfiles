@@ -143,8 +143,7 @@
                            company-files
                            (company-keywords company-dabbrev-code)
                            company-dabbrev))
-  (advice-add 'company-capf--candidates :around #'ngq/just-one-face)
-  :diminish company-mode)
+  (advice-add 'company-capf--candidates :around #'ngq/just-one-face))
 
 (use-package company-dabbrev
   :straight nil
@@ -162,8 +161,7 @@
               ("C-c & r" . yas-reload-all)
               ("C-c & &" . yas-describe-tables))
   :init (setq yas-wrap-around-region t
-              yas-verbosity 1)
-  :diminish yas-minor-mode)
+              yas-verbosity 1))
 
 (use-package yasnippet-snippets
   :after yasnippet

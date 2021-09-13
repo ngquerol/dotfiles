@@ -24,7 +24,6 @@
 (use-package geiser
   :hook (scheme-mode . geiser-mode)
   :commands run-geiser
-  :diminish (geiser-mode geiser-autodoc-mode)
   :defines (geiser-active-implementations
             geiser-default-implementation
             geiser-mode-start-repl-p
