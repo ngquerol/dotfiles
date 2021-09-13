@@ -26,10 +26,11 @@
 
   (magit-add-section-hook 'magit-status-sections-hook
                           'magit-insert-unpulled-from-upstream
-                          'replace))
+                          'replace)
 
-(use-package magit-todos
-  :hook (magit-mode . magit-todos-mode))
+  (with-eval-after-load 'tab-line
+    (dolist (mode '(magit-status-mode magit-log-mode))
+      (add-to-list 'tab-line-exclude-modes mode))))
 
 (use-package abridge-diff
   :after magit
