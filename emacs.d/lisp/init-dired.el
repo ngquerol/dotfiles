@@ -30,7 +30,10 @@
                 dired-auto-revert-buffer t
                 dired-isearch-filenames 'dwim
                 dired-recursive-deletes 'top
-                dired-recursive-copies 'always))
+                dired-recursive-copies 'always)
+
+  (when (boundp 'dired-kill-when-opening-new-dired-buffer)
+    (setq dired-kill-when-opening-new-dired-buffer t)))
 
 (use-package dired-x
   :after dired
@@ -51,6 +54,7 @@
 
 (use-package dired-single
   :after dired
+  :if (not (boundp 'dired-kill-when-opening-new-dired-buffer))
   :preface
   (defun ngq/dired-up-directory ()
     "Go to parent directory, reusing existing dired buffer."
