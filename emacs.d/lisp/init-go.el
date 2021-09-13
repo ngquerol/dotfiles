@@ -38,7 +38,10 @@
        ("gopls.staticcheck" ,(if (executable-find "staticcheck") t nil) t)
        ("gopls.gofumpt" ,(if (executable-find "gofumpt") t nil) t)))
     (add-hook 'go-mode-hook  #'ngq/lsp-go-install-save-hooks)
-    (add-hook 'go-mode-hook #'lsp-deferred)))
+    (add-hook 'go-mode-hook #'lsp-deferred)
+
+    (when (executable-find "gofumpt")
+      (setq lsp-go-use-gofumpt t))))
 
 (provide 'init-go)
 
