@@ -1,7 +1,8 @@
 elpa/
 var/
-lisp/init-local.el
+eln-cache/
 straight/*
 !straight/versions/
 !straight/versions/default.el
+lisp/init-local.el
 custom.el
