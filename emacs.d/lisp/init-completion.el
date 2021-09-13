@@ -18,9 +18,9 @@
 
 (use-package orderless
   :config
-  (setq completion-styles '(orderless)
+  (setq completion-styles '(partial-completion orderless)
         completion-category-defaults nil
-        completion-category-overrides '((file (styles . (initials)))
+        completion-category-overrides '((file (styles . (partial-completion initials)))
                                         (unicode-name (styles . (substring)))))
 
   (setq orderless-matching-styles
