@@ -46,9 +46,6 @@
     (setq woman-cache-filename
           (no-littering-expand-var-file-name "woman-cache.el"))))
 
-;; Strat-up profiler
-(use-package esup)
-
 (provide 'init-core)
 
 ;;; init-core.el ends here
