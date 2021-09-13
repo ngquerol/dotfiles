@@ -45,9 +45,14 @@
     (interactive (list prefix-arg (when-let ((s (symbol-at-point)))
                                     (symbol-name s))))
     (affe-grep dir initial))
+
+  (defun ngq/affe-orderless-regexp-compiler (input _type)
+    (setq input (orderless-pattern-compiler input))
+    (cons input (lambda (str) (orderless--highlight input str))))
   :config (setq affe-count 20
                 affe-regexp-function #'orderless-pattern-compiler
-                affe-highlight-function #'orderless-highlight-matches))
+                affe-highlight-function #'orderless-highlight-matches
+                affe-regexp-compiler #'ngq/affe-orderless-regexp-compiler))
 
 (use-package consult
   :bind (("M-X" . consult-mode-command)
