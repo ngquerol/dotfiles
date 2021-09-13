@@ -21,7 +21,8 @@
   :config
   ;; Smartparens integration
   (with-eval-after-load 'smartparens
-    (sp-local-pair 'go-mode "{" nil :post-handlers '(("||\n[i]" "RET"))))
+    (sp-local-pair 'go-mode "{" nil :post-handlers '(("||\n[i]" "RET")))
+    (sp-local-pair 'go-mode "(" nil :post-handlers '(("||\n[i]" "RET"))))
 
   ;; Projectile integration
   (with-eval-after-load 'projectile
