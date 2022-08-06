@@ -1,8 +1,6 @@
 ## global shell keybindings
 
 # emacs-style keybindings
-autoload -U select-word-style && select-word-style bash
-
 bindkey -e
 
 case $TERM in
