@@ -3,112 +3,122 @@
 set -o errexit
 set -o nounset
 
-## Global variables
-
-# Absolute path this script is in
 script_dir_path=$(cd "$(dirname "${0}")" && pwd)
-
-# Filename of this script
 script_name=$(basename "${0}")
-
-# Absolute script path
 script_path="${script_dir_path}/${script_name}"
 
-## Functions
-
-link_target() {
-    dotfile="${1##*/}"
-
-    echo "${HOME}/.${dotfile}"
-
-    unset dotfile
-}
-
-unlink() {
-    target="$(link_target "${1}")"
-
-    if [ -L "${target}" ]; then
-        [ -n "${verbose_opt}" ] && echo "Removing symlink \"${target}\""
-        rm "${target}"
-    fi
-
-    unset target
-}
-
-link() {
-    target="$(link_target "${1}")"
-
-    [ -n "${verbose_opt}" ] && printf "\"%s\" => \"%s\"" \
-                                      "${dotfile}" "${target}"
-
-    if [ -n "${clobber_opt}" ]; then
-        if [ -n "${verbose_opt}" ] && [ -e "${target}" ]; then
-            printf " (clobbering existing target)"
-        fi
-
-        ln -Fns "${dotfile}" "${target}"
-    else
-        if [ -e "${target}" ]; then
-            [ -n "${verbose_opt}" ] && \
-                printf "\rSkipping \"%s\": target \"%s\" already exists.\n" \
-                       "${dotfile}" "${target}"
-            return
-        fi
-
-        ln -ns "${dotfile}" "${target}"
-    fi
-
-    [ -n "${verbose_opt}" ] && printf "\n"
-
-    unset target
-}
+# TODO: clobber w/ interactive prompt ?
 
 print_usage() {
-    echo "usage: ${script_name} [-(-l)ink|-(-u)nlink] (-(-v)erbose) (-(-f)orce)"
+    echo "usage: ${script_name} [(l)ink|(u)nlink] (-(-d)ry-run)"
 }
-
-## Entry point
 
 link_opt=
 unlink_opt=
-clobber_opt=
-verbose_opt=
+dryrun_opt=
 
-while [ $# -gt 0 ]; do
+while [ ${#} -gt 0 ]; do
     case ${1} in
-        -l|--link) [ -n "${unlink_opt}" ] && \
-                       { print_usage >&2; exit 1; } || link_opt=1 ;;
-        -u|--unlink) [ -n "${link_opt}" ] && \
-                         { print_usage >&2; exit 1; } || unlink_opt=1 ;;
-        -f|--force) clobber_opt=1 ;;
-        -v|--verbose) verbose_opt=1 ;;
-        *) print_usage >&2; exit 1 ;;
+        l|link)
+            if [ -n "${unlink_opt}" ]; then
+                { print_usage >&2; exit 1; }
+            else
+                link_opt=1
+            fi
+            ;;
+        u|unlink)
+            if [ -n "${link_opt}" ]; then
+                { print_usage >&2; exit 1; }
+            else
+                unlink_opt=1
+            fi
+            ;;
+        -d|--dry-run)
+            dryrun_opt=1
+            ;;
+        *)
+            { print_usage >&2; exit 1; }
+            ;;
     esac
 
     shift
 done
 
+target() {
+    echo "${HOME}/.${1#"${script_dir_path}"/}"
+}
+
+is_ours() {
+    case $(readlink -f "${1}") in
+        "${script_dir_path}"*) true ;;
+        *) false ;;
+    esac
+}
+
+link() {
+    for src in "${1}"/*; do
+        [ "${src}" = "${script_path}" ] && continue
+
+        dst=$(target "${src}")
+
+        if [ ! -e "${dst}" ]; then
+            if [ -n "${dryrun_opt}" ]; then
+                echo "ln -snv ${src} ${dst}"
+            else
+                ln -snv "${src}" "${dst}"
+            fi
+        elif [ -L "${dst}" ] || [ -f "${dst}" ]; then
+            if is_ours "${dst}"; then
+                echo "${dst} is already linked, skipping" >&2
+            else
+                echo "${dst} already exists, skipping" >&2
+            fi
+        elif [ -d "${dst}" ];then
+            link "${src}"
+        fi
+    done
+}
+
+unlink() {
+    for src in "${1}"/*; do
+        [ "${src}" = "${script_path}" ] && continue
+
+        dst=$(target "${src}")
+
+        if [ -L "${dst}" ] && is_ours "${dst}"; then
+            if [ -n "${dryrun_opt}" ]; then
+                echo "rm -v ${dst}"
+            else
+                rm -v "${dst}"
+            fi
+        elif [ -d "${dst}" ]; then
+            unlink "${src}"
+        fi
+    done
+}
+
 if [ -z "${link_opt}" ] && [ -z "${unlink_opt}" ]; then
-    print_usage >&2
-    exit 1
+    { print_usage >&2; exit 1; }
 fi
 
 if [ -n "${link_opt}" ]; then
-    echo "Symlinking dotfiles..."
-    for dotfile in "${script_dir_path}"/*; do
-        if [ -e "${dotfile}" ] && [ "${dotfile}" != "${script_path}" ]; then
-            link "${dotfile}"
+    if [ ! -e "${HOME}/.config" ]; then
+        echo "Creating ${HOME}/.config..."
+        if [ ! -d "${HOME}/.config" ]; then
+            if [ -n "${dryrun_opt}" ]; then
+                echo "mkdir ${HOME}/.config"
+            else
+                mkdir "${HOME}/.config"
+            fi
         fi
-    done
-    echo "Done."
+    fi
+    echo "Symlinking dotfiles..."
+    link "${script_dir_path}"
 fi
 
 if [ -n "${unlink_opt}" ]; then
     echo "Unlinking dotfiles..."
-    for dotfile in "${script_dir_path}"/*; do
-        if [ -e "${dotfile}" ] && [ "${dotfile}" != "${script_path}" ]; then
-            unlink "${dotfile}"
-        fi
-    done
-    echo "Done."
+    unlink "${script_dir_path}"
 fi
+
+echo "Done."
