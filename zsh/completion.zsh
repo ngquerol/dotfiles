@@ -6,15 +6,13 @@ autoload -Uz bashcompinit
 zmodload zsh/complist
 
 # load and initialize the completion system with a cache time of 24 hours
-_comp_files=(${ZSH_CACHE_DIRECTORY}/zcompdump(N.mh-24))
-if (( $#_comp_files )); then
+if [[ -n "${ZSH_CACHE_DIRECTORY}/zcompdump"(N.mh-24) ]]; then
   compinit -i -C -d "${ZSH_CACHE_DIRECTORY}/zcompdump"
 else
   echo "Initializing completions..."
   rm -f "${ZSH_CACHE_DIRECTORY}/zcompdump"
   compinit -i -d "${ZSH_CACHE_DIRECTORY}/zcompdump"
 fi
-unset _comp_files
 
 bashcompinit
 

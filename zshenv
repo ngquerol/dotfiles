@@ -5,8 +5,7 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
   linux*) export ZSH_OS_NAME=linux ;;
   freebsd*) export ZSH_OS_NAME=freebsd ;;
   darwin*) export ZSH_OS_NAME=darwin ;;
-  msys*) export ZSH_OS_NAME=windows ;;
-  cygwin*) export ZSH_OS_NAME=windows ;;
+  msys*|cygwin*) export ZSH_OS_NAME=windows ;;
   *) export ZSH_OS_NAME=unknown ;;
 esac
 

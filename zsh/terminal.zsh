@@ -1,46 +1,46 @@
 ## terminal-related configuration
 
-# look for existing 256 colors support and set $TERM accordingly
-if [[ ! "${TERM}" =~ "-256color$" ]]; then
-    TERM_256COLORS="${TERM}-256color"
-    TERMINFO_DIRECTORIES=(
-        "${HOME}/.terminfo"
-        "/etc/terminfo"
-        "/lib/terminfo"
-        "/usr/share/terminfo"
-    )
+# don't do anything if the terminal is very basic
+if [[ "${TERM}" == (dumb|linux|*bsd*|eterm*) ]]; then
+    return
+fi
 
-    if [ -x $commands[toe] ] && toe -a 2>/dev/null | grep -q "${TERM_256COLORS}"; then
-        export TERM="${TERM_256COLORS}"
-    else
-        for dir in $TERMINFO_DIRECTORIES; do
-            if [ -d "${dir}/${TERM[1]}/${TERM_256COLORS}" ]; then
-                export TERM="${TERM_256COLORS}"
-                break
-            fi
-        done
+# look for existing 256 colors support and set ${TERM} accordingly
+function set-256colors { 
+    if [[ "${TERM}" =~ "-256color$" ]] || [[ "${TERM}" =~ "-kitty$" ]]; then
+      return
     fi
 
-    unset TERM_256COLORS
-    unset TERMINFO_DIRECTORIES
-fi
+    local term_256="${TERM}-256color"
+
+    for file in "${TERMCAP}" "${HOME}/.termcap" "/etc/termcap" "/etc/termcap.small"; do
+      if [[ -e "${file}" ]] && grep -E -q "(^${term_256}|\|${term_256})\|" "${file}"; then
+        export TERM="${term_256}"
+        return
+      fi
+    done
+
+    for dir in "${TERMINFO}" "${HOME}/.terminfo" "/etc/terminfo" "/lib/terminfo" "/usr/share/terminfo"; do
+      if [[ -e "${dir}"/${TERM}[1]/"${term_256}" || -e "${dir}"/"${term_256}" ]]; then
+        export TERM="${term_256}"
+        return
+      fi
+    done
+}
+
+set-256colors
 
 # set & update the terminal's title
-
-if [[ "${TERM}" == (dumb|linux|*bsd*|eterm*) ]]; then
-  return
-fi
-
 autoload -Uz add-zsh-hook
 
 function set-window-title-pwd() {
-    print -Pn "\e]0;%n@%m: %~\a"
+    print -Pn "\e]0;%n@%m: %~\007"
 }
 
 add-zsh-hook precmd set-window-title-pwd
 
 function set-window-title-cmd() {
-    print -Pn "\e]0;%n@%m: ${2}\a"
+    print -Pn "\e]0;%n@%m: ${2}\007"
 }
 
 add-zsh-hook preexec set-window-title-cmd

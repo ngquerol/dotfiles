@@ -135,11 +135,13 @@ function render_prompt() {
 
     # last command duration, if it lasted long enough
     if (( last_command_duration > 500 )); then
-        local minutes=$(( last_command_duration/60000 ))
+        local hours=$(( (last_command_duration/3600000) ))
+        local minutes=$(( (last_command_duration%3600000)/60000 ))
         local seconds=$(( (last_command_duration%60000)/1000 ))
         local milliseconds=$(( last_command_duration%1000 ))
         local -a parts
         parts+='%F{8}'
+        (( hours )) && parts+=${hours}'h'
         (( minutes )) && parts+=${minutes}'m'
         (( seconds )) && parts+=${seconds}'s'
         (( milliseconds )) && parts+=${milliseconds}'ms'

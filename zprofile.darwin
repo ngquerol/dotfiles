@@ -11,8 +11,8 @@ if [ -x $commands[brew] ]; then
     # headers & libraries
     # note: C_INCLUDE_PATH, CPLUS_INCLUDE_PATH, OBJC_INCLUDE_PATH and
     # OBJCPLUS_INCLUDE_PATH are also available for language-specific headers.
-    export CPATH="${HOMEBREW_PREFIX}/include"
-    export LIBRARY_PATH="${HOMEBREW_PREFIX}/lib"
+    export CPATH="${HOMEBREW_PREFIX}/include:${CPATH}"
+    export LIBRARY_PATH="${HOMEBREW_PREFIX}/lib:${LIBRARY_PATH}"
 
     # binaries & info pages
     path=("${HOMEBREW_PREFIX}/sbin" $path)
@@ -25,6 +25,6 @@ if [ -x $commands[brew] ]; then
 
     # additional ZSH completions
     if [ -d "${HOMEBREW_PREFIX}/share/zsh-completions" ]; then
-        fpath+=("/usr/local/share/zsh-completions")
+        fpath+=("${HOMEBREW_PREFIX}/share/zsh-completions")
     fi
 fi

@@ -1,5 +1,8 @@
 ## global shell keybindings
 
+# bash word selection style
+autoload -U select-word-style && select-word-style bash
+
 # emacs-style keybindings
 bindkey -e
 
