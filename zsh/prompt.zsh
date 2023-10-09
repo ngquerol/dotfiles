@@ -10,6 +10,7 @@ ZLE_RPROMPT_INDENT=0
 
 ## VCS information retrieval
 
+# FIXME: slows down prompt by ~15ms, even in non-git directories
 autoload -Uz vcs_info
 
 add-zsh-hook precmd vcs_info
