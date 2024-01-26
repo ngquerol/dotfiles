@@ -4,3 +4,5 @@
 !/bin/flac2alac.sh
 !/bin/tmux_system_stats.sh
 zprofile.local
+config/fish/fish_variables
+config/fish/completions
