@@ -36,23 +36,23 @@ vim.opt.showmode = false
 vim.opt.shortmess:append("TISsq")
 
 vim.diagnostic.config({
-  severity_sort = true,
-  underline = false,
-  virtual_text = {
-    spacing = 4,
-    source = "if_many",
-    prefix = " ●",
-    suffix = " "
-  },
-  float = {
-    border = "rounded",
-    source = "always",
-  },
+	severity_sort = true,
+	underline = false,
+	virtual_text = {
+		spacing = 4,
+		source = "if_many",
+		prefix = " ●",
+		suffix = " ",
+	},
+	float = {
+		border = "rounded",
+		source = "always",
+	},
 })
 
-for type, icon in pairs({ Error = "🚫", Warn = "⚠️ ", Info = "ℹ️ ", Hint = "💡" }) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+for type, icon in pairs({ Error = "✖", Warn = "▲", Info = "●", Hint = "*" }) do
+	local hl = "DiagnosticSign" .. type
+	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
 vim.o.guifont = "Iosevka:h13"
