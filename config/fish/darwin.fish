@@ -1,5 +1,11 @@
 ## darwin-specific shell configuration
 
+# XDG user directories
+test -d "$HOME/.config"; and set -x XDG_CONFIG_HOME "$HOME/.config"
+test -d "$HOME/.cache"; and set -x XDG_CACHE_HOME "$HOME/.cache"
+test -d "$HOME/.local/share"; and set -x XDG_DATA_HOME "$HOME/.local/share"
+test -d "$HOME/.local/state"; and set -x XDG_STATE_HOME "$HOME/.local/state"
+
 # homebrew
 if command -q brew 
     # homebrew(-cask) options
