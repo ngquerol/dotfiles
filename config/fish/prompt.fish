@@ -2,15 +2,6 @@
 
 status is-interactive; or return
 
-set __fish_git_prompt_show_informative_status true
-set __fish_git_prompt_showdirtystate true
-set __fish_git_prompt_showuntrackedfiles true
-set __fish_git_prompt_showupstream informative
-set __fish_git_prompt_showstashstate true
-set __fish_git_prompt_describe_style branch
-set __fish_git_prompt_showcolorhints true
-set __fish_git_prompt_color_prefix ''
-
 function fish_prompt
     set -l last_status $status
 
@@ -118,7 +109,8 @@ function _git_prompt
 
     test $in_gdir = true && set -l _set_dir_opt -C $gdir/..
     set -l stat (git $_set_dir_opt --no-optional-locks status --porcelain 2>/dev/null)
-    string match -qr '(0|(?<stash>.*))\n(0|(?<conflicted>.*))\n(0|(?<staged>.*))\n(0|(?<dirty>.*))\n(0|(?<untracked>.*))(\n(0|(?<behind>.*))\t(0|(?<ahead>.*)))?' \
+    string match -qr \
+        '(0|(?<stash>.*))\n(0|(?<conflicted>.*))\n(0|(?<staged>.*))\n(0|(?<dirty>.*))\n(0|(?<untracked>.*))(\n(0|(?<behind>.*))\t(0|(?<ahead>.*)))?' \
         "$(
             git stash list 2>/dev/null | count
             string match -r ^UU $stat | count
