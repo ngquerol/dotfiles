@@ -23,14 +23,14 @@ function fish_prompt
         set -l seconds (math -s0 $CMD_DURATION % 60000 / 1000)
         set -l milliseconds (math -s0 $CMD_DURATION % 1000)
         set_color brblack
-        printf ' %dm%ds%dms' $minutes $seconds $milliseconds
+        echo -ns " " $minutes "m" $seconds "s" $milliseconds "ms" 
         set_color normal
     end
 
     # last exit status, if > 0
     if test $last_status -ne 0
         set_color brred -o
-        printf " %s" $last_status
+        echo -n " $last_status"
     else 
         set_color normal
     end
@@ -44,17 +44,17 @@ function fish_right_prompt
     # background jobs
     if test (jobs | wc -l) -gt 0
         set_color brblack -o
-        printf "%dj" (jobs | wc -l)
+        echo -ns " " (jobs | wc -l) "j"
         set_color normal
     end
 
     # current python virtualenv
     if test -n "$VIRTUAL_ENV"
-        printf "🐍 %s" (path basename $VIRTUAL_ENV)
+        echo -ns " 🐍 " (path basename $VIRTUAL_ENV)
     end
 
     # git info
-    echo -n $(_git_prompt)
+    echo -n " $(_git_prompt)"
 end
 
 # print newline between prompts, if anything was output
@@ -62,7 +62,7 @@ function postexec_test --on-event fish_postexec
     echo
 end
 
-# mainly stolen from https://github.com/IlanCosman/tide/blob/main/functions/_tide_item_git.fish
+# mostly stolen from https://github.com/IlanCosman/tide/blob/main/functions/_tide_item_git.fish
 function _git_prompt
     set -l loc_len 30
 
@@ -73,7 +73,7 @@ function _git_prompt
         return
     else if git tag --points-at HEAD | string shorten -m$loc_len | read location
         git rev-parse --git-dir --is-inside-git-dir | read -fL gdir in_gdir
-        set location '#'$location
+        set location "#"$location
     else
         git rev-parse --git-dir --is-inside-git-dir --short HEAD | read -fL gdir in_gdir location
         set location @$location
@@ -110,7 +110,7 @@ function _git_prompt
     test $in_gdir = true && set -l _set_dir_opt -C $gdir/..
     set -l stat (git $_set_dir_opt --no-optional-locks status --porcelain 2>/dev/null)
     string match -qr \
-        '(0|(?<stash>.*))\n(0|(?<conflicted>.*))\n(0|(?<staged>.*))\n(0|(?<dirty>.*))\n(0|(?<untracked>.*))(\n(0|(?<behind>.*))\t(0|(?<ahead>.*)))?' \
+        "(0|(?<stash>.*))\n(0|(?<conflicted>.*))\n(0|(?<staged>.*))\n(0|(?<dirty>.*))\n(0|(?<untracked>.*))(\n(0|(?<behind>.*))\t(0|(?<ahead>.*)))?" \
         "$(
             git stash list 2>/dev/null | count
             string match -r ^UU $stat | count
@@ -122,13 +122,13 @@ function _git_prompt
 
     echo -n (
         set_color blue; echo -ns "± $location"
-        set_color magenta; echo -ns ' '$operation ' '$step/$total_steps
-        set_color red; echo -ns ' ↓'$behind
-        set_color green; echo -ns ' ↑'$ahead
-        set_color purple; echo -ns ' $'$stash
-        set_color red; echo -ns ' ~'$conflicted
-        set_color green; echo -ns ' +'$staged
-        set_color yellow; echo -ns ' !'$dirty
-        set_color normal; echo -ns ' ?'$untracked
+        set_color magenta; echo -ns " "$operation " "$step/$total_steps
+        set_color red; echo -ns " ↓"$behind
+        set_color green; echo -ns " ↑"$ahead
+        set_color purple; echo -ns " \$"$stash
+        set_color red; echo -ns " ~"$conflicted
+        set_color green; echo -ns " +"$staged
+        set_color cyan; echo -ns " !"$dirty
+        set_color yellow; echo -ns " ?"$untracked
     )
 end

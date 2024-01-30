@@ -8,18 +8,7 @@ set -x EDITOR "vi"
 set -x VISUAL "$EDITOR"
 set -x PAGER "less -s -M +Gg"
 
-for path in \
-    "$HOME/.bin" \
-    "$HOME/.cargo/bin" \
-    "$HOME/.orbstack/bin" \
-    "/usr/local/opt/binutils/bin"
-    fish_add_path $path
-end
-
-if command -q go
-    set -x GOPATH "$HOME/Developer/go/gopath"
-    test -d $GOPATH; and fish_add_path "$GOPATH/bin"
-end
+test -d "$HOME/.bin"; and fish_add_path "$HOME/.bin"
 
 if command -q nvim
     set -x EDITOR "nvim"
