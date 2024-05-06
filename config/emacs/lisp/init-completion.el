@@ -71,7 +71,7 @@
          ("C-c h" . consult-man)
          ("C-c b" . consult-compile-error)
          ("C-c s" . ngq/consult-grep-at-point)
-         ("C-c f" . consult-flymake)
+         ("C-c f f" . consult-flymake)
          ([remap isearch-forward] . consult-line)
          ([remap switch-to-buffer] . consult-buffer)
          ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
@@ -215,15 +215,15 @@
   (dolist (backend (list #'cape-dabbrev #'cape-file #'cape-keyword))
     (add-to-list 'completion-at-point-functions backend)))
 
-(use-package cape-yasnippet
+(use-package yasnippet-capf
   :after (cape yasnippet)
-  :straight (:host github :repo "elken/cape-yasnippet")
+  :straight (:host github :repo "elken/yasnippet-capf")
   :preface
   (defun ngq/cape-setup-yasnippet ()
     (setq-local completion-at-point-functions
                 (append (list
-                         (cape-super-capf #'cape-yasnippet
-                                          (car completion-at-point-functions)))
+                         (cape-capf-super (car completion-at-point-functions)
+                                          #'yasnippet-capf))
                         (list #'cape-dabbrev #'cape-file #'cape-keyword))))
   :hook ((prog-mode . ngq/cape-setup-yasnippet)
          (lsp-completion-mode . ngq/cape-setup-yasnippet)))

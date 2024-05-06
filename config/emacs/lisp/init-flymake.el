@@ -11,6 +11,9 @@
 (use-package flymake
   :straight (:type built-in)
   :hook ((prog-mode) . flymake-mode)
+  :bind (:map flymake-mode-map
+              ("C-c f d" . #'flymake-show-buffer-diagnostics)
+              ("C-c f D" . #'flymake-show-project-diagnostics))
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
   (setq elisp-flymake-byte-compile-load-path
