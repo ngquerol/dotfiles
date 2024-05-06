@@ -40,10 +40,15 @@
                       (s-join " " it))))
       (lsp--render-element (concat "```rust\n" sig "\n```"))))
 
-  (with-eval-after-load 'lsp
-    (add-hook 'rust-mode-hook #'lsp-deferred)
+  (when (and (fboundp 'lsp-deferred) (executable-find "rust-analyzer"))
     (when (executable-find "cargo-clippy")
-      (setq lsp-rust-analyzer-cargo-watch-command "clippy")))
+      (setq lsp-rust-analyzer-cargo-watch-command "clippy"
+            lsp-rust-analyzer-display-chaining-hints t
+            lsp-rust-analyzer-closure-style "rust_analyzer"
+            lsp-rust-analyzer-display-closure-return-type-hints "always"
+            lsp-rust-analyzer-display-lifetime-elision-hints-enable "always"
+            lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names t))
+    (add-hook 'rust-mode-hook #'lsp-deferred))
 
   (with-eval-after-load 'tab-line
     (dolist (mode '(rustic-compilation-mode

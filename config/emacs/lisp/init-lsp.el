@@ -35,6 +35,7 @@
         lsp-headerline-breadcrumb-enable nil
         lsp-imenu-sort-methods '(position kind name)
         lsp-lens-enable nil
+        lsp-inlay-hint-enable t
         lsp-modeline-code-action-fallback-icon "★"
         lsp-modeline-diagnostics-enable nil
         lsp-progress-prefix "⧗ "
