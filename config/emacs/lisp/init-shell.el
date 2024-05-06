@@ -20,6 +20,9 @@
   :hook (sh-mode . flymake-shellcheck-load)
   :config (setq flymake-shellcheck-allow-external-files t))
 
+(use-package fish-mode
+  :mode ("\\.fish\\'" . fish-mode))
+
 (provide 'init-shell)
 
 ;;; init-shell.el ends here
