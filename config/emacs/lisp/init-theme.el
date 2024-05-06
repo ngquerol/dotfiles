@@ -51,8 +51,7 @@
   :init
   (require-theme 'modus-themes)
 
-  (setq modus-themes-org-blocks 'grey-background
-        modus-themes-prompts '(medium)
+  (setq modus-themes-prompts '(medium)
         modus-themes-bold-constructs t
         modus-themes-italic-constructs t
         modus-themes-variable-pitch-ui nil
