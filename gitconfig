@@ -29,4 +29,6 @@
     so = show --stat
     st = status --short --branch
 [pull]
-	ff = only
+    ff = only
+[merge]
+    conflictstyle = zdiff3
