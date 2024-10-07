@@ -9,46 +9,47 @@
 ;;; Code:
 
 (use-package rustic
-  :mode ("\\.rs$" . rustic-mode)
+  :preface
+  (defun ngq/rust-eglot-hook ()
+    (setq eglot-workspace-configuration
+          `(:rust-analyzer (
+                            :check (:command "clippy")
+                            :completion (
+                                         :autoimport (:enable t)
+                                         :postfix (:enable t))
+                            :debug (:openDebugPane t)
+                            :inlayHints (
+                                         :chainingHints.enable: t
+                                         :closureStyle: "rust_analyzer"
+                                         :closureReturnTypeHints.enable: "always"
+                                         :expressionAdjustmentHints.enable: "never"
+                                         :implicitDrops.enable: :json-false
+                                         :lifetimeElisionHints.enable: "always"
+                                         :lifetimeElisionHints.useParameterNames: t
+                                         :renderColons: :json-false)
+                            :lens (:location "above_whole_item")
+                            :procMacro (:enable t))))
+    (eglot-ensure))
+  :hook (rust-ts-mode . rustic-mode)
   :bind (:map rustic-mode-map
               ("C-c C-l" . rustic-format-buffer)
-              ("C-c C-h" . lsp-rust-analyzer-inlay-hints-mode)
+              ("C-c C-h" . eglot-inlay-hints-mode)
               ("C-c C-c" . rustic-cargo-build)
               ("C-c C-f" . rustic-cargo-clean)
               ("C-c C-r" . rustic-cargo-run)
               ("C-c C-t" . rustic-cargo-test)
               ("C-c C-y" . rustic-cargo-clippy))
   :config
-  (setq-default rustic-compile-backtrace "FULL")
+  (setq-default rustic-compile-backtrace "FULL"
+                rustic-lsp-client 'eglot)
 
   ;; Correctly link rustc errors in compilation buffers
   (add-to-list 'compilation-error-regexp-alist 'rust)
   (setf (alist-get 'rust compilation-error-regexp-alist-alist)
         '("^error[^:]*:[^\n]*\n *--> \\([^\n]+\\):\\([0-9]+\\):\\([0-9]+\\)" 1 2 3))
 
-  ;; Better Eldoc signature on hover
-  (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
-    (-let* (((&hash "value") contents)
-            (groups (--partition-by (s-blank? it) (s-lines (s-trim value))))
-            (sig_group (if (s-equals? "```rust" (car (-third-item groups)))
-                           (-third-item groups)
-                         (car groups)))
-            (sig (--> sig_group
-                      (--drop-while (s-equals? "```rust" it) it)
-                      (--take-while (not (s-equals? "```" it)) it)
-                      (--map (s-trim it) it)
-                      (s-join " " it))))
-      (lsp--render-element (concat "```rust\n" sig "\n```"))))
-
-  (when (and (fboundp 'lsp-deferred) (executable-find "rust-analyzer"))
-    (when (executable-find "cargo-clippy")
-      (setq lsp-rust-analyzer-cargo-watch-command "clippy"
-            lsp-rust-analyzer-display-chaining-hints t
-            lsp-rust-analyzer-closure-style "rust_analyzer"
-            lsp-rust-analyzer-display-closure-return-type-hints "always"
-            lsp-rust-analyzer-display-lifetime-elision-hints-enable "always"
-            lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names t))
-    (add-hook 'rust-mode-hook #'lsp-deferred))
+  (when (and (fboundp #'eglot-ensure) (executable-find "rust-analyzer"))
+    (add-hook 'rust-ts-mode-hook #'ngq/rust-eglot-hook))
 
   (with-eval-after-load 'tab-line
     (dolist (mode '(rustic-compilation-mode

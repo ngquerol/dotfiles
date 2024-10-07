@@ -1,8 +1,7 @@
-elpa/
-var/
 eln-cache/
-straight/*
-!straight/versions/
-!straight/versions/default.el
+elpa/
+elpaca/
 lisp/init-local.el
+tree-sitter/
+var/
 custom.el

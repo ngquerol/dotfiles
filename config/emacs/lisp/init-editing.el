@@ -28,7 +28,7 @@
 (delete-selection-mode t)
 
 ;; Automatically indent when inserting a newline
-(global-set-key (kbd "RET") #'reindent-then-newline-and-indent)
+(keymap-global-set "RET" #'reindent-then-newline-and-indent)
 
 ;; Join following line by default
 (defun ngq/my-join-line ()
@@ -36,7 +36,7 @@
   (interactive)
   (join-line -1))
 
-(global-set-key (kbd "M-j") #'ngq/my-join-line)
+(keymap-global-set "M-j" #'ngq/my-join-line)
 
 ;; Smart open line
 (defun ngq/smart-open-line ()
@@ -55,30 +55,30 @@ Position the cursor at it's beginning, according to the current mode."
   (forward-line -1)
   (indent-according-to-mode))
 
-(global-set-key (kbd "M-<return>") #'ngq/smart-open-line)
-(global-set-key (kbd "M-S-<return>") #'ngq/smart-open-line-above)
+(keymap-global-set "M-<return>" #'ngq/smart-open-line)
+(keymap-global-set "M-S-<return>" #'ngq/smart-open-line-above)
 
 ;; Zap (up) to char
-(global-set-key (kbd "M-z") #'zap-to-char)
-(global-set-key (kbd "M-Z") #'zap-up-to-char)
+(keymap-global-set "M-z" #'zap-to-char)
+(keymap-global-set "M-Z" #'zap-up-to-char)
 
 ;; Align according to regexp
-(global-set-key (kbd "C-c a") #'align-regexp)
+(keymap-global-set "C-c a" #'align-regexp)
 
 ;; Change case of region if active, of word otherwise.
-(global-set-key [remap upcase-word] #'upcase-dwim)
-(global-set-key [remap downcase-word] #'downcase-dwim)
-(global-set-key [remap capitalize-word] #'capitalize-dwim)
+(keymap-global-set "<remap> <upcase-word>" #'upcase-dwim)
+(keymap-global-set "<remap> <downcase-word>" #'downcase-dwim)
+(keymap-global-set "<remap> <capitalize-word>" #'capitalize-dwim)
 
 ;; Reload buffers automagically if the corresponding file has been changed
 (use-package autorevert
-  :straight (:type built-in)
+  :ensure nil
   :hook (after-init . global-auto-revert-mode)
   :config (setq auto-revert-avoid-polling t))
 
 ;; Show some whitespace characters
 (use-package whitespace
-  :straight (:type built-in)
+  :ensure nil
   :hook (after-init . global-whitespace-mode)
   :config
   (setq whitespace-style '(tab-mark face trailing missing-newline-at-eof))
@@ -87,15 +87,29 @@ Position the cursor at it's beginning, according to the current mode."
 
 ;; Expand abbreviations
 (use-package abbrev
-  :straight (:type built-in)
+  :ensure nil
   :config
   (setq save-abbrevs 'silently)
   (when (file-exists-p abbrev-file-name)
     (quietly-read-abbrev-file)))
 
+(use-package editorconfig
+  :ensure nil
+  :config (editorconfig-mode))
+
 ;; External packages
 
-;; Move current line or region up or down
+;; Visually interactive align-regexp
+(use-package ialign
+  :bind ("C-c a" . ialign)
+  :config (with-eval-after-load 'pcre2el
+            (setq ialign-pcre-mode t)))
+
+;; Edit grep buffer and apply the changes
+(use-package wgrep
+  :commands (wgrep-setup wgrep-change-to-wgrep-mode))
+
+;; Move line or region around
 (use-package move-text
   :bind (("M-<up>" . move-text-up)
          ("M-<down>" . move-text-down)))
@@ -116,11 +130,12 @@ Position the cursor at it's beginning, according to the current mode."
          ("C-c x s" . er/mark-symbol)
          ("C-c x w" . er/mark-word)
          ("C-c x m" . er/mark-method-call))
-  :config (setq expand-region-contract-fast-key "X"))
+  :config (setq expand-region-contract-fast-key "X"
+                expand-region-smart-cursor t))
 
 ;; Operate on current line if region is undefined
 (use-package whole-line-or-region
-  :hook (after-init . whole-line-or-region-global-mode)
+  :hook (elpaca-after-init . whole-line-or-region-global-mode)
   :bind ("C-w" . whole-line-or-region-kill-region) ;; KLUDGE
   )
 
@@ -182,10 +197,6 @@ Position the cursor at it's beginning, according to the current mode."
 
   (dolist (pair '("(" "{" "["))
     (sp-local-pair 'prog-mode pair nil :post-handlers '(("||\n[i]" "RET")))))
-
-;; Aggressive-indent, in lisp modes
-(use-package aggressive-indent
-  :hook ((emacs-lisp-mode lisp-mode clojure-mode) . aggressive-indent-mode))
 
 (provide 'init-editing)
 

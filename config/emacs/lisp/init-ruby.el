@@ -9,7 +9,7 @@
 ;;; Code:
 
 (use-package ruby-mode
-  :straight (:type built-in)
+  :ensure nil
   :mode ("\\.rb\\'" "Rakefile\\'" "Gemfile\\'")
   :interpreter "ruby"
   :config (setq ruby-insert-encoding-magic-comment nil))

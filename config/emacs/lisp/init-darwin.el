@@ -18,10 +18,6 @@
       mac-command-modifier 'meta
       ns-use-mwheel-momentum nil)
 
-;; Necessary until `system-move-file-to-trash' is implemented on darwin
-(use-package osx-trash
-  :config (osx-trash-setup))
-
 ;; GUI sessions
 (when (display-graphic-p)
 
@@ -31,25 +27,27 @@
   ;; Use the appropriate system font to display emoji
   (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
+  ;; Hide titlebar proxy icon
+  (setq ns-use-proxy-icon nil)
+
   ;; Standard macOS app keybindings
   (when (fboundp 'ns-do-hide-emacs)
-    (global-set-key (kbd "M-h") #'ns-do-hide-emacs))
+    (keymap-global-set "M-h" #'ns-do-hide-emacs))
 
   (when (fboundp 'ns-do-show-character-palette)
-    (global-set-key (kbd "C-M-SPC") #'ns-do-show-character-palette))
+    (keymap-global-set "C-M-SPC" #'ns-do-show-character-palette))
 
   ;; Retrieve environment variables from the shell
   (use-package exec-path-from-shell
-    :config (setq-default exec-path-from-shell-warn-duration-millis 250
-                          exec-path-from-shell-arguments '("-l")
+    :hook (elpaca-after-init . exec-path-from-shell-initialize)
+    :config (setq-default exec-path-from-shell-arguments '("-l")
                           exec-path-from-shell-variables '("PATH"
                                                            "MANPATH"
                                                            "INFOPATH"
                                                            "PKG_CONFIG_PATH"
                                                            "CPATH"
                                                            "LIBRARY_PATH"
-                                                           "GOPATH"))
-    (exec-path-from-shell-initialize)))
+                                                           "GOPATH"))))
 
 (provide 'init-darwin)
 

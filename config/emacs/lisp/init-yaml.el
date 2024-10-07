@@ -14,9 +14,8 @@
   :hook (yaml-mode . ngq/setup-yaml-mode)
   :bind (:map yaml-mode-map
               ([remap reindent-then-newline-and-indent] . #'newline-and-indent))
-  :config
-  ;; LSP integration w/ yaml-language-server
-  (when (executable-find "yaml-language-server")
+  :init
+  (when (and (fboundp #'eglot-ensure) (executable-find "yaml-language-server"))
     (setq lsp-yaml-schema-store-local-db "~/.emacs.d/var/lsp/lsp-yaml-schemas.json"
           lsp-yaml-schemas '((kubernetes . ["kube.yaml"
                                             "resources.yaml"
@@ -31,7 +30,7 @@
                                             "configmap.yaml"
                                             "service.yaml"])
                              (http://json\.schemastore\.org/kustomization . ["kustomization.yaml"])))
-    (add-hook 'yaml-mode-hook #'lsp-deferred)))
+    (add-hook 'yaml-mode-hook #'eglot-ensure)))
 
 (provide 'init-yaml)
 

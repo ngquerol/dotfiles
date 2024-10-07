@@ -27,13 +27,6 @@ error is raised unless NO-ERROR is non-nil."
 
 ;; Interactive functions (mainly editing helpers)
 
-(defun ngq/kill-this-buffer ()
-  "Kill current buffer without confirmation."
-  (interactive)
-  (kill-buffer (current-buffer)))
-
-(global-set-key [remap kill-buffer] #'ngq/kill-this-buffer)
-
 (defun ngq/rename-file-and-buffer ()
   "Rename the current buffer and file it is visiting."
   (interactive)
@@ -47,7 +40,7 @@ error is raised unless NO-ERROR is non-nil."
           (rename-file filename new-name t)
           (set-visited-file-name new-name t t))))))
 
-(global-set-key (kbd "C-c R") #'ngq/rename-file-and-buffer)
+(keymap-global-set "C-c R" #'ngq/rename-file-and-buffer)
 
 (defun ngq/delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
@@ -62,7 +55,7 @@ error is raised unless NO-ERROR is non-nil."
               (message "Deleted file %s" filename)
               (kill-buffer)))))))
 
-(global-set-key (kbd "C-c D") #'ngq/delete-file-and-buffer)
+(keymap-global-set "C-c D" #'ngq/delete-file-and-buffer)
 
 (provide 'init-utils)
 

@@ -9,7 +9,7 @@
 ;;; Code:
 
 (use-package dired
-  :straight (:type built-in)
+  :ensure nil
   :commands (dired dired-jump)
   :hook ((dired-mode . auto-revert-mode)
          (dired-mode . toggle-truncate-lines))
@@ -36,7 +36,7 @@
 
 (use-package dired-x
   :after dired
-  :straight (:type built-in)
+  :ensure nil
   :hook (dired-mode . dired-omit-mode)
   :bind (:map dired-mode-map ("C-x M-o" . dired-omit-mode))
   :config (setq dired-clean-confirm-killing-deleted-buffers nil
@@ -44,7 +44,7 @@
 
 (use-package wdired
   :after dired
-  :straight (:type built-in)
+  :ensure nil
   :bind (:map dired-mode-map ("C-c C-e" . wdired-change-to-wdired-mode))
   :config (setq wdired-use-dired-vertical-movement 'sometimes
                 wdired-confirm-overwrite t

@@ -1,16 +1,16 @@
-;;; init-build.el --- Build tools configuration -*- lexical-binding: t -*-
+;;; init-compile.el --- `compilation-mode' and build tools configuration -*- lexical-binding: t -*-
 
 ;; Author: Nicolas G. Querol <nicolas.gquerol@gmail.com>
 
 ;;; Commentary:
 
-;; Configuration for build tools.
+;; Configuration for `compilation-mode' and build tools.
 
 ;;; Code:
 
 ;; Compilation buffers
 (use-package compile
-  :straight (:type built-in)
+  :ensure nil
   :commands compile
   :preface
   (defun --bury-compilation-buffer (buffer)
@@ -47,6 +47,13 @@ Otherwise select its window."
                 compilation-always-kill t
                 compilation-ask-about-save nil)
 
+  ;; Add AddressSanitizer error format
+  (setq compilation-error-regexp-alist-alist
+        (cons '(asan "^\s+#[0-9]+ 0x[0-9a-f]+ in [a-zA-Z_]+\\(?:+0x[0-9a-f]+\\)? \\(\\([a-zA-Z_]+\.[a-zA-Z_]+\\):\\([0-9]+\\)\\)$" 2 3 nil nil 1)
+              compilation-error-regexp-alist-alist))
+  (setq compilation-error-regexp-alist
+        (cons 'asan compilation-error-regexp-alist))
+
   (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
   (add-to-list 'compilation-finish-functions #'ngq/bury-compilation-buffer-if-successful)
@@ -65,6 +72,6 @@ Otherwise select its window."
   :init (with-eval-after-load 'projectile
           (add-to-list 'projectile-project-root-files "meson.build")))
 
-(provide 'init-build)
+(provide 'init-compile)
 
-;;; init-build.el ends here
+;;; init-compile.el ends here

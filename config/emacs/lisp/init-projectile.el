@@ -5,12 +5,14 @@
 ;;; Commentary:
 ;;
 ;; Configuration for project management as provided by `projectile-mode'.
+;;
+;; NOTE: Consider just using project.el.
 
 ;;; Code:
 
 (use-package projectile
   :bind-keymap ("C-c p" . projectile-command-map)
-  :hook (after-init . projectile-mode)
+  :hook (elpaca-after-init . projectile-mode)
   :preface
   (defun ngq/projectile-mode-line-function ()
     "Same as the default mode-line indicator, except that it

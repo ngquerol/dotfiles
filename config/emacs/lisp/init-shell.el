@@ -10,7 +10,7 @@
 
 ;; Shell scripts
 (use-package sh-script
-  :straight (:type built-in)
+  :ensure nil
   :mode ("\\.zsh\\'" . shell-script-mode))
 
 ;; External packages

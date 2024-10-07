@@ -5,49 +5,38 @@
 ;;; Commentary:
 ;;
 ;; Configuration for python programming.
-;;
-;; TODO: investigate elpy
 
 ;;; Code:
+
+(when (executable-find "python3")
+  (setq-default python-interpreter "python3"
+                python-shell-interpreter "python3"))
+
 (use-package python-mode
-  :mode ("\\.py\\'" . python-mode)
-  :interpreter ("python3" . python-mode)
-  :config
-  (when (executable-find "ipython")
-    (setq-default python-shell-interpreter "ipython"
-                  python-shell-interpreter-args "-i --simple-prompt")))
+  :ensure nil
+  :mode "\\.py\\'"
+  :interpreter "python3"
+  :init (when (and (fboundp #'eglot-ensure) (executable-find "pyright"))
+          (add-hook 'python-base-mode-hook #'eglot-ensure))
+  :config (when (executable-find "ipython")
+            (setq-default python-shell-interpreter "ipython"
+                          python-shell-interpreter-args "-i --simple-prompt"
+                          python-shell-completion-native-enable nil)))
 
-(use-package lsp-pyright
-  :defer t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp-deferred))))
+;; External packages
 
-(use-package pyvenv
-  :after python-mode
-  :config
-  ;; Set correct Python interpreter
-  (setq pyvenv-post-activate-hooks
-        (list (lambda ()
-                (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
+(use-package pet
+  :after python
+  :config (add-hook 'python-base-mode-hook #'pet-mode -10))
 
-  (setq pyvenv-post-deactivate-hooks
-        (list (lambda ()
-                (setq python-shell-interpreter "python3")))))
-
-(use-package pipenv
-  :if (executable-find "pipenv")
-  :hook ((python-mode . pipenv-mode))
-  :config (setq pipenv-projectile-after-switch-function
-                #'pipenv-projectile-after-switch-extended))
+(use-package flymake-ruff
+  :if (executable-find "ruff")
+  :after (python flymake)
+  :hook ((python-mode python-ts-mode) . flymake-ruff-load))
 
 (use-package poetry
   :if (executable-find "poetry")
-  :hook ((python-mode . poetry-tracking-mode)))
-
-(use-package python-black
-  :if (executable-find "black")
-  :hook ((python-mode . python-black-on-save-mode-enable-dwim)))
+  :after python)
 
 (provide 'init-python)
 

@@ -9,11 +9,13 @@
 ;;; Code:
 
 (use-package vc-hooks
-  :straight (:type built-in)
+  :ensure nil
   :config (setq vc-follow-symlinks t
                 find-file-visit-truename t))
 
 ;; External packages
+
+(use-package transient)
 
 (use-package magit
   :commands (magit-init magit-status)
@@ -37,13 +39,12 @@
   :config (abridge-diff-mode t))
 
 (use-package diff-hl
-  :disabled t
   :hook ((dired-mode . (lambda ()
                          (setq-local diff-hl-side 'left)
                          (diff-hl-dired-mode)))
          (tty-setup . diff-hl-margin-mode)
          (diff-hl-mode . diff-hl-flydiff-mode)
-         (after-init . global-diff-hl-mode))
+         (elpaca-after-init . global-diff-hl-mode))
   :config
   (setq diff-hl-draw-borders nil
         diff-hl-side 'right)

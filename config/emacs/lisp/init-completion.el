@@ -13,75 +13,65 @@
 ;;; Code:
 
 (use-package emacs
-  :straight (:type built-in)
+  :ensure nil
   :init (setq completion-cycle-threshold 3
               read-extended-command-predicate #'command-completion-default-include-p
-              tab-always-indent 'complete))
+              tab-always-indent 'complete
+              tab-first-completion 'word-or-paren-or-punct))
+
+(use-package completion-preview
+  :ensure nil
+  :config (global-completion-preview-mode))
 
 ;; External packages
 
 ;; Orderless completion style
 (use-package orderless
   :config
-  (setq  completion-styles '(orderless basic)
-         completion-category-defaults nil
-         completion-category-overrides '((file (styles basic partial-completion))
-                                         (unicode-name (styles . (substring))))
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles basic partial-completion))
+                                        (unicode-name (styles . (substring))))
 
-         orderless-matching-styles '(orderless-literal
-                                     orderless-regexp
-                                     orderless-initialism)))
+        orderless-matching-styles '(orderless-literal
+                                    orderless-regexp
+                                    orderless-initialism)))
 
 ;; Minibuffer completion UI
 (use-package vertico
-  ;; :straight (:files (:defaults "extensions/*"))
-  :hook ((after-init . vertico-mode))
+  :hook ((elpaca-after-init . vertico-mode))
   :config (setq vertico-cycle t))
-
-(use-package vertico-multiform
-  :disabled t
-  :after vertico
-  :straight nil
-  :hook ((vertico-mode . vertico-multiform-mode))
-  :config
-  ;; Choices: vertical grid flat reverse unobtrusive
-  (setq vertico-multiform-categories '((command flat))))
-
-(use-package vertico-posframe
-  :if (display-graphic-p)
-  :after vertico
-  :hook (after-init . vertico-posframe-mode)
-  :config (setq vertico-posframe-parameters '((left-fringe . 8)
-                                              (right-fringe . 8))
-                vertico-posframe-border-width 2))
 
 ;; Annotations for the minibuffer completion UI
 (use-package marginalia
-  :hook ((vertico-mode . marginalia-mode))
-  :bind ((:map minibuffer-local-map ("C-o" . marginalia-cycle)))
+  :hook (vertico-mode . marginalia-mode)
+  :bind (:map minibuffer-local-map ("C-o" . marginalia-cycle))
   :config (setq marginalia-align-offset 0
                 marginalia-align 'left
                 marginalia--ellipsis "…"))
 
 ;; Consulting `completing-read'
 (use-package consult
-  :bind (("M-X" . consult-mode-command)
-         ("C-x C-r" . consult-recent-file)
-         ("C-c i" . consult-imenu)
-         ("C-c h" . consult-man)
-         ("C-c b" . consult-compile-error)
-         ("C-c s" . ngq/consult-grep-at-point)
-         ("C-c f f" . consult-flymake)
-         ([remap isearch-forward] . consult-line)
-         ([remap switch-to-buffer] . consult-buffer)
-         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-         ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
-         ([remap yank-pop] . consult-yank-pop)
-         ([remap goto-line] . consult-goto-line)
-         :map minibuffer-local-map ("C-r" . consult-history))
+  :functions (consult-fd
+              consult-find
+              consult-ripgrep
+              consult-git-grep
+              consult-grep
+              consult-xref)
+  :defines (flymake-mode-map
+            eshell-mode-map
+            xref-show-definitions-function
+            xref-show-xrefs-function)
   :preface
   (defun ngq/in-git-repo-p ()
     (string= (vc-responsible-backend default-directory 'no-error) "Git"))
+
+  (defun ngq/consult-find (&optional dir initial)
+    (interactive)
+    (let ((command (if (executable-find "fd")
+                       #'consult-fd
+                     #'consult-find)))
+      (funcall command dir initial)))
 
   (defun ngq/consult-grep-at-point (&optional dir initial)
     (interactive (list prefix-arg (when-let ((s (symbol-at-point)))
@@ -90,6 +80,21 @@
                          ((and (executable-find "git") (ngq/in-git-repo-p)) #'consult-git-grep)
                          (t #'consult-grep))))
       (funcall command dir initial)))
+  :bind (("M-X" . consult-mode-command)
+         ("C-x C-r" . consult-recent-file)
+         ("C-c i" . consult-imenu)
+         ("C-c h" . consult-man)
+         ("C-c b" . consult-compile-error)
+         ("C-c s" . ngq/consult-grep-at-point)
+         ("C-c f" . ngq/consult-find)
+         ([remap isearch-forward] . consult-line)
+         ([remap switch-to-buffer] . consult-buffer)
+         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+         ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
+         ([remap yank-pop] . consult-yank-pop)
+         ([remap goto-line] . consult-goto-line)
+         :map minibuffer-local-map ("C-r" . consult-history)
+         :map flymake-mode-map ("C-c e e" . consult-flymake))
   :config
   (setq consult-preview-key nil)
 
@@ -103,39 +108,45 @@
   (add-hook 'eshell-mode-hook
             (lambda () (define-key eshell-mode-map (kbd "C-r") #'consult-history))))
 
-;; Consult commands for `lsp-mode'
-(use-package consult-lsp
-  :after (consult lsp-mode)
-  :config
-  (define-key lsp-command-map (kbd "s") #'consult-lsp-symbols)
-  (define-key lsp-command-map (kbd "i") #'consult-lsp-file-symbols)
-  (define-key lsp-command-map (kbd "d") #'consult-lsp-diagnostics))
+;; Consult commands for `eglot'
+(use-package consult-eglot
+  :disabled t ;; FIXME
+  :after (consult eglot)
+  :bind (:map eglot-mode-map ("C-c C-s" . consult-eglot-symbols)))
 
 ;; Execute context-sensitive actions on different targets
 (use-package embark
-  :disabled t
-  :bind (("C-c C-o" . embark-export)
-         ("C-c C-c" . embark-act))
+  :bind (:map minibuffer-mode-map
+              ("C-c C-e" . embark-export)
+              ("C-c C-c" . embark-act)
+              ("C-c C-a" . embark-act-all)
+              ("C-SPC" . embark-select))
   :config
-  (setq embark-quit-after-action nil
-        embark-indicators '(embark-minimal-indicator
-                            embark-highlight-indicator
-                            embark-isearch-highlight-indicator))
-
+  (setf (alist-get 'kill-buffer embark-pre-action-hooks) nil)
+  (setq embark-quit-after-action '((kill-buffer . nil) (t . t)))
   (add-to-list 'display-buffer-alist
-               '("\\*Embark Actions\\*"
+               '("\\*Embark \\(Collect\\|Export\\|Completions\\)"
                  nil
+                 (display-buffer-reuse-window display-buffer-below-selected)
+                 (reusable-frames . visible)
                  (window-height . 0.33)
-                 (window-parameters (mode-line-format . none)))))
+                 (body-function . select-window))))
 
 ;; Integrate Embark with Consult
 (use-package embark-consult
-  :after (embark consult))
+  :after (embark consult)
+  :functions (embark-consult-export-location-grep)
+  :hook (embark-collect-mode . consult-preview-at-point-mode)
+  :config (setf (alist-get 'consult-location embark-exporters-alist)
+                #'embark-consult-export-location-grep))
 
 ;; Asynchronous fuzzy finder similar to fzf
 (use-package affe
   :if (executable-find "rg")
   :after orderless
+  :functions (affe-grep
+              orderless-pattern-compiler
+              orderless--highlight)
   :bind (("C-c S" . ngq/affe-grep-at-point)
          ("C-c F" . affe-find))
   :preface
@@ -144,21 +155,24 @@
                                     (symbol-name s))))
     (affe-grep dir initial))
 
-  (defun ngq/affe-orderless-regexp-compiler (input _type _ignorecase)
+  (defun ngq/affe-orderless-regexp-compiler (input _type ignorecase)
     (setq input (orderless-pattern-compiler input))
-    (cons input (lambda (str) (orderless--highlight input str))))
+    (cons input (lambda (str) (orderless--highlight input ignorecase str))))
   :config (setq affe-count 20
                 affe-regexp-compiler #'ngq/affe-orderless-regexp-compiler))
 
 ;; In-region completion UI
 (use-package corfu
-  :straight (:files (:defaults "extensions/corfu-popupinfo.el"
-                               "extensions/corfu-info.el"))
+  :ensure (:files (:defaults "extensions/corfu-popupinfo.el"
+                             "extensions/corfu-info.el"
+                             "extensions/corfu-echo.el"))
   :bind ((:map corfu-map
-               ("TAB" . corfu-next)
                ([tab] . corfu-next)
-               ("S-TAB" . corfu-previous)
-               ([backtab] . corfu-previous)))
+               ("TAB" . corfu-next)
+               ([backtab] . corfu-previous)
+               ("S-TAB" . corfu-previous)))
+  :hook ((elpaca-after-init . global-corfu-mode)
+         (corfu-mode . corfu-popupinfo-mode))
   :preface
   (defun corfu-send-shell (&rest _)
     "Send completion candidate when inside comint/eshell."
@@ -174,32 +188,22 @@
                 corfu-max-width 80
                 corfu-min-width 40
                 corfu-preselect 'valid
-                corfu-preview-current t
+                corfu-preview-current 'insert
                 corfu-quit-at-boundary t
-                corfu-quit-no-match t
+                corfu-count 10
                 corfu-scroll-margin 5)
-
   (advice-add #'corfu-insert :after #'corfu-send-shell)
-  :custom-face (corfu-popupinfo ((t (:height 1.0))))
-  :init (progn
-          (global-corfu-mode)
-          (unless (display-graphic-p)
-            (corfu-popupinfo-mode))))
+  :custom-face (corfu-popupinfo ((t (:height 1.0)))))
 
 (use-package corfu-terminal
   :unless (display-graphic-p)
-  :after corfu
   :hook (corfu-mode . corfu-terminal-mode)
-  :straight (:type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git"))
-
-(use-package corfu-doc-terminal
-  :unless (display-graphic-p)
-  :after corfu
-  :hook (corfu-mode . corfu-doc-terminal-mode)
-  :straight (:type git :repo "https://codeberg.org/akib/emacs-corfu-doc-terminal.git"))
+  :ensure (:repo "https://codeberg.org/akib/emacs-corfu-terminal.git"))
 
 (use-package kind-icon
   :after corfu
+  :defines (corfu-margin-formatters)
+  :functions (kind-icon-margin-formatter)
   :config
   (setq kind-icon-use-icons t
         kind-icon-blend-background t
@@ -211,26 +215,27 @@
 
 ;; Extra `completion-at-point-functions'
 (use-package cape
+  :functions (cape-dabbrev cape-file cape-keyword)
   :init
   (dolist (backend (list #'cape-dabbrev #'cape-file #'cape-keyword))
     (add-to-list 'completion-at-point-functions backend)))
 
 (use-package yasnippet-capf
   :after (cape yasnippet)
-  :straight (:host github :repo "elken/yasnippet-capf")
+  :ensure (:host github :repo "elken/yasnippet-capf")
   :preface
   (defun ngq/cape-setup-yasnippet ()
     (setq-local completion-at-point-functions
-                (append (list
-                         (cape-capf-super (car completion-at-point-functions)
-                                          #'yasnippet-capf))
-                        (list #'cape-dabbrev #'cape-file #'cape-keyword))))
-  :hook ((prog-mode . ngq/cape-setup-yasnippet)
-         (lsp-completion-mode . ngq/cape-setup-yasnippet)))
+                (list (cape-capf-super
+                       (car completion-at-point-functions)
+                       #'yasnippet-capf)
+                      #'cape-dabbrev #'cape-file #'cape-keyword)))
+  :hook (prog-mode . ngq/cape-setup-yasnippet))
 
 ;; Snippets
 (use-package yasnippet
-  :hook (prog-mode . yas-minor-mode)
+  :hook ((prog-mode . yas-minor-mode)
+         (org-mode . yas-minor-mode))
   :bind (:map yas-minor-mode-map
               ("C-c & n" . yas-new-snippet)
               ("C-c & s" . yas-insert-snippet)
@@ -242,6 +247,7 @@
 
 (use-package yasnippet-snippets
   :after yasnippet
+  :functions (yasnippet-snippets-initialize)
   :config (yasnippet-snippets-initialize))
 
 (provide 'init-completion)

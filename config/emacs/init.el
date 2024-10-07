@@ -10,7 +10,7 @@
 ;;; Code:
 
 ;; Check if running Emacs is recent enough
-(let ((minimum-version "29"))
+(let ((minimum-version "30"))
   (when (version< emacs-version minimum-version)
     (error "This Emacs is too old -- this config requires version %s or higher"
            minimum-version)))
@@ -41,12 +41,14 @@
 (require 'init-flymake)
 
 ;; Domain-specific
-(require 'init-build)
 (require 'init-cc)
 (require 'init-clojure)
+(require 'init-compile)
 (require 'init-eshell)
+(require 'init-formatting)
 (require 'init-go)
 (require 'init-javascript)
+(require 'init-typescript)
 (require 'init-lisp)
 (require 'init-org)
 (require 'init-python)
@@ -54,7 +56,8 @@
 (require 'init-rust)
 (require 'init-scheme)
 (require 'init-shell)
-(require 'init-tex)
+(require 'init-yaml)
+(require 'init-treesit)
 (require 'init-vcs)
 (require 'init-web)
 (require 'init-yaml)

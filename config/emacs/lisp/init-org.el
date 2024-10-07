@@ -62,7 +62,7 @@ its subchildren are updated."
 
 (use-package ob
   :after org
-  :straight (:type built-in)
+  :ensure nil
   :config
   (setq-default org-confirm-babel-evaluate nil
                 org-babel-noweb-error-all-langs t
@@ -76,7 +76,7 @@ its subchildren are updated."
 
 (use-package ox-html
   :after org
-  :straight (:type built-in)
+  :ensure nil
   :config
   (setq-default org-html-doctype "html5"
                 org-html-html5-fancy t
@@ -102,6 +102,7 @@ its subchildren are updated."
 
 ;; External packages
 
+;; It's the future
 (use-package org-modern
   :hook (org-mode . org-modern-mode))
 
@@ -119,6 +120,33 @@ its subchildren are updated."
   (let ((default-font-height (face-attribute 'default :height)))
     (set-face-attribute 'org-variable-pitch-face nil :height default-font-height)
     (set-face-attribute 'variable-pitch nil :height (+ default-font-height 10))))
+
+;; Provides completion-at-point for code blocks
+(use-package corg
+  :after org
+  :ensure (:host github :repo "isamert/corg.el"))
+
+;; *Org*anize and send HTTP requests.
+(use-package verb
+  :after org
+  :hook (verb-post-response . read-only-mode)
+  :bind (:map verb-command-map ("C-l" . verb-util-show-log))
+  :config
+  (setq verb-json-use-mode #'js-ts-mode)
+
+  (keymap-set org-mode-map "C-c C-r" verb-command-map)
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((verb . t)))
+
+  (add-to-list 'display-buffer-alist
+               '("\\*HTTP Response [0-9]+\\*\\|\\*HTTP Headers\\*"
+                 nil
+                 (window-parameters (mode-line-format . none))
+                 (window-height . 0.33)
+                 (reusable-frames . visible)
+                 (body-function . select-window))))
 
 (provide 'init-org)
 

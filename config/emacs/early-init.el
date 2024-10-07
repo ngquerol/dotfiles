@@ -60,11 +60,12 @@
       gc-cons-percentage 0.6)
 
 (let ((orig-file-name-handler-alist file-name-handler-alist))
+  (defun ngq/restore-gc-and-file-name-handlers ()
+    (setq file-name-handler-alist orig-file-name-handler-alist
+          gc-cons-threshold (* 50 1024 1024)
+          gc-cons-percentage 0.2))
   (setq file-name-handler-alist nil)
-  (add-hook 'after-init-hook
-            (lambda () (setq file-name-handler-alist orig-file-name-handler-alist
-                             gc-cons-threshold (* 50 1024 1024)
-                             gc-cons-percentage 0.2))))
+  (add-hook 'after-init-hook #'ngq/restore-gc-and-file-name-handlers))
 
 ;; Run GC when Emacs is idle for a set period of time
 (run-with-idle-timer 10 t #'garbage-collect)

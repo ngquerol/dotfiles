@@ -5,13 +5,11 @@
 ;;; Commentary:
 ;;
 ;; Configuration for C family languages (C, C++, Objective-C).
-;;
-;; TODO: investigate rtags/ctags for large projects
 
 ;;; Code:
 
 (use-package cc-mode
-  :straight (:type built-in)
+  :ensure nil
   :bind (:map c-mode-base-map
               ("TAB" . indent-for-tab-command)
               ("C-c C-o" . ff-find-other-file)
@@ -25,6 +23,12 @@
                        (+ (aref in-assign 0)
                           (* 2 c-basic-offset)))
                  in-assign)))
+  :init (when (and (fboundp #'eglot-ensure) (executable-find "clangd"))
+          (dolist (hook '(c-mode-hook
+                          c-ts-mode-hook
+                          c++-mode-hook
+                          objc-mode-hook))
+            (add-hook hook #'eglot-ensure)))
   :config
   (setq c-basic-offset 2)
   (c-set-offset 'case-label '+)
@@ -41,25 +45,7 @@
                                      (innamespace . 0)
                                      (member-init-intro . ++)
                                      (statement-cont . llvm-lineup-statement)))))
-  (setcdr (assoc 'other c-default-style) "llvm")
-
-  ;; LSP integration via clangd
-  (when (executable-find "clangd")
-    (setq-default lsp-clients-clangd-args '("--all-scopes-completion"
-                                            "--background-index"
-                                            ;; "--completion-style=detailed"
-                                            "--header-insertion=never"
-                                            ;; "--header-insertion-decorators"
-                                            "--clang-tidy"))
-    (mapc (lambda (hook) (add-hook hook #'lsp-deferred))
-          '(c-mode-hook c++-mode-hook objc-mode-hook))))
-
-;; Source formatting via clang-format
-(use-package clang-format+
-  :if (executable-find "clang-format")
-  :hook ((c-mode c++-mode objc-mode) . clang-format+-mode)
-  :bind (:map c-mode-base-map ("C-c C-f" . clang-format-region))
-  :config (setq clang-format+-context 'definition))
+  (setcdr (assoc 'other c-default-style) "llvm"))
 
 (use-package disaster
   :after cc-mode

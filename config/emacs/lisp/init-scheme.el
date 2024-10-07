@@ -9,7 +9,7 @@
 ;;; Code:
 
 (use-package scheme
-  :straight (:type built-in)
+  :ensure nil
   :mode (("\\.scm\\'" . scheme-mode)
          ("\\.ss\\'" . scheme-mode)
          ("\\.sls\\'" . scheme-mode)

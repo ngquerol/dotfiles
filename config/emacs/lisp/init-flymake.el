@@ -9,15 +9,16 @@
 ;;; Code:
 
 (use-package flymake
-  :straight (:type built-in)
-  :hook ((prog-mode) . flymake-mode)
+  :ensure nil
+  :hook (prog-mode . flymake-mode)
   :bind (:map flymake-mode-map
-              ("C-c f d" . #'flymake-show-buffer-diagnostics)
-              ("C-c f D" . #'flymake-show-project-diagnostics))
+              ("C-c e b" . #'flymake-show-buffer-diagnostics)
+              ("C-c e p" . #'flymake-show-project-diagnostics))
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
   (setq elisp-flymake-byte-compile-load-path
-        (append elisp-flymake-byte-compile-load-path load-path)))
+        (append elisp-flymake-byte-compile-load-path load-path)
+        flymake-show-diagnostics-at-end-of-line nil))
 
 ;; External packages
 
@@ -26,11 +27,6 @@
   :hook (flymake-mode . flymake-diagnostic-at-point-mode)
   :config (setq flymake-diagnostic-at-point-display-diagnostic-function
                 #'flymake-diagnostic-at-point-display-popup))
-
-(use-package flymake-popon
-  :disabled t
-  :after flymake
-  :hook (flymake-mode . flymake-popon-mode))
 
 (provide 'init-flymake)
 

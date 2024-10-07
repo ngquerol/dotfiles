@@ -36,7 +36,6 @@
 (setq help-window-select t ;; Select help windows upon opening
       echo-keystrokes 0.02 ;; Show commands as they are typed
       ring-bell-function #'ignore ;; No beeping of any sort
-      eldoc-echo-area-use-multiline-p nil
       delete-by-moving-to-trash t ;; Do not delete files permanently by default
       ;; Scroll one mine at a time by default, three at a time when
       ;; pressing shift, and +/- frame font size when pressing control
@@ -52,18 +51,16 @@
 
 (add-hook 'prog-mode-hook #'ngq/prog-mode-hook)
 
-;; Show documentation in the minibuffer
-(global-eldoc-mode t)
-
 ;; Do case-sensitive searches, unless input has mixed case
 (setq case-fold-search t)
 
 ;; Show search matches count
 (setq isearch-lazy-count t)
 
-;; Stay at the end of a line when moving from another
+;; Stay at the end of a line when moving from another,
+;; except when the line is truncated due to its length
 (setq track-eol t
-      line-move-visual nil)
+      line-move-visual 'goal-column)
 
 ;; Add a little more breathing room between lines
 (setq-default line-spacing 1)
@@ -78,7 +75,7 @@
 (blink-cursor-mode -1)
 
 ;; Show current line, column and next-buffer size in modeline
-(global-set-key (kbd "C-c n") #'display-line-numbers-mode)
+(keymap-global-set "C-c n" #'display-line-numbers-mode)
 (setq mode-line-position-column-format nil)
 (column-number-mode t)
 (size-indication-mode t)
@@ -86,7 +83,7 @@
 ;; Show tabs for window-local buffers
 (use-package tab-line
   :disabled t
-  :straight (:type built-in)
+  :ensure nil
   :if (display-graphic-p)
   :hook (after-init . global-tab-line-mode)
   :config
@@ -113,7 +110,7 @@
       scroll-preserve-screen-position t)
 
 (when (display-graphic-p)
-  (pixel-scroll-mode))
+  (add-hook 'after-init-hook #'pixel-scroll-mode))
 
 ;; Disable scroll-margin for specific modes
 (mapc (lambda (hook) (add-hook hook (lambda () (setq-local scroll-margin 0))))
@@ -124,7 +121,7 @@
         term-mode-hook))
 
 ;; Faster repeat last command
-(global-set-key (kbd "C-z") #'repeat)
+(keymap-global-set "C-z" #'repeat)
 
 ;; Do not delete files immediately
 (setq delete-by-moving-to-trash t)
@@ -138,29 +135,34 @@
       '(read-only t cursor-intangible t face minibuffer-prompt))
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
+;; Show documentation in the minibuffer
+(use-package eldoc
+  :ensure nil
+  :config (setq eldoc-echo-area-use-multiline-p nil))
+
 ;; Remember recently visited files
 (use-package recentf
-  :straight (:type built-in)
-  :config
-  (setq recentf-max-saved-items 200
-        recentf-auto-cleanup 60
-        recentf-exclude (append recentf-exclude
-                                '("/\\.git/.*\\'"
-                                  "/elpa/.*\\'"
-                                  "/tmp/.*\\'"
-                                  "/private/.*\\'"
-                                  "/var/tmp/.*\\'"))))
+  :ensure nil
+  :hook (elpaca-after-init . recentf-mode)
+  :config (setq recentf-max-saved-items 200
+                recentf-auto-cleanup 60
+                recentf-exclude (append recentf-exclude
+                                        '("/\\.git/.*\\'"
+                                          "/elpa/.*\\'"
+                                          "/tmp/.*\\'"
+                                          "/private/.*\\'"
+                                          "/var/tmp/.*\\'"))))
 
 ;; Remember last visited place in a file
 (use-package saveplace
-  :straight (:type built-in)
-  :hook (after-init . save-place-mode)
+  :ensure nil
+  :hook (elpaca-after-init . save-place-mode)
   :config (setq save-place-forget-unreadable-files t))
 
 ;; Save minibuffer history
 (use-package savehist
-  :straight (:type built-in)
-  :hook (after-init . savehist-mode)
+  :ensure nil
+  :hook (elpaca-after-init . savehist-mode)
   :config (setq history-delete-duplicates t
                 savehist-autosave-interval 60
                 savehist-additional-variables '(compile-command
@@ -170,12 +172,12 @@
 
 ;; Switch windows with windmove
 (use-package windmove
-  :straight (:type built-in)
+  :ensure nil
   :config (windmove-default-keybindings 'shift))
 
 ;; Comint buffers
 (use-package comint
-  :straight (:type built-in)
+  :ensure nil
   :defer t
   :config (setq comint-process-echoes t
                 comint-prompt-read-only t
@@ -187,7 +189,7 @@
 
 ;; Man pages
 (use-package woman
-  :straight (:type built-in)
+  :ensure nil
   :bind ("C-c C-x m" . woman)
   :commands woman
   :config (setq woman-fill-frame t
@@ -201,12 +203,12 @@
 
 ;; Diffs
 (use-package ediff
-  :straight (:type built-in)
+  :ensure nil
   :defer
   :config (setq ediff-ignore-similar-regions t))
 
 (use-package ediff-wind
-  :straight (:type built-in)
+  :ensure nil
   :after ediff
   :config (setq ediff-window-setup-function #'ediff-setup-windows-plain-compare))
 
@@ -220,27 +222,30 @@
                                    help-mode
                                    read-only-mode
                                    compilation-mode
-                                   Man-mode)))))
+                                   Man-mode
+                                   flymake-diagnostics-buffer-mode
+                                   flymake-project-diagnostics-mode)))))
                (display-buffer-reuse-window display-buffer-below-selected)
                (reusable-frames . visible)
                (window-height . 0.33)
                (body-function . select-window)))
+
 
 ;; External packages
 
 ;; Prettier modeline
 (use-package moody
   :if (display-graphic-p)
-  :hook ((after-init . moody-replace-mode-line-buffer-identification)
-         (after-init . moody-replace-vc-mode)
-         (after-init . moody-replace-mode-line-front-space)
-         (after-init . moody-replace-eldoc-minibuffer-message-function))
-  :config (setq x-underline-at-descent-line t
-                moody-mode-line-height 16))
+  :hook (;; FIXME not compatible with variable-width fonts in modeline
+         ;; (elpaca-after-init . moody-replace-vc-mode)
+         (elpaca-after-init . moody-replace-mode-line-buffer-identification)
+         (elpaca-after-init . moody-replace-mode-line-front-space)
+         (elpaca-after-init . moody-replace-eldoc-minibuffer-message-function))
+  :config (setq moody-mode-line-height 16))
 
 ;; Hide minor-modes in a tidy menu
 (use-package minions
-  :init (minions-mode)
+  :hook (elpaca-after-init . minions-mode)
   :config (with-eval-after-load 'flymake
             (setq minions-prominent-modes '(flymake-mode))))
 
@@ -256,14 +261,14 @@
 
 ;; Better line highlighting for special modes
 (use-package lin
-  :hook ((after-init . lin-global-mode))
+  :hook ((elpaca-after-init . lin-global-mode))
   :config (setq lin-face 'lin-cyan-override-fg))
 
 ;; Highlight surrounding parentheses
 (use-package highlight-parentheses
   :disabled t
-  :hook ((highlight-parentheses-mode-hook . ngq/set-highlight-parentheses-colors)
-         ((emacs-lisp-mode lisp-mode clojure-mode) . highlight-parentheses-mode))
+  :hook (((emacs-lisp-mode lisp-mode clojure-mode) . highlight-parentheses-mode)
+         (highlight-parentheses-mode . ngq/set-highlight-parentheses-colors))
   :preface
   (defun ngq/--fade-out-color (highlight-color steps)
     (require 'color)
@@ -278,11 +283,12 @@
 
 ;; Pulse modified region
 (use-package goggles
+  :if (display-graphic-p)
   :hook ((prog-mode text-mode) . goggles-mode))
 
 ;; Persist *scratch* next-buffer
 (use-package persistent-scratch
-  :hook (after-init . persistent-scratch-setup-default)
+  :hook (elpaca-after-init . persistent-scratch-setup-default)
   :bind (:map lisp-interaction-mode-map
               ([remap save-buffer] . persistent-scratch-save))
   :config (setq persistent-scratch-backup-directory
@@ -290,7 +296,7 @@
 
 ;; Persistent & consistent undo
 (use-package undo-fu
-  :hook (after-init . global-undo-fu-session-mode)
+  :hook (elpaca-after-init . global-undo-fu-session-mode)
   :bind (([remap undo] . undo-fu-only-undo)
          ("C-x U" . undo-fu-only-redo)))
 
@@ -301,6 +307,7 @@
 
 ;; Display available keybindings when entering a command
 (use-package which-key
+  :ensure nil
   :hook (after-init . which-key-mode)
   :config
   (setq which-key-idle-secondary-delay 0.05
@@ -323,29 +330,6 @@
   :init
   (with-eval-after-load 'tab-line
     (add-to-list 'tab-line-exclude-modes 'helpful-mode)))
-
-;; To feel right at home upon startup
-(use-package dashboard
-  :config
-  (setq dashboard-set-navigator t
-        dashboard-center-content t
-        dashboard-set-init-info t
-        dashboard-startup-banner (concat user-emacs-directory
-                                         "/banner"
-                                         (if (display-graphic-p) ".svg" ".txt"))
-        dashboard-image-banner-max-width 175
-        dashboard-items '((recents  . 5)
-                          (bookmarks . 5)
-                          (projects . 5))
-        dashboard-page-separator "
-
-
-")
-
-  (dashboard-setup-startup-hook)
-
-  (with-eval-after-load 'tab-line
-    (add-to-list 'tab-line-exclude-modes 'dashboard-mode)))
 
 (provide 'init-ui)
 

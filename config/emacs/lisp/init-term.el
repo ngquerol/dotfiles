@@ -30,8 +30,8 @@
 (defun ngq/tty-setup-hook ()
   "Configuration for Emacs sessions running in a terminal."
   (xterm-mouse-mode t)
-  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
-  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+  (keymap-global-set "<mouse-4>" #'scroll-down-line)
+  (keymap-global-set "<mouse-5>" #'scroll-up-line))
 
 (when (and (not (display-graphic-p))
            (string-prefix-p "xterm" (getenv-internal "TERM" initial-environment)))
@@ -42,7 +42,7 @@
 
 (use-package xclip
   :unless (display-graphic-p)
-  :hook (after-init . xclip-mode))
+  :hook (elpaca-after-init . xclip-mode))
 
 (use-package vterm
   :config (with-eval-after-load 'tab-line

@@ -9,7 +9,7 @@
 ;;; Code:
 
 (use-package eshell
-  :straight (:type built-in)
+  :ensure nil
   :defines (eshell-output-filter-functions
             eshell-mode-map
             eshell-cmpl-mode-map)
