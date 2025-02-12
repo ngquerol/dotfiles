@@ -12,7 +12,7 @@ fi
 compression_program="xz --threads=0"
 backup_file_name="${1}"
 backup_src_dir="${2}"
-backup_dest_dir="${HOME}/Library/Mobile Documents/com~apple~CloudDocs/backups"
+backup_dest_dir="${HOME}/Library/Mobile Documents/com~apple~CloudDocs/Documents/Backups"
 backup_dest_file="${backup_dest_dir}/${backup_file_name}.tar.xz"
 exclude_file="${backup_src_dir}/.exclude"
 
