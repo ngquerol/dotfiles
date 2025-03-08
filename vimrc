@@ -82,7 +82,6 @@ if &t_Co == 8 && $TERM !~# '^Eterm'
 endif
 
 set background=dark
-colorscheme elflord 
 
 " Load matchit.vim, but only if the user hasn't installed a newer version.
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
