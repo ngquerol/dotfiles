@@ -15,15 +15,15 @@ function fish_prompt
     # working directory
     set_color brgreen -o
     echo -n (prompt_pwd)
-    set_color normal 
+    set_color normal
 
-    # elapsed time during last command 
+    # elapsed time during last command
     if test "$CMD_DURATION" -ge 500
         set -l minutes (math -s0 $CMD_DURATION / 60000)
         set -l seconds (math -s0 $CMD_DURATION % 60000 / 1000)
         set -l milliseconds (math -s0 $CMD_DURATION % 1000)
         set_color brblack
-        echo -ns " " $minutes "m" $seconds "s" $milliseconds "ms" 
+        echo -ns " " $minutes m $seconds s $milliseconds ms
         set_color normal
     end
 
@@ -31,7 +31,7 @@ function fish_prompt
     if test $last_status -ne 0
         set_color brred -o
         echo -n " $last_status"
-    else 
+    else
         set_color normal
     end
 
@@ -44,13 +44,13 @@ function fish_right_prompt
     # background jobs
     if test (jobs | wc -l) -gt 0
         set_color brblack -o
-        echo -ns " " (jobs | wc -l) "j"
+        echo -ns " " (jobs | wc -l) j
         set_color normal
     end
 
     # current python virtualenv
     if test -n "$VIRTUAL_ENV"
-        echo -ns " 🐍 " (path basename $VIRTUAL_ENV)
+        echo -ns " 🐍 " (path basename $VIRTUAL_ENV) " (" (python3 --version | string trim -c  'Python ') ")"
     end
 
     # git info

@@ -7,7 +7,7 @@ test -d "$HOME/.local/share"; and set -x XDG_DATA_HOME "$HOME/.local/share"
 test -d "$HOME/.local/state"; and set -x XDG_STATE_HOME "$HOME/.local/state"
 
 # homebrew
-if command -q brew 
+if command -q brew
     # homebrew(-cask) options
     set -x HOMEBREW_NO_ANALYTICS 1
     set -x HOMEBREW_NO_INSECURE_REDIRECT 1
@@ -52,19 +52,19 @@ function tmcleanlocal
     end
 
     printf "Found %d local snapshot(s): \n\n%s\n\n" \
-    (count $snapshots) \
-    (string join \n $snapshots | string collect)
+        (count $snapshots) \
+        (string join \n $snapshots | string collect)
 
     while read --local response --nchars 1 --prompt-str="Proceed with deletion? (y/n) "
-        or return 1 
+        or return 1
         switch $response
-        case y Y
-            break
-        case n N
-            return 
-        case '*'
-            echo Invalid input.
-            continue
+            case y Y
+                break
+            case n N
+                return
+            case '*'
+                echo Invalid input.
+                continue
         end
     end
 
