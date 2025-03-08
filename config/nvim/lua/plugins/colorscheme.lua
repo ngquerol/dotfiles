@@ -1,23 +1,36 @@
 return {
-	"catppuccin/nvim",
-	name = "catpuccin",
-	lazy = false,
-	priority = 1000,
-	opts = {
-		flavour = "mocha",
-		background = {
-			light = "latte",
-			dark = "mocha",
-		},
-		term_colors = true,
-		custom_highlights = function(colors)
-			return {
-				LspInlayHint = { bg = colors.none },
-			}
-		end,
-	},
-	config = function(_, opts)
-		require("catppuccin").setup(opts)
-		vim.cmd.colorscheme("catppuccin")
-	end,
+  {
+    "catppuccin/nvim",
+    version = false,
+    name = "catpuccin",
+    lazy = false,
+    priority = 1000,
+    opts = {
+      background = { dark = "mocha" },
+      term_colors = true,
+      no_italic = true,
+      integrations = {
+        blink_cmp = true,
+        lsp_trouble = true,
+        notify = true,
+        native_lsp = {
+          inlay_hints = { background = false },
+          underlines = {
+            errors = { "undercurl" },
+            hints = { "undercurl" },
+            warnings = { "undercurl" },
+            information = { "undercurl" },
+          },
+        },
+        mason = true,
+        neotest = true,
+        snacks = true,
+        which_key = true,
+      },
+    },
+    config = function(_, opts)
+      require("catppuccin").setup(opts)
+      vim.cmd.colorscheme("catppuccin-mocha")
+    end,
+  },
 }

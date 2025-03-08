@@ -1,109 +1,164 @@
 return {
-	{
-		"neovim/nvim-lspconfig",
-		version = false, ---@diagnostic disable-line: assign-type-mismatch
-		event = { "BufReadPre", "BufNewFile" },
-		dependencies = {
-			{ "folke/neodev.nvim", opts = {} },
-			{
-				"williamboman/mason.nvim",
-				cmd = "Mason",
-				keys = {
-					{ "<leader>M", "<cmd>Mason<cr>", desc = "Mason" },
-				},
-				opts = {
-					ui = {
-						border = "rounded",
-						icons = {
-							package_installed = "✓",
-							package_pending = "➜",
-							package_uninstalled = "✗",
-						},
-					},
-				},
-			},
-		},
-		keys = {
-			{ "<leader>ga", vim.lsp.buf.code_action, desc = "code action(s)" },
-			{ "<leader>gr", vim.lsp.buf.rename, desc = "rename symbol" },
-			{ "<leader>gi", vim.lsp.buf.implementation, desc = "go to implementation" },
-			{ "<leader>gd", vim.lsp.buf.definition, desc = "go to definition" },
-			{ "<leader>gD", vim.lsp.buf.declaration, desc = "go to declaration" },
-		},
-		config = function()
-			local lspconfig = require("lspconfig")
+  {
+    "neovim/nvim-lspconfig",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    dependencies = {
+      { "williamboman/mason.nvim" },
+      { "williamboman/mason-lspconfig.nvim" },
+      {
+        "folke/lazydev.nvim",
+        ft = "lua",
+        opts = {
+          library = {
+            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            { path = "snacks.nvim", words = { "Snacks" } },
+          },
+        },
+      },
+      { "saghen/blink.cmp" },
+    },
+    keys = {
+      { "ga", vim.lsp.buf.code_action, desc = "Code action(s)" },
+      { "gR", vim.lsp.buf.rename, desc = "Rename symbol" },
+      {
+        "<leader>gh",
+        function()
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
+        end,
+        desc = "Toggle inlay hints",
+      },
+    },
+    opts = {
+      enable_inlay_hints = false,
+      servers = {
+        lua_ls = {
+          settings = {
+            Lua = {
+              runtime = { version = "LuaJIT" },
+              diagnostics = { globals = { "vim" } },
+              workspace = { checkThirdParty = false },
+              telemetry = { enable = false },
+            },
+          },
+        },
+      },
+    },
+    config = function(_, opts)
+      local lspconfig = require("lspconfig")
+      local mlsp = require("mason-lspconfig")
+      local blink = require("blink.cmp")
 
-			local capabilities = vim.tbl_deep_extend(
-				"force",
-				lspconfig.util.default_config.capabilities,
-				require("cmp_nvim_lsp").default_capabilities()
-			)
+      local on_attach = function(client, bufnr)
+        if client.server_capabilities.inlayHintProvider then
+          vim.lsp.inlay_hint.enable(opts.enable_inlay_hints, { bufnr = bufnr })
+        end
+      end
 
-			local on_attach = function(client, bufnr)
-				if client.server_capabilities.inlayHintProvider then
-					vim.lsp.inlay_hint.enable(bufnr, true)
-				end
-			end
+      local setup = function(server)
+        if not opts.servers[server] then
+          return
+        end
 
-			lspconfig.lua_ls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				settings = {
-					Lua = {
-						runtime = { version = "LuaJIT" },
-						diagnostics = { globals = { "vim" } },
-						workspace = { checkThirdParty = false },
-						telemetry = { enable = false },
-					},
-				},
-			})
+        local server_opts = opts.servers[server] or {}
+        local capabilities = blink.get_lsp_capabilities(server_opts.capabilities or {}, true)
 
-			lspconfig.clangd.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-			})
+        local config = vim.tbl_deep_extend("keep", server_opts, {
+          capabilities = capabilities,
+          on_attach = on_attach,
+        })
 
-			lspconfig.gopls.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				settings = {
-					gopls = {
-						gofumpt = true,
-						analyses = {
-							fieldalignment = true,
-							nilness = true,
-							unusedparams = true,
-							unusedwrite = true,
-							useany = true,
-						},
-						hints = {
-							assignVariableTypes = true,
-							compositeLiteralFields = true,
-							compositeLiteralTypes = true,
-							constantValues = true,
-							functionTypeParameters = true,
-							parameterNames = true,
-							rangeVariableTypes = true,
-						},
-					},
-				},
-			})
-		end,
-	},
-	{
-		"j-hui/fidget.nvim",
-		enabled = false,
-		event = "LspAttach",
-		opts = {
-			notification = {
-				window = { border = "rounded" },
-			},
-			integration = {
-				["nvim-tree"] = { enable = true },
-			},
-		},
-		config = function(_, opts)
-			require("fidget").setup(opts)
-		end,
-	},
+        lspconfig[server].setup(config)
+      end
+
+      local ensure_installed = {}
+      for server in pairs(opts.servers) do
+        ensure_installed[#ensure_installed + 1] = server
+      end
+
+      ---@diagnostic disable-next-line: missing-fields
+      mlsp.setup({
+        ensure_installed = ensure_installed,
+        handlers = { setup },
+      })
+    end,
+  },
+  {
+    "folke/snacks.nvim",
+    keys = {
+      {
+        "gd",
+        function()
+          Snacks.picker.lsp_definitions()
+        end,
+        desc = "Go to Definition",
+      },
+      {
+        "gD",
+        function()
+          Snacks.picker.lsp_declarations()
+        end,
+        desc = "Go to Declaration",
+      },
+      {
+        "gr",
+        function()
+          Snacks.picker.lsp_references()
+        end,
+        nowait = true,
+        desc = "References",
+      },
+      {
+        "gI",
+        function()
+          Snacks.picker.lsp_implementations()
+        end,
+        desc = "Go to Implementation",
+      },
+      {
+        "gy",
+        function()
+          Snacks.picker.lsp_type_definitions()
+        end,
+        desc = "Go to T[y]pe Definition",
+      },
+      {
+        "<leader>ss",
+        function()
+          Snacks.picker.lsp_symbols()
+        end,
+        desc = "LSP Symbols",
+      },
+      {
+        "<leader>sS",
+        function()
+          Snacks.picker.lsp_workspace_symbols()
+        end,
+        desc = "LSP Workspace Symbols",
+      },
+    },
+  },
+  {
+    "kosayoda/nvim-lightbulb",
+    version = false,
+    event = "LspAttach",
+    opts = {
+      autocmd = { enabled = true },
+      code_lenses = true,
+      sign = { enabled = false },
+      status_text = { enabled = true },
+      virtual_text = { enabled = false },
+    },
+  },
+  {
+    "j-hui/fidget.nvim",
+    event = "VeryLazy",
+    opts = {
+      notification = {
+        window = {
+          align = "top",
+          border = "rounded",
+        },
+      },
+    },
+  },
 }
