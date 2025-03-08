@@ -6,3 +6,4 @@
 zprofile.local
 config/fish/fish_variables
 config/fish/completions
+config/fish/environment.local.fish
